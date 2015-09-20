@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    MK20D5/pal_lld.h
+ * @file    KINETIS/pal_lld.h
  * @brief   PAL subsystem low level driver header.
  *
  * @addtogroup PAL
@@ -31,13 +31,13 @@
 /* Unsupported modes and specific modes                                      */
 /*===========================================================================*/
 
-#define PAL_MODE_ALTERNATIVE_1      10
-#define PAL_MODE_ALTERNATIVE_2      11
-#define PAL_MODE_ALTERNATIVE_3      12
-#define PAL_MODE_ALTERNATIVE_4      13
-#define PAL_MODE_ALTERNATIVE_5      14
-#define PAL_MODE_ALTERNATIVE_6      15
-#define PAL_MODE_ALTERNATIVE_7      16
+#define PAL_MODE_ALTERNATIVE_1      0x10
+#define PAL_MODE_ALTERNATIVE_2      0x11
+#define PAL_MODE_ALTERNATIVE_3      0x12
+#define PAL_MODE_ALTERNATIVE_4      0x13
+#define PAL_MODE_ALTERNATIVE_5      0x14
+#define PAL_MODE_ALTERNATIVE_6      0x15
+#define PAL_MODE_ALTERNATIVE_7      0x16
 
 #define PIN_MUX_ALTERNATIVE(x)      PORTx_PCRn_MUX(x)
 

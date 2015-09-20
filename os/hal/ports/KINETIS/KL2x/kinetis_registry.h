@@ -56,6 +56,7 @@
 #define KINETIS_HAS_PORTE           FALSE
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 #define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
 
 /* GPT attributes.*/
 #define KINETIS_PIT0_HANDLER        Vector98
