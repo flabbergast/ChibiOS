@@ -27,18 +27,6 @@
 #if HAL_USE_PWM || defined(__DOXYGEN__)
 
 /*===========================================================================*/
-/* Driver local definitions.                                                 */
-/*===========================================================================*/
-
-#define KINETIS_TPM0_CHANNELS 6
-#define KINETIS_TPM1_CHANNELS 2
-#define KINETIS_TPM2_CHANNELS 2
-
-#define KINETIS_TPM0_HANDLER  Vector84
-#define KINETIS_TPM1_HANDLER  Vector88
-#define KINETIS_TPM2_HANDLER  Vector8C
-
-/*===========================================================================*/
 /* Driver exported variables.                                                */
 /*===========================================================================*/
 
@@ -113,7 +101,7 @@ static void pwm_lld_serve_interrupt(PWMDriver *pwmp) {
  *
  * @isr
  */
-OSAL_IRQ_HANDLER(KINETIS_TPM0_HANDLER) {
+OSAL_IRQ_HANDLER(KINETIS_TPM0_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   pwm_lld_serve_interrupt(&PWMD1);
@@ -127,7 +115,7 @@ OSAL_IRQ_HANDLER(KINETIS_TPM0_HANDLER) {
  *
  * @isr
  */
-OSAL_IRQ_HANDLER(KINETIS_TPM1_HANDLER) {
+OSAL_IRQ_HANDLER(KINETIS_TPM1_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   pwm_lld_serve_interrupt(&PWMD2);
@@ -141,7 +129,7 @@ OSAL_IRQ_HANDLER(KINETIS_TPM1_HANDLER) {
  *
  * @isr
  */
-OSAL_IRQ_HANDLER(KINETIS_TPM2_HANDLER) {
+OSAL_IRQ_HANDLER(KINETIS_TPM2_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   pwm_lld_serve_interrupt(&PWMD3);

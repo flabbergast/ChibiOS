@@ -34,16 +34,65 @@
  * @{
  */
 
-/* EXT attributes.*/
-#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
-#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
-
 /* ADC attributes.*/
 #define KINETIS_HAS_ADC0            TRUE
 #define KINETIS_ADC0_IRC_VECTOR     Vector7C
 
+/* DAC attributes */
+#define KINETIS_HAS_DAC0            TRUE
+#define KINTEIS_DAC0_IRQ_VECTOR     VectorA4
+
+/* DMA attributes.*/
+#define KINETIS_DMA0_IRQ_VECTOR     Vector40
+#define KINETIS_DMA1_IRQ_VECTOR     Vector44
+#define KINETIS_DMA2_IRQ_VECTOR     Vector48
+#define KINETIS_DMA3_IRQ_VECTOR     Vector4C
+
+/* EXT attributes.*/
+#define KINETIS_HAS_PORTA           TRUE
+#define KINETIS_HAS_PORTB           FALSE
+#define KINETIS_HAS_PORTC           FALSE
+#define KINETIS_HAS_PORTD           TRUE
+#define KINETIS_HAS_PORTE           FALSE
+#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
+#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+
+/* GPT attributes.*/
+#define KINETIS_PIT0_HANDLER        Vector98
+
 /* I2C attributes.*/
+#define KINETIS_HAS_I2C0            TRUE
 #define KINETIS_I2C0_IRQ_VECTOR     Vector60
+#define KINETIS_HAS_I2C1            TRUE
+#define KINETIS_I2C1_IRQ_VECTOR     Vector64
+
+/* Serial attributes */
+#define KINETIS_HAS_SERIAL0         TRUE
+#define KINETIS_SERIAL0_IRQ_VECTOR  Vector70
+#define KINETIS_HAS_SERIAL1         TRUE
+#define KINETIS_SERIAL1_IRQ_VECTOR  Vector74
+#define KINETIS_HAS_SERIAL2         TRUE
+#define KINETIS_SERIAL2_IRQ_VECTOR  Vector78
+
+/* SPI attributes.*/
+#define KINETIS_HAS_SPI0            TRUE
+#define KINETIS_SPI0_IRQ_VECTOR     Vector68
+#define KINETIS_HAS_SPI1            TRUE
+#define KINETIS_SPI1_IRQ_VECTOR     Vector6C
+
+/* TPM attributes.*/
+#define KINETIS_TPM0_CHANNELS       6
+#define KINETIS_TPM1_CHANNELS       2
+#define KINETIS_TPM2_CHANNELS       2
+#define KINETIS_TPM0_IRQ_VECTOR     Vector84
+#define KINETIS_TPM1_IRQ_VECTOR     Vector88
+#define KINETIS_TPM2_IRQ_VECTOR     Vector8C
+
+
+
+/* USB attributes.*/
+#define KINETIS_HAS_USB             TRUE
+#define KINETIS_USB_IRQ_VECTOR      VectorA0
 
 /** @} */
 
