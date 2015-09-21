@@ -226,7 +226,9 @@ struct GPTDriver {
  * @notapi
  */
 #define gpt_lld_change_interval(gptp, interval)                               \
-  ((gptp)->channel->LDVAL = (uint32_t)((interval)))
+  ((gptp)->channel->LDVAL = (uint32_t)( \
+                            ( (gptp)->clock / (gptp)->config->frequency ) * \
+                            ( interval ) ))
 
 /**
  * @brief   Returns the interval of GPT peripheral.
@@ -237,7 +239,9 @@ struct GPTDriver {
  *
  * @notapi
  */
-#define gpt_lld_get_interval(gptp) ((gptcnt_t)(gptp)->pit->CHANNEL[gptp->channel].LDVAL)
+#define gpt_lld_get_interval(gptp)                                            \
+  ((uint32_t)( ( (uint64_t)(gptp)->channel->LDVAL * (gptp)->config->frequency ) / \
+               ( (uint32_t)(gptp)->clock ) ))
 
 /**
  * @brief   Returns the counter value of GPT peripheral.

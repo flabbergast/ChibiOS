@@ -30,11 +30,6 @@
 /* Driver local definitions.                                                 */
 /*===========================================================================*/
 
-#define KINETIS_PIT0_HANDLER    VectorB8
-#define KINETIS_PIT1_HANDLER    VectorBC
-#define KINETIS_PIT2_HANDLER    VectorC0
-#define KINETIS_PIT3_HANDLER    VectorC4
-
 /*===========================================================================*/
 /* Driver exported variables.                                                */
 /*===========================================================================*/
@@ -101,15 +96,15 @@ static void gpt_lld_serve_interrupt(GPTDriver *gptp) {
 /*===========================================================================*/
 
 #if KINETIS_GPT_USE_PIT0
-#if !defined(KINETIS_PIT0_HANDLER)
-#error "KINETIS_PIT0_HANDLER not defined"
+#if !defined(KINETIS_PIT0_IRQ_VECTOR)
+#error "KINETIS_PIT0_IRQ_VECTOR not defined"
 #endif
 /**
  * @brief   PIT1 interrupt handler.
  *
  * @isr
  */
-OSAL_IRQ_HANDLER(KINETIS_PIT0_HANDLER) {
+OSAL_IRQ_HANDLER(KINETIS_PIT0_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
 
@@ -120,15 +115,15 @@ OSAL_IRQ_HANDLER(KINETIS_PIT0_HANDLER) {
 #endif /* KINETIS_GPT_USE_PIT0 */
 
 #if KINETIS_GPT_USE_PIT1
-#if !defined(KINETIS_PIT1_HANDLER)
-#error "KINETIS_PIT1_HANDLER not defined"
+#if !defined(KINETIS_PIT1_IRQ_VECTOR)
+#error "KINETIS_PIT1_IRQ_VECTOR not defined"
 #endif
 /**
  * @brief   PIT1 interrupt handler.
  *
  * @isr
  */
-OSAL_IRQ_HANDLER(KINETIS_PIT1_HANDLER) {
+OSAL_IRQ_HANDLER(KINETIS_PIT1_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
 
@@ -139,15 +134,15 @@ OSAL_IRQ_HANDLER(KINETIS_PIT1_HANDLER) {
 #endif /* KINETIS_GPT_USE_PIT1 */
 
 #if KINETIS_GPT_USE_PIT2
-#if !defined(KINETIS_PIT2_HANDLER)
-#error "KINETIS_PIT2_HANDLER not defined"
+#if !defined(KINETIS_PIT2_IRQ_VECTOR)
+#error "KINETIS_PIT2_IRQ_VECTOR not defined"
 #endif
 /**
  * @brief   PIT2 interrupt handler.
  *
  * @isr
  */
-OSAL_IRQ_HANDLER(KINETIS_PIT2_HANDLER) {
+OSAL_IRQ_HANDLER(KINETIS_PIT2_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
 
@@ -158,15 +153,15 @@ OSAL_IRQ_HANDLER(KINETIS_PIT2_HANDLER) {
 #endif /* KINETIS_GPT_USE_PIT2 */
 
 #if KINETIS_GPT_USE_PIT3
-#if !defined(KINETIS_PIT3_HANDLER)
-#error "KINETIS_PIT3_HANDLER not defined"
+#if !defined(KINETIS_PIT3_IRQ_VECTOR)
+#error "KINETIS_PIT3_IRQ_VECTOR not defined"
 #endif
 /**
  * @brief   PIT3 interrupt handler.
  *
  * @isr
  */
-OSAL_IRQ_HANDLER(KINETIS_PIT3_HANDLER) {
+OSAL_IRQ_HANDLER(KINETIS_PIT3_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
 
@@ -314,7 +309,7 @@ void gpt_lld_start_timer(GPTDriver *gptp, gptcnt_t interval) {
   gptp->channel->TFLG |= PIT_TFLG_TIF;
 
   /* Set the interval */
-  gptp->channel->LDVAL = (gptp->clock / gptp->config->frequency) * interval;
+  gpt_lld_change_interval(gptp, interval);
 
   /* Start the timer */
   gptp->channel->TCTRL |= PIT_TCTRL_TIE | PIT_TCTRL_TEN;
