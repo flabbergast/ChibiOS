@@ -45,16 +45,6 @@
 /** @} */
 
 /**
- * @brief   Maximum system and core clock (f_SYS) frequency.
- */
-#define KINETIS_SYSCLK_MAX      48000000
-
-/**
- * @brief   Maximum bus clock (f_BUS) frequency.
- */
-#define KINETIS_BUSCLK_MAX      24000000
-
-/**
  * @name    Internal clock sources
  * @{
  */

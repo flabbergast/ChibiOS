@@ -25,6 +25,10 @@
 #ifndef _KINETIS_REGISTRY_H_
 #define _KINETIS_REGISTRY_H_
 
+#if !defined(KL2x) || defined(__DOXYGEN__)
+#define KL2x
+#endif
+
 /*===========================================================================*/
 /* Platform capabilities.                                                    */
 /*===========================================================================*/
@@ -33,12 +37,31 @@
  * @name    KL2x capabilities
  * @{
  */
+/*===========================================================================*/
+/* KL25                                                                      */
+/*===========================================================================*/
+#if defined(KL25) || defined(__DOXYGEN__)
+
+/**
+ * @brief   Maximum system and core clock (f_SYS) frequency.
+ */
+#define KINETIS_SYSCLK_MAX      48000000
+
+/**
+ * @brief   Maximum bus clock (f_BUS) frequency.
+ */
+#define KINETIS_BUSCLK_MAX      24000000
+
+/**
+ * @brief   Maximum flash clock (f_FLASH) frequency.
+ */
+#define KINETIS_FLASHCLK_MAX    24000000L
 
 /* ADC attributes.*/
 #define KINETIS_HAS_ADC0            TRUE
 #define KINETIS_ADC0_IRC_VECTOR     Vector7C
 
-/* DAC attributes */
+/* DAC attributes.*/
 #define KINETIS_HAS_DAC0            TRUE
 #define KINTEIS_DAC0_IRQ_VECTOR     VectorA4
 
@@ -47,6 +70,7 @@
 #define KINETIS_DMA1_IRQ_VECTOR     Vector44
 #define KINETIS_DMA2_IRQ_VECTOR     Vector48
 #define KINETIS_DMA3_IRQ_VECTOR     Vector4C
+#define KINETIS_HAS_DMA_ERROR_IRQ   FALSE
 
 /* EXT attributes.*/
 #define KINETIS_HAS_PORTA           TRUE
@@ -89,11 +113,11 @@
 #define KINETIS_TPM1_IRQ_VECTOR     Vector88
 #define KINETIS_TPM2_IRQ_VECTOR     Vector8C
 
-
-
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE
 #define KINETIS_USB_IRQ_VECTOR      VectorA0
+
+#endif /* KL2Y */
 
 /** @} */
 

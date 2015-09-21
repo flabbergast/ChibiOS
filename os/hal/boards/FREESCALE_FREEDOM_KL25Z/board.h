@@ -31,6 +31,12 @@
 #define KINETIS_SYSCLK_FREQUENCY    48000000UL
 #define KINETIS_MCG_MODE            KINETIS_MCG_MODE_PEE
 
+
+/*
+ * MCU type
+ */
+#define KL25
+
 #if !defined(_FROM_ASM_)
 #ifdef __cplusplus
 extern "C" {

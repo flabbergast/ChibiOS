@@ -27,6 +27,11 @@
 #define BOARD_FREESCALE_FREEDOM_K20D50M
 #define BOARD_NAME                  "Freescale Freedom K20D50M"
 
+/*
+ * MCU type
+ */
+#define K20x5
+
 #if !defined(_FROM_ASM_)
 #ifdef __cplusplus
 extern "C" {

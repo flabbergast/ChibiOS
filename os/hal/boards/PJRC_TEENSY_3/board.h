@@ -33,6 +33,11 @@
 #define KINETIS_XTAL_FREQUENCY      16000000UL
 
 /*
+ * MCU type
+ */
+#define K20x5
+
+/*
  * IO pins assignments.
  */
 #define PORTA_PIN0                  0
