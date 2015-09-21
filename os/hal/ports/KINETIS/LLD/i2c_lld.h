@@ -67,6 +67,20 @@
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
+/** @brief  error checks */
+#if KINETIS_I2C_USE_I2C0 && !KINETIS_HAS_I2C0
+#error "I2C0 not present in the selected device"
+#endif
+
+#if KINETIS_I2C_USE_I2C1 && !KINETIS_HAS_I2C1
+#error "I2C1 not present in the selected device"
+#endif
+
+
+#if !(KINETIS_I2C_USE_I2C0 || KINETIS_I2C_USE_I2C1)
+#error "I2C driver activated but no I2C peripheral assigned"
+#endif
+
 /*===========================================================================*/
 /* Driver data structures and types.                                         */
 /*===========================================================================*/
