@@ -8,6 +8,7 @@ PLATFORMSRC = ${CHIBIOS}/os/hal/ports/common/ARMCMx/nvic.c \
               ${CHIBIOS}/os/hal/ports/KINETIS/LLD/ext_lld.c \
               ${CHIBIOS}/os/hal/ports/KINETIS/LLD/adc_lld.c \
               ${CHIBIOS}/os/hal/ports/KINETIS/K20x/gpt_lld.c \
+              ${CHIBIOS}/os/hal/ports/KINETIS/K20x/pwm_lld.c \
               ${CHIBIOS}/os/hal/ports/KINETIS/LLD/st_lld.c
 
 # Required include directories
