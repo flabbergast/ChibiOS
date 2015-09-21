@@ -27,8 +27,6 @@
 
 #if HAL_USE_SERIAL || defined(__DOXYGEN__)
 
-#include "mk20d5.h"
-
 /*===========================================================================*/
 /* Driver local definitions.                                                 */
 /*===========================================================================*/
@@ -155,9 +153,20 @@ static void notify3(io_queue_t *qp)
  * @brief   Common UART configuration.
  *
  */
-static void configure_uart(UART_TypeDef *uart, const SerialConfig *config)
+static void configure_uart(SerialDriver *sdp, const SerialConfig *config)
 {
-  uint32_t divisor = (KINETIS_SYSCLK_FREQUENCY * 2 + 1) / config->sc_speed;
+  UART_TypeDef *uart = sdp->uart;
+  /* UARTs 0 and 1 are clocked from SYSCLK, others from BUSCLK */
+  uint32_t divisor=KINETIS_BUSCLK_FREQUENCY;
+#if KINETIS_SERIAL_USE_UART0
+  if(sdp == &SD1)
+       divisor = KINETIS_SYSCLK_FREQUENCY;
+#endif
+#if KINETIS_SERIAL_USE_UART1
+  if(sdp == &SD2)
+       divisor = KINETIS_SYSCLK_FREQUENCY;
+#endif
+  divisor = (divisor * 2 + 1) / config->sc_speed;
 
   /* Disable UART while configuring */
   uart->C2 &= ~(UARTx_C2_RE | UARTx_C2_TE);
@@ -176,13 +185,13 @@ static void configure_uart(UART_TypeDef *uart, const SerialConfig *config)
 /*===========================================================================*/
 
 /* TODO:
- *   UART0_Error is Vector84
- *   UART1_Error is Vector8C
- *   UART2_Error is Vector94
+ *   UARTx_ERROR handlers
+ * if KINETIS_HAS_SERIAL_ERROR_IRQ
+ * use KINETIS_SERIALn_ERROR_IRQ_VECTOR
  */
 
 #if KINETIS_SERIAL_USE_UART0 || defined(__DOXYGEN__)
-OSAL_IRQ_HANDLER(Vector80) {
+OSAL_IRQ_HANDLER(KINETIS_SERIAL0_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   serve_interrupt(&SD1);
@@ -191,7 +200,7 @@ OSAL_IRQ_HANDLER(Vector80) {
 #endif
 
 #if KINETIS_SERIAL_USE_UART1 || defined(__DOXYGEN__)
-OSAL_IRQ_HANDLER(Vector88) {
+OSAL_IRQ_HANDLER(KINETIS_SERIAL1_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   serve_interrupt(&SD2);
@@ -200,7 +209,7 @@ OSAL_IRQ_HANDLER(Vector88) {
 #endif
 
 #if KINETIS_SERIAL_USE_UART2 || defined(__DOXYGEN__)
-OSAL_IRQ_HANDLER(Vector90) {
+OSAL_IRQ_HANDLER(KINETIS_SERIAL2_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   serve_interrupt(&SD3);
@@ -259,7 +268,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 #if KINETIS_SERIAL_USE_UART0
     if (sdp == &SD1) {
       SIM->SCGC4 |= SIM_SCGC4_UART0;
-      configure_uart(sdp->uart, config);
+      configure_uart(sdp, config);
       nvicEnableVector(UART0Status_IRQn, KINETIS_SERIAL_UART0_PRIORITY);
     }
 #endif /* KINETIS_SERIAL_USE_UART0 */
@@ -267,7 +276,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 #if KINETIS_SERIAL_USE_UART1
     if (sdp == &SD2) {
       SIM->SCGC4 |= SIM_SCGC4_UART1;
-      configure_uart(sdp->uart, config);
+      configure_uart(sdp, config);
       nvicEnableVector(UART1Status_IRQn, KINETIS_SERIAL_UART1_PRIORITY);
     }
 #endif /* KINETIS_SERIAL_USE_UART1 */
@@ -275,7 +284,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 #if KINETIS_SERIAL_USE_UART2
     if (sdp == &SD3) {
       SIM->SCGC4 |= SIM_SCGC4_UART2;
-      configure_uart(sdp->uart, config);
+      configure_uart(sdp, config);
       nvicEnableVector(UART2Status_IRQn, KINETIS_SERIAL_UART2_PRIORITY);
     }
 #endif /* KINETIS_SERIAL_USE_UART2 */

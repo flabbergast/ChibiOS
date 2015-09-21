@@ -27,8 +27,6 @@
 
 #if HAL_USE_SERIAL || defined(__DOXYGEN__)
 
-#include "kl25z.h"
-
 /*===========================================================================*/
 /* Driver local definitions.                                                 */
 /*===========================================================================*/
@@ -78,8 +76,9 @@ static const SerialConfig default_config = {
  */
 static void serve_interrupt(SerialDriver *sdp) {
   UARTLP_TypeDef *u = sdp->uart;
+  uint8_t s1 = u->S1;
 
-  if (u->S1 & UARTx_S1_RDRF) {
+  if (s1 & UARTx_S1_RDRF) {
     osalSysLockFromISR();
     if (iqIsEmptyI(&sdp->iqueue))
       chnAddFlagsI(sdp, CHN_INPUT_AVAILABLE);
@@ -88,7 +87,7 @@ static void serve_interrupt(SerialDriver *sdp) {
     osalSysUnlockFromISR();
   }
 
-  if (u->S1 & UARTx_S1_TDRE) {
+  if (s1 & UARTx_S1_TDRE) {
     msg_t b;
 
     osalSysLockFromISR();
@@ -105,13 +104,13 @@ static void serve_interrupt(SerialDriver *sdp) {
     }
   }
 
-  if (u->S1 & UARTx_S1_IDLE)
+  if (s1 & UARTx_S1_IDLE)
     u->S1 = UARTx_S1_IDLE;  // Clear IDLE (S1 bits are write-1-to-clear).
 
-  if (u->S1 & (UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF)) {
+  if (s1 & (UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF)) {
     // FIXME: need to add set_error()
     // Clear flags (S1 bits are write-1-to-clear).
-    u->S1 = UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF;
+    s1 = UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF;
   }
 }
 
@@ -205,7 +204,7 @@ static void configure_uart(UARTLP_TypeDef *uart, const SerialConfig *config)
 /*===========================================================================*/
 
 #if KINETIS_SERIAL_USE_UART0 || defined(__DOXYGEN__)
-OSAL_IRQ_HANDLER(Vector70) {
+OSAL_IRQ_HANDLER(KINETIS_SERIAL0_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   serve_interrupt(&SD1);
@@ -214,7 +213,7 @@ OSAL_IRQ_HANDLER(Vector70) {
 #endif
 
 #if KINETIS_SERIAL_USE_UART1 || defined(__DOXYGEN__)
-OSAL_IRQ_HANDLER(Vector74) {
+OSAL_IRQ_HANDLER(KINETIS_SERIAL1_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   serve_interrupt(&SD2);
@@ -223,7 +222,7 @@ OSAL_IRQ_HANDLER(Vector74) {
 #endif
 
 #if KINETIS_SERIAL_USE_UART2 || defined(__DOXYGEN__)
-OSAL_IRQ_HANDLER(Vector78) {
+OSAL_IRQ_HANDLER(KINETIS_SERIAL2_IRQ_VECTOR) {
 
   OSAL_IRQ_PROLOGUE();
   serve_interrupt(&SD3);

@@ -88,6 +88,24 @@
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
+/** @brief  error checks */
+#if KINETIS_SERIAL_USE_UART0 && !KINETIS_HAS_SERIAL0
+#error "UART0 not present in the selected device"
+#endif
+
+#if KINETIS_SERIAL_USE_UART1 && !KINETIS_HAS_SERIAL1
+#error "UART1 not present in the selected device"
+#endif
+
+#if KINETIS_SERIAL_USE_UART2 && !KINETIS_HAS_SERIAL2
+#error "UART2 not present in the selected device"
+#endif
+
+#if !(KINETIS_SERIAL_USE_UART0 || KINETIS_SERIAL_USE_UART1 || \
+      KINETIS_SERIAL_USE_UART2)
+#error "Serial driver activated but no UART peripheral assigned"
+#endif
+
 /*===========================================================================*/
 /* Driver data structures and types.                                         */
 /*===========================================================================*/

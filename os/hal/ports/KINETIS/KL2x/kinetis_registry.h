@@ -98,6 +98,7 @@
 #define KINETIS_SERIAL1_IRQ_VECTOR  Vector74
 #define KINETIS_HAS_SERIAL2         TRUE
 #define KINETIS_SERIAL2_IRQ_VECTOR  Vector78
+#define KINETIS_HAS_SERIAL_ERROR_IRQ FALSE
 
 /* SPI attributes.*/
 #define KINETIS_HAS_SPI0            TRUE
