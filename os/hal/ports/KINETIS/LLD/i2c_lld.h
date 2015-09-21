@@ -63,6 +63,20 @@
 #endif
 /** @} */
 
+/**
+ * @brief   I2C0 interrupt priority level setting.
+ */
+#if !defined(KINETIS_I2C_I2C0_PRIORITY) || defined(__DOXYGEN__)
+#define KINETIS_I2C_I2C0_PRIORITY        12
+#endif
+
+/**
+ * @brief   I2C1 interrupt priority level setting.
+ */
+#if !defined(KINETIS_I2C_I2C1_PRIORITY) || defined(__DOXYGEN__)
+#define KINETIS_I2C_I2C1_PRIORITY        12
+#endif
+
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
