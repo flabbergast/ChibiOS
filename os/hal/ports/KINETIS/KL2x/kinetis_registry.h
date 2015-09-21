@@ -83,7 +83,7 @@
 #define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
 
 /* GPT attributes.*/
-#define KINETIS_PIT0_HANDLER        Vector98
+#define KINETIS_PIT_HANDLER         Vector98
 
 /* I2C attributes.*/
 #define KINETIS_HAS_I2C0            TRUE

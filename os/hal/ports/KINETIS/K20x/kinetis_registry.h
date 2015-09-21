@@ -119,9 +119,13 @@
 #define KINETIS_HAS_FTM2            FALSE
 
 /* GPT attributes.*/
+#define KINETIS_HAS_PIT0            TRUE
 #define KINETIS_PIT0_IRQ_VECTOR     VectorB8
+#define KINETIS_HAS_PIT1            TRUE
 #define KINETIS_PIT1_IRQ_VECTOR     VectorBC
+#define KINETIS_HAS_PIT2            TRUE
 #define KINETIS_PIT2_IRQ_VECTOR     VectorC0
+#define KINETIS_HAS_PIT3            TRUE
 #define KINETIS_PIT3_IRQ_VECTOR     VectorC4
 
 /* USB attributes.*/
