@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    KINETIS/pal_lld.c
+ * @file    KINETIS/LLD/pal_lld.c
  * @brief   PAL subsystem low level driver.
  *
  * @addtogroup PAL

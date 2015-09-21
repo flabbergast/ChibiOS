@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    KINETIS/i2c_lld.c
+ * @file    KINETIS/LLD/i2c_lld.c
  * @brief   KINETIS I2C subsystem low level driver source.
  *
  * @addtogroup I2C
