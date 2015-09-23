@@ -323,6 +323,66 @@ typedef struct
   __IO uint8_t  REGSC;
 } PMC_TypeDef;
 
+typedef struct {
+  __I  uint8_t  PERID;               // 0x00
+       uint8_t  RESERVED0[3];
+  __I  uint8_t  IDCOMP;              // 0x04
+       uint8_t  RESERVED1[3];
+  __I  uint8_t  REV;                 // 0x08
+       uint8_t  RESERVED2[3];
+  __I  uint8_t  ADDINFO;             // 0x0C
+       uint8_t  RESERVED3[3];
+  __IO uint8_t  OTGISTAT;            // 0x10
+       uint8_t  RESERVED4[3];
+  __IO uint8_t  OTGICR;              // 0x14
+       uint8_t  RESERVED5[3];
+  __IO uint8_t  OTGSTAT;             // 0x18
+       uint8_t  RESERVED6[3];
+  __IO uint8_t  OTGCTL;              // 0x1C
+       uint8_t  RESERVED7[99];
+  __IO uint8_t  ISTAT;               // 0x80
+       uint8_t  RESERVED8[3];
+  __IO uint8_t  INTEN;               // 0x84
+       uint8_t  RESERVED9[3];
+  __IO uint8_t  ERRSTAT;             // 0x88
+       uint8_t  RESERVED10[3];
+  __IO uint8_t  ERREN;               // 0x8C
+       uint8_t  RESERVED11[3];
+  __I  uint8_t  STAT;                // 0x90
+       uint8_t  RESERVED12[3];
+  __IO uint8_t  CTL;                 // 0x94
+       uint8_t  RESERVED13[3];
+  __IO uint8_t  ADDR;                // 0x98
+       uint8_t  RESERVED14[3];
+  __IO uint8_t  BDTPAGE1;            // 0x9C
+       uint8_t  RESERVED15[3];
+  __IO uint8_t  FRMNUML;             // 0xA0
+       uint8_t  RESERVED16[3];
+  __IO uint8_t  FRMNUMH;             // 0xA4
+       uint8_t  RESERVED17[3];
+  __IO uint8_t  TOKEN;               // 0xA8
+       uint8_t  RESERVED18[3];
+  __IO uint8_t  SOFTHLD;             // 0xAC
+       uint8_t  RESERVED19[3];
+  __IO uint8_t  BDTPAGE2;            // 0xB0
+       uint8_t  RESERVED20[3];
+  __IO uint8_t  BDTPAGE3;            // 0xB4
+       uint8_t  RESERVED21[11];
+  struct {
+    __IO uint8_t  V;                 // 0xC0
+         uint8_t  RESERVED[3];
+  } ENDPT[16];
+  __IO uint8_t  USBCTRL;             // 0x100
+       uint8_t  RESERVED22[3];
+  __I  uint8_t  OBSERVE;             // 0x104
+       uint8_t  RESERVED23[3];
+  __IO uint8_t  CONTROL;             // 0x108
+       uint8_t  RESERVED24[3];
+  __IO uint8_t  USBTRC0;             // 0x10C
+       uint8_t  RESERVED25[7];
+  __IO uint8_t  USBFRMADJUST;        // 0x114
+} USBOTG_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -347,6 +407,7 @@ typedef struct
 #define UART0_BASE              ((uint32_t)0x4006A000)
 #define UART1_BASE              ((uint32_t)0x4006B000)
 #define UART2_BASE              ((uint32_t)0x4006C000)
+#define USBOTG_BASE             ((uint32_t)0x40072000)
 #define SPI0_BASE               ((uint32_t)0x40076000)
 #define SPI1_BASE               ((uint32_t)0x40077000)
 #define LLWU_BASE               ((uint32_t)0x4007C000)
@@ -376,6 +437,7 @@ typedef struct
 #define PORTC                   ((PORT_TypeDef  *)   PORTC_BASE)
 #define PORTD                   ((PORT_TypeDef  *)   PORTD_BASE)
 #define PORTE                   ((PORT_TypeDef  *)   PORTE_BASE)
+#define USBOTG                  ((USBOTG_TypeDef *)  USBOTG_BASE)
 #define MCG                     ((MCG_TypeDef  *)    MCG_BASE)
 #define OSC0                    ((OSC_TypeDef  *)    OSC0_BASE)
 #define SPI0                    ((SPI_TypeDef *)     SPI0_BASE)
@@ -1186,5 +1248,80 @@ typedef struct
 #define PMC_REGSC_ACKISO              ((uint8_t)0x8)    /*!< Acknowledge Isolation */
 #define PMC_REGSC_REGONS              ((uint8_t)0x4)    /*!< Regulator In Run Regulation Status */
 #define PMC_REGSC_BGBE                ((uint8_t)0x1)    /*!< Bandgap Buffer Enable */
+
+/****************************************************************/
+/*                                                              */
+/*                         USB OTG                              */
+/*                                                              */
+/****************************************************************/
+
+/********  Bits definition for USBx_STAT register  *************/
+#define USBx_STAT_ENDP_MASK         ((uint8_t)0xF0) /*!< Endpoint address mask*/
+#define USBx_STAT_ENDP_SHIFT        ((uint8_t)0x04) /*!< Endpoint address shift*/
+#define USBx_STAT_TX_MASK           ((uint8_t)0x08) /*!< Transmit indicator mask*/
+#define USBx_STAT_TX_SHIFT          ((uint8_t)0x03) /*!< Transmit indicator shift*/
+#define USBx_STAT_ODD_MASK          ((uint8_t)0x04) /*!< EVEN/ODD bank indicator mask*/
+#define USBx_STAT_ODD_SHIFT         ((uint8_t)0x02) /*!< EVEN/ODD bank indicator shift */
+
+/********  Bits definition for USBx_ISTAT register  *************/
+#define USBx_ISTAT_STALL             ((uint8_t)0x80) /*!< Stall interrupt */
+#define USBx_ISTAT_ATTACH            ((uint8_t)0x40) /*!< Attach interrupt */
+#define USBx_ISTAT_RESUME            ((uint8_t)0x20) /*!< Signal remote wakeup on the bus */
+#define USBx_ISTAT_SLEEP             ((uint8_t)0x10) /*!< Detected bus idle for 3ms */
+#define USBx_ISTAT_TOKDNE            ((uint8_t)0x08) /*!< Completed processing of current token */
+#define USBx_ISTAT_SOFTOK            ((uint8_t)0x04) /*!< Received start of frame */
+#define USBx_ISTAT_ERROR             ((uint8_t)0x02) /*!< Error (must check ERRSTAT!) */
+#define USBx_ISTAT_USBRST            ((uint8_t)0x01) /*!< USB reset detected */
+
+/********  Bits definition for USBx_ERRSTAT register  ***********/
+#define USBx_ERRSTAT_BTSERR          ((uint8_t)0x80) /*!< Bit stuff error detected */
+#define USBx_ERRSTAT_DMAERR          ((uint8_t)0x20) /*!< DMA request was not given */
+#define USBx_ERRSTAT_BTOERR          ((uint8_t)0x10) /*!< BUS turnaround timeout error */
+#define USBx_ERRSTAT_DFN8            ((uint8_t)0x08) /*!< Received data not 8-bit sized */
+#define USBx_ERRSTAT_CRC16           ((uint8_t)0x04) /*!< Packet with CRC16 error */
+#define USBx_ERRSTAT_CRC5EOF         ((uint8_t)0x02) /*!< CRC5 (device) or EOF (host) error */
+#define USBx_ERRSTAT_PIDERR          ((uint8_t)0x01) /*!< PID check field fail */
+
+/******** Bits definition for USBx_CTL register *****************/
+#define USBx_CTL_JSTATE              ((uint8_t)0x80) /*!< Live USB differential receiver JSTATE signal */
+#define USBx_CTL_SE0                 ((uint8_t)0x40) /*!< Live USB single ended zero signal */
+#define USBx_CTL_TXSUSPENDTOKENBUS   ((uint8_t)0x20) /*!<  */
+#define USBx_CTL_RESET               ((uint8_t)0x10) /*!< Generates an USB reset signal (host mode) */
+#define USBx_CTL_HOSTMODEEN          ((uint8_t)0x08) /*!< Operate in Host mode */
+#define USBx_CTL_RESUME              ((uint8_t)0x04) /*!< Executes resume signaling */
+#define USBx_CTL_ODDRST              ((uint8_t)0x02) /*!< Reset all BDT ODD ping/pong bits */
+#define USBx_CTL_USBENSOFEN          ((uint8_t)0x01) /*!< USB Enable! */
+
+/******** Bits definition for USBx_INTEN register ***************/
+#define USBx_INTEN_STALLEN           ((uint8_t)0x80) /*!< STALL interrupt enable */
+#define USBx_INTEN_ATTACHEN          ((uint8_t)0x40) /*!< ATTACH interrupt enable */
+#define USBx_INTEN_RESUMEEN          ((uint8_t)0x20) /*!< RESUME interrupt enable */
+#define USBx_INTEN_SLEEPEN           ((uint8_t)0x10) /*!< SLEEP interrupt enable */
+#define USBx_INTEN_TOKDNEEN          ((uint8_t)0x08) /*!< TOKDNE interrupt enable */
+#define USBx_INTEN_SOFTOKEN          ((uint8_t)0x04) /*!< SOFTOK interrupt enable */
+#define USBx_INTEN_ERROREN           ((uint8_t)0x02) /*!< ERROR interrupt enable */
+#define USBx_INTEN_USBRSTEN          ((uint8_t)0x01) /*!< USBRST interrupt enable */
+
+/******** Bits definition for USBx_ENDPTn register **************/
+#define USBx_ENDPTn_HOSTWOHUB        ((uint8_t)0x80)
+#define USBx_ENDPTn_RETRYDIS         ((uint8_t)0x40)
+#define USBx_ENDPTn_EPCTLDIS         ((uint8_t)0x10) /*!< Disables control transfers */
+#define USBx_ENDPTn_EPRXEN           ((uint8_t)0x08) /*!< Enable RX transfers */
+#define USBx_ENDPTn_EPTXEN           ((uint8_t)0x04) /*!< Enable TX transfers */
+#define USBx_ENDPTn_EPSTALL          ((uint8_t)0x02) /*!< Endpoint is called and in STALL */
+#define USBx_ENDPTn_EPHSHK           ((uint8_t)0x01) /*!< Enable handshaking during transaction */
+
+/******** Bits definition for USBx_CTRL register ****************/
+#define USBx_CTRL_SUSP               ((uint8_t)0x80) /*!< USB transceiver in suspend state */
+#define USBx_CTRL_PDE                ((uint8_t)0x40) /*!< Enable weak pull-downs */
+
+/******** Bits definition for USBx_USBTRC0 register *************/
+#define USBx_USBTRC0_USBRESET        ((uint8_t)0x80) /*!< USB reset */
+#define USBx_USBTRC0_USBRESMEN       ((uint8_t)0x20) /*!< Asynchronous resume interrupt enable */
+#define USBx_USBTRC0_SYNC_DET        ((uint8_t)0x02) /*!< Synchronous USB interrupt detect */
+#define USBx_USBTRC0_USB_RESUME_INT  ((uint8_t)0x01) /*!< USB asynchronous interrupt */
+
+/******** Bits definition for USBx_CONTROL register *************/
+#define USBx_CONTROL_DPPULLUPNONOTG  ((uint8_t)0x10) /*!< Control pull-ups in device mode */
 
 #endif
