@@ -32,6 +32,7 @@
 #define KINETIS_MCG_FLL_DMX32       1           /* Fine-tune for 32.768 kHz */
 #define KINETIS_MCG_FLL_DRS         1           /* 1464x FLL factor */
 #define KINETIS_SYSCLK_FREQUENCY    47972352UL  /* 32.768 kHz * 1464 (~48 MHz) */
+#define KINETIS_BUSCLK_FREQUENCY    KINETIS_SYSCLK_FREQUENCY
 
 /* FEE mode - 24 MHz with external 32.768 kHz crystal */
 #if 0
@@ -72,7 +73,5 @@
  */
 #define KINETIS_GPT_USE_PIT0                TRUE
 #define KINETIS_GPT_PIT0_IRQ_PRIORITY       8
-/* TODO: Move this to a KINETIS registry */
-#define KINETIS_HAS_PIT0                    TRUE
 
 #endif /* _MCUCONF_H_ */
