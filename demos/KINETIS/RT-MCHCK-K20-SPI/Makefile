@@ -101,7 +101,8 @@ include $(CHIBIOS)/os/rt/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 include $(CHIBIOS)/test/rt/test.mk
 
 # Define linker script file here
-LDSCRIPT= $(STARTUPLD)/MK20DX128.ld
+# Use BLDR4 for a 4k bootloader, BLDR3 for a 3k bootloader
+LDSCRIPT= $(STARTUPLD)/MK20DX128BLDR4.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -195,7 +196,9 @@ CPPWARN = -Wall -Wextra -Wundef
 #
 
 # List all user C define here, like -D_DEBUG=1
-UDEFS =
+# VTOR moved to after the bootloader; use 0x1000 for a 4k bootloader,
+#   0xc00 for a 3k bootloader
+UDEFS = -DCORTEX_VTOR_INIT=0x00001000
 
 # Define ASM defines here
 UADEFS =
