@@ -522,24 +522,31 @@ void usb_lld_init(void) {
   SIM->SOPT2 |= SIM_SOPT2_USBSRC;
 
 #if defined(K20x5) || defined(K20x7)
+
+#if KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI
+  /* MCGOUTCLK is the SYSCLK frequency, so don't divide for USB clock */
+  SIM->CLKDIV2 = SIM_CLKDIV2_USBDIV(0);
+#endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI */
+
+#if KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
   #define KINETIS_USBCLK_FREQUENCY 48000000UL
-  /* Default assume a 96MHz PLL */
-  SIM->CLKDIV2 = SIM_CLKDIV2_USBDIV(1);
   uint32_t i,j;
-  for(i = 0; i < 2; i++)
-  {
-    for(j=0; j < 8; j++)
-    {
-      if((KINETIS_PLLCLK_FREQUENCY * (i+1)) == (KINETIS_USBCLK_FREQUENCY*(j+1)))
-      {
+  for(i=0; i < 2; i++) {
+    for(j=0; j < 8; j++) {
+      if((KINETIS_PLLCLK_FREQUENCY * (i+1)) == (KINETIS_USBCLK_FREQUENCY*(j+1))) {
         SIM->CLKDIV2 = i | SIM_CLKDIV2_USBDIV(j);
-        break;
+        goto usbfrac_match_found;
       }
     }
   }
+  usbfrac_match_found:
   chDbgAssert(i<2 && j <8,"USB Init error");
-#elif defined(KL25) || defined (KL26)
-#endif /* K20xY - MCU type */
+#endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE */
+
+#endif /* defined(K20x5) || defined (K20x7) */
+
+#if defined(KL25) || defined (KL26)
+#endif /* defined(KL25) || defined (KL26) */
 
 #endif /* KINETIS_USB_USE_USB0 */
 }

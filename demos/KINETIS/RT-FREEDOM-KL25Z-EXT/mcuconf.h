@@ -24,6 +24,7 @@
  */
 
 /* Select the MCU clocking mode below by enabling the appropriate block. */
+/* The defaults are MCG_MODE_PEE, SYSCLK 48MHz, PLLCLK 96MHz, BUSCLK 24MHz */
 
 /* FEI mode */
 #if 0

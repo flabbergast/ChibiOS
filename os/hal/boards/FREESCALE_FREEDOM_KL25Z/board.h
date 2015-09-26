@@ -27,10 +27,8 @@
 #define BOARD_FREESCALE_FREEDOM_KL25Z
 #define BOARD_NAME                  "Freescale Freedom KL25Z"
 
-/* External 8 MHz crystal with PLL for 48 MHz core/system clock. */
-#define KINETIS_SYSCLK_FREQUENCY    48000000UL
-#define KINETIS_MCG_MODE            KINETIS_MCG_MODE_PEE
-
+/* External 8 MHz crystal. */
+#define KINETIS_XTAL_FREQUENCY      8000000UL
 
 /*
  * MCU type

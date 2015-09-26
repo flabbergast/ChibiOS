@@ -96,13 +96,6 @@ void hal_lld_init(void) {
 void k20x_clock_init(void) {
 #if !KINETIS_NO_INIT
 
-#if KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
-  uint32_t ratio, frdiv;
-  uint32_t ratios[] = { 32, 64, 128, 256, 512, 1024, 1280, 1536 };
-  uint8_t ratio_quantity = sizeof(ratios) / sizeof(ratios[0]);
-  uint8_t i;
-#endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE */
-
   /* Disable the watchdog */
   WDOG->UNLOCK = 0xC520;
   WDOG->UNLOCK = 0xD928;
@@ -115,14 +108,26 @@ void k20x_clock_init(void) {
                 SIM_SCGC5_PORTE;
 
 #if KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI
+  /* This is the default mode at reset. */
 
   /* Configure FEI mode */
   MCG->C4 = MCG_C4_DRST_DRS(KINETIS_MCG_FLL_DRS) |
             (KINETIS_MCG_FLL_DMX32 ? MCG_C4_DMX32 : 0);
 
+  /* Set clock dividers */
+  SIM->CLKDIV1 = SIM_CLKDIV1_OUTDIV1(KINETIS_CLKDIV1_OUTDIV1-1) |
+                 SIM_CLKDIV1_OUTDIV2(KINETIS_CLKDIV1_OUTDIV2-1) |
+                 SIM_CLKDIV1_OUTDIV4(KINETIS_CLKDIV1_OUTDIV4-1);
+  SIM->CLKDIV2 = SIM_CLKDIV2_USBDIV(0); /* not strictly necessary since usb_lld will set this */
+
 #endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI */
 
 #if KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
+
+  uint32_t ratio, frdiv;
+  uint32_t ratios[] = { 32, 64, 128, 256, 512, 1024, 1280, 1536 };
+  uint8_t ratio_quantity = sizeof(ratios) / sizeof(ratios[0]);
+  uint8_t i;
 
   /* EXTAL0 and XTAL0 */
   PORTA->PCR[18] = 0;
@@ -190,10 +195,8 @@ void k20x_clock_init(void) {
       break;
     }
   }
-  /*
-   * Config PLL for 96 MHz output as default setting
-   */
-  if(i>=56)
+
+  if(i>=56)  /* Config PLL for 96 MHz output as default setting */
     MCG->C6 = MCG_C6_PLLS | MCG_C6_VDIV0(0);
 
   /* Wait for PLL to start using crystal as its input, and to lock */

@@ -17,20 +17,6 @@
 #ifndef _MCUCONF_H_
 #define _MCUCONF_H_
 
-/*
- * STM32F0xx drivers configuration.
- * The following settings override the default settings present in
- * the various device driver implementation headers.
- * Note that the settings for each driver only have effect if the whole
- * driver is enabled in halconf.h.
- *
- * IRQ priorities:
- * 3...0       Lowest...Highest.
- *
- * DMA priorities:
- * 0...3        Lowest...Highest.
- */
-
 #define KL2x_MCUCONF
 
 /*
@@ -38,6 +24,7 @@
  */
 
 /* Select the MCU clocking mode below by enabling the appropriate block. */
+/* The defaults are MCG_MODE_PEE, SYSCLK 48MHz, PLLCLK 96MHz, BUSCLK 24MHz */
 
 /* FEI mode */
 #if 0

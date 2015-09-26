@@ -133,7 +133,6 @@
   #else
     #define KINETIS_CLKDIV1_OUTDIV4     4
   #endif
-
 #endif
 
 /**

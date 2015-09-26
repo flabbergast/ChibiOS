@@ -91,6 +91,7 @@ void hal_lld_init(void) {
  */
 void kl2x_clock_init(void) {
 #if !KINETIS_NO_INIT
+
   /* Disable COP watchdog */
   SIM->COPC = 0;
 
@@ -113,8 +114,12 @@ void kl2x_clock_init(void) {
    * OUTDIV1 (divider for core/system and bus/flash clock)
    * OUTDIV4 (additional divider for bus/flash clock) */
   SIM->CLKDIV1 =
-          SIM_CLKDIV1_OUTDIV1(1) |  /* OUTDIV1 = divide-by-2 => 24 MHz */
-          SIM_CLKDIV1_OUTDIV4(0);   /* OUTDIV4 = divide-by-1 => 24 MHz */
+          SIM_CLKDIV1_OUTDIV1(KINETIS_CLKDIV1_OUTDIV1-1) |
+          SIM_CLKDIV1_OUTDIV4(KINETIS_CLKDIV1_OUTDIV4-1);
+
+  /* Configure FEI mode */
+  MCG->C4 = MCG_C4_DRST_DRS(KINETIS_MCG_FLL_DRS) |
+            (KINETIS_MCG_FLL_DMX32 ? MCG_C4_DMX32 : 0);
 
 #elif KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEE
   /*
@@ -183,11 +188,16 @@ void kl2x_clock_init(void) {
      seems to omit it. */
 
 #elif KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
+  uint32_t ratio, frdiv;
+  uint32_t ratios[] = { 32, 64, 128, 256, 512, 1024, 1280, 1536 };
+  uint8_t ratio_quantity = sizeof(ratios) / sizeof(ratios[0]);
+  uint8_t i;
+
   /*
    * PLL Enabled External (PEE) MCG Mode
-   * 48 MHz core, 24 MHz bus - using 8 MHz crystal with PLL.
-   * f_MCGOUTCLK = (OSCCLK / PLL_R) * M
-   *             =  8 MHz / 2 * 24 = 96 MHz
+   * 48 MHz core, 24 MHz bus - using a crystal (KINETIS_XTAL_FREQUENCY) with PLL.
+   * f_MCGOUTCLK = (OSCCLK / PLL_R) * M (a.k.a. KINETIS_PLLCLK_FREQUENCY)
+   *             =  {8 MHz} / 2 * 24 = {96 MHz}
    *  PLL_R is the reference divider selected by C5[PRDIV0]
    *  M is the multiplier selected by C6[VDIV0]
    *
@@ -196,21 +206,13 @@ void kl2x_clock_init(void) {
    *   f_BUS = f_MCGOUTCLK / OUTDIV1 / OUTDIV4 = 96 MHz / 4 = 24 MHz
    */
 
-  /* The MCGOUTCLK is divided by OUTDIV1 and OUTDIV4:
-   * OUTDIV1 (divider for core/system and bus/flash clock)
-   * OUTDIV4 (additional divider for bus/flash clock) */
-  SIM->CLKDIV1 =
-          SIM_CLKDIV1_OUTDIV1(1) |  /* OUTDIV1 = divide-by-2 => 48 MHz */
-          SIM_CLKDIV1_OUTDIV4(1);   /* OUTDIV4 = divide-by-2 => 24 MHz */
-
-  SIM->SOPT2 =
-          SIM_SOPT2_TPMSRC(1) | /* MCGFLLCLK clock or MCGPLLCLK/2 */
-          SIM_SOPT2_PLLFLLSEL;  /* PLLFLLSEL=MCGPLLCLK/2 */
-
   /* EXTAL0 and XTAL0 */
   PORTA->PCR[18] &= ~0x01000700; /* Set PA18 to analog (default) */
   PORTA->PCR[19] &= ~0x01000700; /* Set PA19 to analog (default) */
 
+  /* Start in FEI mode */
+
+  /* Disable capacitors for crystal */
   OSC0->CR = 0;
 
   /* From KL25P80M48SF0RM section 24.5.1.1 "Initializing the MCG". */
@@ -220,15 +222,27 @@ void kl2x_clock_init(void) {
          resistor since FRDM-KL25Z has feedback resistor R25 unpopulated.
          Use high-gain mode by setting C2[HGO0] instead if external
          feedback resistor Rf is installed.  */
-  MCG->C2 =
-          MCG_C2_RANGE0(2) |  /* very high frequency range */
-          MCG_C2_EREFS0;      /* external reference (using a crystal) */
+  MCG->C2 = MCG_C2_EREFS0;      /* external reference (using a crystal) */
+  if (KINETIS_XTAL_FREQUENCY > 8000000UL)
+    MCG->C2 |= MCG_C2_RANGE0(2);
+  else
+    MCG->C2 |= MCG_C2_RANGE0(1);
   /* (2) Write to C1 to select the clock mode. */
+  frdiv = 7;
+  ratio = KINETIS_XTAL_FREQUENCY / 31250UL;
+  for (i = 0; i < ratio_quantity; ++i) {
+    if (ratio == ratios[i]) {
+      frdiv = i;
+      break;
+    }
+  }
+
+  /* Switch to crystal as clock source, FLL input of 31.25 KHz */
   MCG->C1 = /* Clear the IREFS bit to switch to the external reference. */
-          MCG_C1_CLKS_ERCLK |  /* Use ERCLK for system clock, MCGCLKOUT. */
-          MCG_C1_FRDIV(3);     /* Divide ERCLK / 256 for FLL reference. */
-  /* Note: FLL reference frequency must be 31.25 kHz to 39.0625 kHz.
-     8 MHz / 256 = 31.25 kHz. */
+          MCG_C1_CLKS_ERCLK |  /* Use Ext Ref Clock for system clock, MCGCLKOUT. */
+          MCG_C1_FRDIV(frdiv); /* Divide ERCLK / 256 for FLL reference. */
+  /* Note: FLL reference frequency must be 31.25 kHz to 39.0625 kHz. */
+
   MCG->C4 &= ~(MCG_C4_DMX32 | MCG_C4_DRST_DRS_MASK);
   MCG->C6 = 0;  /* PLLS=0: Select FLL as MCG source, not PLL */
 
@@ -254,11 +268,25 @@ void kl2x_clock_init(void) {
 
   /* (2)    Then configure C5[PRDIV0] to generate the
      correct PLL reference frequency. */
-  MCG->C5 = MCG_C5_PRDIV0(1);  /* PLL External Reference Divide by 2 */
+  #define KINETIS_PLLIN_FREQUENCY 2000000UL
+  /* TODO: Make sure KINETIS_XTAL_FREQUENCY >= 2Mhz && <= 50Mhz */
+  /* PLL External Reference Divide by ... */
+  MCG->C5 = MCG_C5_PRDIV0((KINETIS_XTAL_FREQUENCY/KINETIS_PLLIN_FREQUENCY) - 1);
   /* (3)    Then from FBE transition to PBE mode. */
   /* (3)(b) C6[PLLS]=1 to select PLL. */
-  /* (3)(b) C6[VDIV0]=5'b0000 (x24) 2 MHz * 24 = 48 MHz. */
-  MCG->C6 = MCG_C6_PLLS | MCG_C6_VDIV0(0);
+  /* (3)(b) C6[VDIV0]= PLLIN MHz * i = PLLCLK MHz. */
+  /* Config PLL output to match KINETIS_SYSCLK_FREQUENCY
+   * TODO: make sure KINETIS_SYSCLK_FREQUENCY is a match */
+  for(i = 24; i < 56; i++) {
+    if(i == (KINETIS_PLLCLK_FREQUENCY/KINETIS_PLLIN_FREQUENCY)) {
+      /* Config PLL to match KINETIS_PLLCLK_FREQUENCY */
+      MCG->C6 = MCG_C6_PLLS | MCG_C6_VDIV0(i-24);
+      break;
+    }
+  }
+  if(i>=56) /* Config PLL for 96 MHz output as default setting */
+    MCG->C6 = MCG_C6_PLLS | MCG_C6_VDIV0(0);
+
   /* (3)(d) Loop until S[PLLST], indicating PLL
      is the PLLS clock source. */
   while ((MCG->S & MCG_S_PLLST) == 0)
@@ -270,14 +298,26 @@ void kl2x_clock_init(void) {
 
   /* --- MCG mode: PBE (PLL bypassed, external crystal) --- */
 
+  /* Set the PLL dividers for the different clocks */
+  /* The MCGOUTCLK is divided by OUTDIV1 and OUTDIV4:
+   * OUTDIV1 (divider for core/system and bus/flash clock)
+   * OUTDIV4 (additional divider for bus/flash clock)
+   *  - these are computed in .h */
+  SIM->CLKDIV1 =
+          SIM_CLKDIV1_OUTDIV1(KINETIS_CLKDIV1_OUTDIV1-1) |
+          SIM_CLKDIV1_OUTDIV4(KINETIS_CLKDIV1_OUTDIV4-1);
+
+  SIM->SOPT2 =
+          SIM_SOPT2_TPMSRC(1) | /* MCGFLLCLK clock or MCGPLLCLK/2 */
+          SIM_SOPT2_PLLFLLSEL;  /* PLLFLLSEL=MCGPLLCLK/2 */
+
   /* (4)    Transition from PBE mode to PEE mode. */
   /* (4)(a) C1[CLKS] = 2'b00 to select PLL output as system clock source. */
   // Switch to PEE mode
   //    Select PLL output (CLKS=0)
-  //    FLL external reference divider (FRDIV=3)
+  //    FLL external reference divider (FRDIV) already set
   //    External reference clock for FLL (IREFS=0)
-  MCG->C1 = MCG_C1_CLKS(0) |
-            MCG_C1_FRDIV(3);
+  MCG->C1 = MCG_C1_CLKS(0);
   /* (4)(b) Loop until S[CLKST] are 2'b11, indicating the PLL output is selected for MCGOUTCLK. */
   while ((MCG->S & MCG_S_CLKST_MASK) != MCG_S_CLKST_PLL)
     ;  /* wait until clock switched to PLL output */

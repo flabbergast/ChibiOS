@@ -27,6 +27,9 @@
 #define BOARD_FREESCALE_FREEDOM_K20D50M
 #define BOARD_NAME                  "Freescale Freedom K20D50M"
 
+/* External 8 MHz crystal. */
+#define KINETIS_XTAL_FREQUENCY      8000000UL
+
 /*
  * MCU type
  */

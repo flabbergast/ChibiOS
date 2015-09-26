@@ -28,10 +28,9 @@
 /* Enable clock initialization by HAL */
 #define KINETIS_NO_INIT             FALSE
 
-/* PEE mode - external 8 MHz crystal with PLL for 48 MHz core/system clock. */
+/* PEE mode - external (8 MHz) crystal with PLL for 48 MHz core/system clock. */
 #if 1
 #define KINETIS_MCG_MODE            KINETIS_MCG_MODE_PEE
-#define KINETIS_XTAL_FREQUENCY      8000000UL
 #define KINETIS_SYSCLK_FREQUENCY    48000000UL
 #endif
 
