@@ -142,7 +142,7 @@ typedef struct {
   uint8_t                   ob[SERIAL_BUFFERS_SIZE];                        \
   /* End of the mandatory fields.*/                                         \
   /* Pointer to the UART registers block.*/                                 \
-  UARTLP_TypeDef            *uart;
+  UART_TypeDef            *uart;
 
 /*===========================================================================*/
 /* Driver macros.                                                            */

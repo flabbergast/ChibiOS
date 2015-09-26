@@ -75,7 +75,7 @@ static const SerialConfig default_config = {
  * @param[in] sdp       communication channel associated to the UART
  */
 static void serve_interrupt(SerialDriver *sdp) {
-  UARTLP_TypeDef *u = sdp->uart;
+  UART_TypeDef *u = sdp->uart;
   uint8_t s1 = u->S1;
 
   if (s1 & UARTx_S1_RDRF) {
@@ -118,7 +118,7 @@ static void serve_interrupt(SerialDriver *sdp) {
  * @brief   Attempts a TX preload
  */
 static void preload(SerialDriver *sdp) {
-  UARTLP_TypeDef *u = sdp->uart;
+  UART_TypeDef *u = sdp->uart;
 
   if (u->S1 & UARTx_S1_TDRE) {
     msg_t b = oqGetI(&sdp->oqueue);
@@ -162,7 +162,7 @@ static void notify3(io_queue_t *qp)
  * @brief   Common UART configuration.
  *
  */
-static void configure_uart(UARTLP_TypeDef *uart, const SerialConfig *config)
+static void configure_uart(UART_TypeDef *uart, const SerialConfig *config)
 {
   uint32_t uart_clock;
 

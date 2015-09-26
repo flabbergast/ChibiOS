@@ -37,10 +37,10 @@
  * @name    KL2x capabilities
  * @{
  */
+
 /*===========================================================================*/
-/* KL25                                                                      */
+/* Common features                                                           */
 /*===========================================================================*/
-#if defined(KL25) || defined(__DOXYGEN__)
 
 /**
  * @brief   Maximum system and core clock (f_SYS) frequency.
@@ -71,16 +71,6 @@
 #define KINETIS_DMA2_IRQ_VECTOR     Vector48
 #define KINETIS_DMA3_IRQ_VECTOR     Vector4C
 #define KINETIS_HAS_DMA_ERROR_IRQ   FALSE
-
-/* EXT attributes.*/
-#define KINETIS_HAS_PORTA           TRUE
-#define KINETIS_HAS_PORTB           FALSE
-#define KINETIS_HAS_PORTC           FALSE
-#define KINETIS_HAS_PORTD           TRUE
-#define KINETIS_HAS_PORTE           FALSE
-#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
-#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
-#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
 
 /* GPT attributes.*/
 #define KINETIS_PIT_HANDLER         Vector98
@@ -118,6 +108,72 @@
 #define KINETIS_HAS_USB             TRUE
 #define KINETIS_USB_IRQ_VECTOR      VectorA0
 
+/*===========================================================================*/
+/* KL25                                                                      */
+/*===========================================================================*/
+#if defined(KL25) || defined(__DOXYGEN__)
+
+/* EXT attributes.*/
+#define KINETIS_HAS_PORTA           TRUE
+#define KINETIS_HAS_PORTB           FALSE
+#define KINETIS_HAS_PORTC           FALSE
+#define KINETIS_HAS_PORTD           TRUE
+#define KINETIS_HAS_PORTE           FALSE
+#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
+#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
+
+/* I2S attributes.*/
+#define KINETIS_HAS_I2S0            FALSE
+
+/*===========================================================================*/
+/* KL26                                                                      */
+/*===========================================================================*/
+#elif defined(KL26) /* defined(KL25) */
+
+/* EXT attributes.*/
+#define KINETIS_HAS_PORTA           TRUE
+#define KINETIS_HAS_PORTB           FALSE
+#define KINETIS_HAS_PORTC           TRUE
+#define KINETIS_HAS_PORTD           TRUE
+#define KINETIS_HAS_PORTE           FALSE
+#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
+/* Common IRQ vector for PORTC and PORTD */
+#define KINETIS_PORTC_IRQ_VECTOR    VectorBC
+#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
+
+/* I2S attributes.*/
+#define KINETIS_HAS_I2S0            TRUE
+#define KINETIS_I2S0_IRQ_VECTOR     Vector9C
+
+/*===========================================================================*/
+/* KL27                                                                      */
+/*===========================================================================*/
+#elif defined(KL27) /* defined(KL26) */
+
+/* EXT attributes.*/
+#define KINETIS_HAS_PORTA           TRUE
+#define KINETIS_HAS_PORTB           FALSE
+#define KINETIS_HAS_PORTC           TRUE
+#define KINETIS_HAS_PORTD           TRUE
+#define KINETIS_HAS_PORTE           FALSE
+#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
+/* Common IRQ vector for PORTC and PORTD */
+#define KINETIS_PORTC_IRQ_VECTOR    VectorBC
+#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
+
+/* I2S attributes.*/
+#define KINETIS_HAS_I2S0            TRUE
+#define KINETIS_I2S0_IRQ_VECTOR     Vector9C
+
+/* Note: on this device SERIAL0 and 1 are LPUART0 and 1,
+ *       and SERIAL2 is alternatively FlexIO.
+ */
+
+#else /* defined(KL27) */
+#error MCU type not described in kinetis_registry
 #endif /* KL2Y */
 
 /** @} */
