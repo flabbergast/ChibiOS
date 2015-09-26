@@ -103,25 +103,7 @@ typedef struct
 } PORT_TypeDef;
 
 /* Device dependent
-typedef struct
-{
-  __IO uint8_t  C1;
-  __IO uint8_t  C2;
-  __IO uint8_t  C3;
-  __IO uint8_t  C4;
-  __IO uint8_t  C5;
-  __IO uint8_t  C6;
-  __IO uint8_t  S;
-       uint8_t  RESERVED0[1];
-  __IO uint8_t  SC;
-       uint8_t  RESERVED1[1];
-  __IO uint8_t  ATCVH;
-  __IO uint8_t  ATCVL;
-  __IO uint8_t  C7;
-  __IO uint8_t  C8;
-  __IO uint8_t  C9;
-  __IO uint8_t  C10;
-} MCG_TypeDef;
+  MCG_TypeDef;
 */
 
 typedef struct
@@ -148,20 +130,7 @@ typedef struct
 } DMAMUX_TypeDef;
 
 /* Device dependent
-typedef struct
-{
-  __IO uint32_t SC;
-  __IO uint32_t CNT;
-  __IO uint32_t MOD;
-  struct {                      // Channels
-    __IO uint32_t SC;
-    __IO uint32_t V;
-  } C[6];
-       uint32_t RESERVED0[5];
-  __IO uint32_t STATUS;
-       uint32_t RESERVED1[12];
-  __IO uint32_t CONF;
-} TPM_TypeDef;
+  TPM_TypeDef;
 */
 
 typedef struct
@@ -205,12 +174,7 @@ typedef struct
 } LPTMR_TypeDef;
 
 /* Device dependent (TSI or FlexIO)
-typedef struct
-{
-  __IO uint32_t GENCS;
-  __IO uint32_t DATA;
-  __IO uint32_t TSHD;
-} TSI_TypeDef;
+  TSI_TypeDef;
 */
 
 typedef struct
@@ -224,54 +188,19 @@ typedef struct
 } GPIO_TypeDef;
 
 /* Device dependent
-typedef struct
-{
-  __IO uint8_t  C1;
-  __IO uint8_t  C2;
-  __IO uint8_t  BR;
-  __IO uint8_t  S;
-       uint8_t  RESERVED0[1];
-  __IO uint8_t  D;
-       uint8_t  RESERVED1[1];
-  __IO uint8_t  M;
-} SPI_TypeDef;
+  SPI_TypeDef;
 */
 
 /* Device dependent
-typedef struct
-{
-  __IO uint8_t  A1;
-  __IO uint8_t  F;
-  __IO uint8_t  C1;
-  __IO uint8_t  S;
-  __IO uint8_t  D;
-  __IO uint8_t  C2;
-  __IO uint8_t  FLT;
-  __IO uint8_t  RA;
-  __IO uint8_t  SMB;
-  __IO uint8_t  A2;
-  __IO uint8_t  SLTH;
-  __IO uint8_t  SLTL;
-} I2C_TypeDef;
+  I2C_TypeDef;
 */
 
 /* Device dependent
-typedef struct
-{
-  __IO uint8_t  BDH;
-  __IO uint8_t  BDL;
-  __IO uint8_t  C1;
-  __IO uint8_t  C2;
-  __IO uint8_t  S1;
-  __IO uint8_t  S2;
-  __IO uint8_t  C3;
-  __IO uint8_t  D;
-  __IO uint8_t  C4;
-} UART_TypeDef;
+  UART_TypeDef;
 */
 
 /* Device dependent
-  LPUART
+  LPUART_Typedef;
 */
 
 typedef struct
@@ -282,65 +211,7 @@ typedef struct
 } PMC_TypeDef;
 
 /* Device dependent
-typedef struct {
-  __I  uint8_t  PERID;               // 0x00
-       uint8_t  RESERVED0[3];
-  __I  uint8_t  IDCOMP;              // 0x04
-       uint8_t  RESERVED1[3];
-  __I  uint8_t  REV;                 // 0x08
-       uint8_t  RESERVED2[3];
-  __I  uint8_t  ADDINFO;             // 0x0C
-       uint8_t  RESERVED3[3];
-  __IO uint8_t  OTGISTAT;            // 0x10
-       uint8_t  RESERVED4[3];
-  __IO uint8_t  OTGICR;              // 0x14
-       uint8_t  RESERVED5[3];
-  __IO uint8_t  OTGSTAT;             // 0x18
-       uint8_t  RESERVED6[3];
-  __IO uint8_t  OTGCTL;              // 0x1C
-       uint8_t  RESERVED7[99];
-  __IO uint8_t  ISTAT;               // 0x80
-       uint8_t  RESERVED8[3];
-  __IO uint8_t  INTEN;               // 0x84
-       uint8_t  RESERVED9[3];
-  __IO uint8_t  ERRSTAT;             // 0x88
-       uint8_t  RESERVED10[3];
-  __IO uint8_t  ERREN;               // 0x8C
-       uint8_t  RESERVED11[3];
-  __I  uint8_t  STAT;                // 0x90
-       uint8_t  RESERVED12[3];
-  __IO uint8_t  CTL;                 // 0x94
-       uint8_t  RESERVED13[3];
-  __IO uint8_t  ADDR;                // 0x98
-       uint8_t  RESERVED14[3];
-  __IO uint8_t  BDTPAGE1;            // 0x9C
-       uint8_t  RESERVED15[3];
-  __IO uint8_t  FRMNUML;             // 0xA0
-       uint8_t  RESERVED16[3];
-  __IO uint8_t  FRMNUMH;             // 0xA4
-       uint8_t  RESERVED17[3];
-  __IO uint8_t  TOKEN;               // 0xA8
-       uint8_t  RESERVED18[3];
-  __IO uint8_t  SOFTHLD;             // 0xAC
-       uint8_t  RESERVED19[3];
-  __IO uint8_t  BDTPAGE2;            // 0xB0
-       uint8_t  RESERVED20[3];
-  __IO uint8_t  BDTPAGE3;            // 0xB4
-       uint8_t  RESERVED21[11];
-  struct {
-    __IO uint8_t  V;                 // 0xC0
-         uint8_t  RESERVED[3];
-  } ENDPT[16];
-  __IO uint8_t  USBCTRL;             // 0x100
-       uint8_t  RESERVED22[3];
-  __I  uint8_t  OBSERVE;             // 0x104
-       uint8_t  RESERVED23[3];
-  __IO uint8_t  CONTROL;             // 0x108
-       uint8_t  RESERVED24[3];
-  __IO uint8_t  USBTRC0;             // 0x10C
-       uint8_t  RESERVED25[7];
-  __IO uint8_t  USBFRMADJUST;        // 0x114
-} USBOTG_TypeDef;
+  USBOTG_TypeDef;
 */
 
 /****************************************************************/
@@ -740,6 +611,14 @@ typedef struct {
 #define PMC_REGSC_ACKISO              ((uint8_t)0x8)    /*!< Acknowledge Isolation */
 #define PMC_REGSC_REGONS              ((uint8_t)0x4)    /*!< Regulator In Run Regulation Status */
 #define PMC_REGSC_BGBE                ((uint8_t)0x1)    /*!< Bandgap Buffer Enable */
+
+/****************************************************************/
+/*                                                              */
+/*                  Timer/PWM Module (TPM)                      */
+/*                                                              */
+/****************************************************************/
+
+/* Device dependent */
 
 /****************************************************************/
 /*                                                              */

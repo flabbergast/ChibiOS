@@ -192,9 +192,9 @@ static void configure_uart(UART_TypeDef *uart, const SerialConfig *config)
 
   /* FIXME: change fixed OSR = 16 to dynamic value based on baud */
   uint16_t divisor = (uart_clock / 16) / config->sc_speed;
-  uart->C4 = UARTx_C4_OSR & (16 - 1);
-  uart->BDH = (divisor >> 8) & UARTx_BDH_SBR;
-  uart->BDL = (divisor & UARTx_BDL_SBR);
+  uart->C4 = UARTx_C4_OSR(16 - 1);
+  uart->BDH = UARTx_BDH_SBR(divisor >> 8);
+  uart->BDL = UARTx_BDL_SBR(divisor);
 
   uart->C2 = UARTx_C2_RE | UARTx_C2_RIE | UARTx_C2_TE;
 }

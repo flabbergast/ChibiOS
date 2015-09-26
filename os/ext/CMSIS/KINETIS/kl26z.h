@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-#ifndef _KL25Z_H_
-#define _KL25Z_H_
+#ifndef _KL26Z_H_
+#define _KL26Z_H_
 
 /*
  * ==============================================================
@@ -62,7 +62,7 @@ typedef enum IRQn
   RTC0_IRQn                     = 20,
   RTC1_IRQn                     = 21,
   PIT_IRQn                      = 22,
-  Reserved1_IRQn                = 23,
+  I2S0_IRQn                     = 23,
   USB_OTG_IRQn                  = 24,
   DAC0_IRQn                     = 25,
   TSI0_IRQn                     = 26,
@@ -70,7 +70,7 @@ typedef enum IRQn
   LPTMR0_IRQn                   = 28,
   Reserved2_IRQn                = 29,
   PINA_IRQn                     = 30,
-  PIND_IRQn                     = 31,
+  PINCD_IRQn                    = 31,
 } IRQn_Type;
 
 /*
@@ -125,14 +125,17 @@ typedef struct
 
 typedef struct
 {
-  __IO uint8_t  C1;
-  __IO uint8_t  C2;
-  __IO uint8_t  BR;
   __IO uint8_t  S;
-       uint8_t  RESERVED0[1];
-  __IO uint8_t  D;
-       uint8_t  RESERVED1[1];
-  __IO uint8_t  M;
+  __IO uint8_t  BR;
+  __IO uint8_t  C2;
+  __IO uint8_t  C1;
+  __IO uint8_t  ML;
+  __IO uint8_t  MH;
+  __IO uint8_t  DL;
+  __IO uint8_t  DH;
+       uint8_t  RESERVED0[2];
+  __IO uint8_t  CI;
+  __IO uint8_t  C3;
 } SPI_TypeDef;
 
 typedef struct
@@ -140,7 +143,7 @@ typedef struct
   __IO uint8_t  A1;
   __IO uint8_t  F;
   __IO uint8_t  C1;
-  __IO uint8_t  S;
+  __IO uint8_t  S1;
   __IO uint8_t  D;
   __IO uint8_t  C2;
   __IO uint8_t  FLT;
@@ -232,6 +235,7 @@ typedef struct {
 /****************************************************************/
 #define DMA_BASE                ((uint32_t)0x40008100)
 #define DMAMUX_BASE             ((uint32_t)0x40021000)
+#define I2S0_BASE               ((uint32_t)0x4002F000) // TODO: registers not implemented
 #define PIT_BASE                ((uint32_t)0x40037000) // TODO: registers not implemented
 #define TPM0_BASE               ((uint32_t)0x40038000)
 #define TPM1_BASE               ((uint32_t)0x40039000)
@@ -370,6 +374,7 @@ typedef struct {
 #define SIM_SCGC6_TPM1               ((uint32_t)0x02000000)    /*!< TPM1 Clock Gate Control */
 #define SIM_SCGC6_TPM0               ((uint32_t)0x01000000)    /*!< TPM0 Clock Gate Control */
 #define SIM_SCGC6_PIT                ((uint32_t)0x00800000)    /*!< PIT Clock Gate Control */
+#define SIM_SCGC6_I2S                ((uint32_t)0x00008000)    /*!< I2S0 Clock Gate Control */
 #define SIM_SCGC6_DMAMUX             ((uint32_t)0x00000002)    /*!< DMA Mux Clock Gate Control */
 #define SIM_SCGC6_FTF                ((uint32_t)0x00000001)    /*!< Flash Memory Clock Gate Control */
 
@@ -515,6 +520,7 @@ typedef struct {
 
 /***********  Bits definition for MCG_C2 register  **************/
 #define MCG_C2_LOCRE0               ((uint8_t)((uint8_t)1 << 7))                                /*!< Loss of Clock Reset Enable */
+#define MCG_C2_FCFTRIM              ((uint8_t)((uint8_t)1 << 6))                                /*!< Loss of Clock Reset Enable */
 #define MCG_C2_RANGE0_SHIFT         4                                                           /*!< Frequency Range Select (shift) */
 #define MCG_C2_RANGE0_MASK          ((uint8_t)((uint8_t)0x03 << MCG_C2_RANGE0_SHIFT))           /*!< Frequency Range Select (mask) */
 #define MCG_C2_RANGE0(x)            ((uint8_t)(((uint8_t)(x) << MCG_C2_RANGE0_SHIFT) & MCG_C2_RANGE0_MASK))  /*!< Frequency Range Select */
@@ -597,16 +603,16 @@ typedef struct {
 #define MCG_ATCVL_ATCVL(x)          ((uint8_t)(((uint8_t)(x) << MCG_ATCVL_ATCVL_SHIFT) & MCG_ATCVL_ATCVL_MASK))  /*!< MCG Auto Trim Compare Value Low Register */
 
 /************  Bits definition for MCG_C7 register  **************/
-/* All MCG_C7 bits are reserved on the KL25Z. */
+#define MCG_C7_OSCSEL               ((uint8_t)((uint8_t)1 << 0)
 
 /************  Bits definition for MCG_C8 register  **************/
 #define MCG_C8_LOLRE                ((uint8_t)((uint8_t)1 << 6))                                /*!< PLL Loss of Lock Reset Enable */
 
 /************  Bits definition for MCG_C9 register  **************/
-/* All MCG_C9 bits are reserved on the KL25Z. */
+/* All MCG_C9 bits are reserved on the KL26Z. */
 
 /************  Bits definition for MCG_C10 register  *************/
-/* All MCG_C10 bits are reserved on the KL25Z. */
+/* All MCG_C10 bits are reserved on the KL26Z. */
 
 
 /****************************************************************/
@@ -614,42 +620,44 @@ typedef struct {
 /*             Serial Peripheral Interface (SPI)                */
 /*                                                              */
 /****************************************************************/
-/***********  Bits definition for SPIx_C1 register  *************/
-#define SPIx_C1_SPIE                 ((uint8_t)0x80)    /*!< SPI Interrupt Enable */
-#define SPIx_C1_SPE                  ((uint8_t)0x40)    /*!< SPI System Enable */
-#define SPIx_C1_SPTIE                ((uint8_t)0x20)    /*!< SPI Transmit Interrupt Enable */
-#define SPIx_C1_MSTR                 ((uint8_t)0x10)    /*!< Master/Slave Mode Select */
-#define SPIx_C1_CPOL                 ((uint8_t)0x08)    /*!< Clock Polarity */
-#define SPIx_C1_CPHA                 ((uint8_t)0x04)    /*!< Clock Phase */
-#define SPIx_C1_SSOE                 ((uint8_t)0x02)    /*!< Slave Select Output Enable */
-#define SPIx_C1_LSBFE                ((uint8_t)0x01)    /*!< LSB First */
 
-/***********  Bits definition for SPIx_C2 register  *************/
-#define SPIx_C2_SPMIE                ((uint8_t)0x80)    /*!< SPI Match Interrupt Enable */
-#define SPIx_C2_TXDMAE               ((uint8_t)0x20)    /*!< Transmit DMA Enable */
-#define SPIx_C2_MODFEN               ((uint8_t)0x10)    /*!< Master Mode-Fault Function Enable */
-#define SPIx_C2_BIDIROE              ((uint8_t)0x08)    /*!< Bidirectional Mode Output Enable */
-#define SPIx_C2_RXDMAE               ((uint8_t)0x04)    /*!< Receive DMA Enable */
-#define SPIx_C2_SPISWAI              ((uint8_t)0x02)    /*!< SPI Stop in Wait Mode */
-#define SPIx_C2_SPC0                 ((uint8_t)0x01)    /*!< SPI Pin Control 0 */
+// TODO!
+// /***********  Bits definition for SPIx_S register  **************/
+// #define SPIx_S_SPRF                  ((uint8_t)0x80)    /*!< SPI Read Buffer Full Flag */
+// #define SPIx_S_SPMF                  ((uint8_t)0x40)    /*!< SPI Match Flag */
+// #define SPIx_S_SPTEF                 ((uint8_t)0x20)    /*!< SPI Transmit Buffer Empty Flag */
+// #define SPIx_S_MODF                  ((uint8_t)0x10)    /*!< Master Mode Fault Flag */
 
-/***********  Bits definition for SPIx_BR register  *************/
-#define SPIx_BR_SPPR                 ((uint8_t)0x70)    /*!< SPI Baud rate Prescaler Divisor */
-#define SPIx_BR_SPR                  ((uint8_t)0x0F)    /*!< SPI Baud rate Divisor */
+// /***********  Bits definition for SPIx_C1 register  *************/
+// #define SPIx_C1_SPIE                 ((uint8_t)0x80)    /*!< SPI Interrupt Enable */
+// #define SPIx_C1_SPE                  ((uint8_t)0x40)    /*!< SPI System Enable */
+// #define SPIx_C1_SPTIE                ((uint8_t)0x20)    /*!< SPI Transmit Interrupt Enable */
+// #define SPIx_C1_MSTR                 ((uint8_t)0x10)    /*!< Master/Slave Mode Select */
+// #define SPIx_C1_CPOL                 ((uint8_t)0x08)    /*!< Clock Polarity */
+// #define SPIx_C1_CPHA                 ((uint8_t)0x04)    /*!< Clock Phase */
+// #define SPIx_C1_SSOE                 ((uint8_t)0x02)    /*!< Slave Select Output Enable */
+// #define SPIx_C1_LSBFE                ((uint8_t)0x01)    /*!< LSB First */
 
-#define SPIx_BR_SPPR_SHIFT           4
+// **********  Bits definition for SPIx_C2 register  ************
+// #define SPIx_C2_SPMIE                ((uint8_t)0x80)    /*!< SPI Match Interrupt Enable */
+// #define SPIx_C2_TXDMAE               ((uint8_t)0x20)    /*!< Transmit DMA Enable */
+// #define SPIx_C2_MODFEN               ((uint8_t)0x10)    /*!< Master Mode-Fault Function Enable */
+// #define SPIx_C2_BIDIROE              ((uint8_t)0x08)    /*!< Bidirectional Mode Output Enable */
+// #define SPIx_C2_RXDMAE               ((uint8_t)0x04)    /*!< Receive DMA Enable */
+// #define SPIx_C2_SPISWAI              ((uint8_t)0x02)    /*!< SPI Stop in Wait Mode */
+// #define SPIx_C2_SPC0                 ((uint8_t)0x01)    /*!< SPI Pin Control 0 */
 
-/***********  Bits definition for SPIx_S register  **************/
-#define SPIx_S_SPRF                  ((uint8_t)0x80)    /*!< SPI Read Buffer Full Flag */
-#define SPIx_S_SPMF                  ((uint8_t)0x40)    /*!< SPI Match Flag */
-#define SPIx_S_SPTEF                 ((uint8_t)0x20)    /*!< SPI Transmit Buffer Empty Flag */
-#define SPIx_S_MODF                  ((uint8_t)0x10)    /*!< Master Mode Fault Flag */
+// /***********  Bits definition for SPIx_BR register  *************/
+// #define SPIx_BR_SPPR                 ((uint8_t)0x70)    /*!< SPI Baud rate Prescaler Divisor */
+// #define SPIx_BR_SPR                  ((uint8_t)0x0F)    /*!< SPI Baud rate Divisor */
 
-/***********  Bits definition for SPIx_D register  **************/
-#define SPIx_D_DATA                  ((uint8_t)0xFF)    /*!< Data */
+// #define SPIx_BR_SPPR_SHIFT           4
 
-/***********  Bits definition for SPIx_M register  **************/
-#define SPIx_M_DATA                  ((uint8_t)0xFF)    /*!< SPI HW Compare value for Match */
+// /***********  Bits definition for SPIx_D register  **************/
+// #define SPIx_D_DATA                  ((uint8_t)0xFF)    /*!< Data */
+
+// /***********  Bits definition for SPIx_M register  **************/
+// #define SPIx_M_DATA                  ((uint8_t)0xFF)    /*!< SPI HW Compare value for Match */
 
 /****************************************************************/
 /*                                                              */
@@ -677,15 +685,15 @@ typedef struct {
 #define I2Cx_C1_WUEN                 ((uint8_t)0x02)    /*!< Wakeup Enable */
 #define I2Cx_C1_DMAEN                ((uint8_t)0x01)    /*!< DMA Enable */
 
-/***********  Bits definition for I2Cx_S register  **************/
-#define I2Cx_S_TCF                   ((uint8_t)0x80)    /*!< Transfer Complete Flag */
-#define I2Cx_S_IAAS                  ((uint8_t)0x40)    /*!< Addressed As A Slave */
-#define I2Cx_S_BUSY                  ((uint8_t)0x20)    /*!< Bus Busy */
-#define I2Cx_S_ARBL                  ((uint8_t)0x10)    /*!< Arbitration Lost */
-#define I2Cx_S_RAM                   ((uint8_t)0x08)    /*!< Range Address Match */
-#define I2Cx_S_SRW                   ((uint8_t)0x04)    /*!< Slave Read/Write */
-#define I2Cx_S_IICIF                 ((uint8_t)0x02)    /*!< Interrupt Flag */
-#define I2Cx_S_RXAK                  ((uint8_t)0x01)    /*!< Receive Acknowledge */
+/***********  Bits definition for I2Cx_S1 register  *************/
+#define I2Cx_S1_TCF                  ((uint8_t)0x80)    /*!< Transfer Complete Flag */
+#define I2Cx_S1_IAAS                 ((uint8_t)0x40)    /*!< Addressed As A Slave */
+#define I2Cx_S1_BUSY                 ((uint8_t)0x20)    /*!< Bus Busy */
+#define I2Cx_S1_ARBL                 ((uint8_t)0x10)    /*!< Arbitration Lost */
+#define I2Cx_S1_RAM                  ((uint8_t)0x08)    /*!< Range Address Match */
+#define I2Cx_S1_SRW                  ((uint8_t)0x04)    /*!< Slave Read/Write */
+#define I2Cx_S1_IICIF                ((uint8_t)0x02)    /*!< Interrupt Flag */
+#define I2Cx_S1_RXAK                 ((uint8_t)0x01)    /*!< Receive Acknowledge */
 
 /***********  Bits definition for I2Cx_D register  **************/
 #define I2Cx_D_DATA_SHIFT            0                  /*!< Data */
@@ -938,4 +946,4 @@ typedef struct {
 /******** Bits definition for USBx_CONTROL register *************/
 #define USBx_CONTROL_DPPULLUPNONOTG  ((uint8_t)0x10) /*!< Control pull-ups in device mode */
 
-#endif /* _KL25Z_H_ */
+#endif /* _KL26Z_H_ */
