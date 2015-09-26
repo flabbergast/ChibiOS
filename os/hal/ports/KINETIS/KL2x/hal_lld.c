@@ -143,8 +143,8 @@ void kl2x_clock_init(void) {
    * OUTDIV1 (divider for core/system and bus/flash clock)
    * OUTDIV4 (additional divider for bus/flash clock) */
   SIM->CLKDIV1 =
-          SIM_CLKDIV1_OUTDIV1(KINETIS_MCG_FLL_OUTDIV1 - 1) |
-          SIM_CLKDIV1_OUTDIV4(KINETIS_MCG_FLL_OUTDIV4 - 1);
+          SIM_CLKDIV1_OUTDIV1(KINETIS_CLKDIV1_OUTDIV1 - 1) |
+          SIM_CLKDIV1_OUTDIV4(KINETIS_CLKDIV1_OUTDIV4 - 1);
 
   /* EXTAL0 and XTAL0 */
   PORTA->PCR[18] &= ~0x01000700; /* Set PA18 to analog (default) */

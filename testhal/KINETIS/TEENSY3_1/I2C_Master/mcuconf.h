@@ -22,8 +22,10 @@
 /*
  * HAL driver system settings.
  */
-#define KINETIS_PLLCLK_FREQUENCY  (96000000L)
-#define KINETIS_SYSCLK_FREQUENCY  (48000000L)
+/* PEE mode - 48MHz system clock driven by external crystal. */
+#define KINETIS_MCG_MODE            KINETIS_MCG_MODE_PEE
+#define KINETIS_PLLCLK_FREQUENCY    96000000UL
+#define KINETIS_SYSCLK_FREQUENCY    48000000UL
 
 /*
  * I2C driver system settings.
