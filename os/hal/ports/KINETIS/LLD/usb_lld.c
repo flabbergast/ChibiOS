@@ -524,11 +524,12 @@ void usb_lld_init(void) {
 #if defined(K20x5) || defined(K20x7)
 
 #if KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI
+
   /* MCGOUTCLK is the SYSCLK frequency, so don't divide for USB clock */
   SIM->CLKDIV2 = SIM_CLKDIV2_USBDIV(0);
-#endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI */
 
-#if KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
+#elif KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
+
   #define KINETIS_USBCLK_FREQUENCY 48000000UL
   uint32_t i,j;
   for(i=0; i < 2; i++) {
@@ -541,12 +542,18 @@ void usb_lld_init(void) {
   }
   usbfrac_match_found:
   chDbgAssert(i<2 && j <8,"USB Init error");
-#endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE */
 
-#endif /* defined(K20x5) || defined (K20x7) */
+#else /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE */
+#error USB clock not implemented in current KINETIS_MCG_MODE
+#endif /* KINETIS_MCG_MODE == ... */
 
-#if defined(KL25) || defined (KL26)
-#endif /* defined(KL25) || defined (KL26) */
+#elif defined(KL25) || defined (KL26)
+
+  /* No extra clock dividers for USB clock */
+
+#else /* defined(KL25) || defined (KL26) */
+#error USB driver not implement for your MCU type
+#endif
 
 #endif /* KINETIS_USB_USE_USB0 */
 }

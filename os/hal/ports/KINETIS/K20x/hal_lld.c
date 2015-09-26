@@ -120,9 +120,7 @@ void k20x_clock_init(void) {
                  SIM_CLKDIV1_OUTDIV4(KINETIS_CLKDIV1_OUTDIV4-1);
   SIM->CLKDIV2 = SIM_CLKDIV2_USBDIV(0); /* not strictly necessary since usb_lld will set this */
 
-#endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI */
-
-#if KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
+#elif KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE
 
   uint32_t ratio, frdiv;
   uint32_t ratios[] = { 32, 64, 128, 256, 512, 1024, 1280, 1536 };
@@ -221,7 +219,9 @@ void k20x_clock_init(void) {
   /*
    * Now in PEE mode
    */
-#endif /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE */
+#else /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE */
+#error Unimplemented KINETIS_MCG_MODE
+#endif /* KINETIS_MCG_MODE == ... */
 
 #endif /* !KINETIS_NO_INIT */
 }
