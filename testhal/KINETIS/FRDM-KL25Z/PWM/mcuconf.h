@@ -40,4 +40,3 @@
  * PWM driver settings.
  */
 #define KINETIS_PWM_USE_TPM2                  TRUE
-#define KINETIS_PWM_TMP2_IRQ_PRIORITY         2                  

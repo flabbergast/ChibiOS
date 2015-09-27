@@ -41,12 +41,12 @@ static const PWMConfig pwmcfg = {
                                          /* meaning PWM resolution is 750 */
   NULL,                                  /* no callback */
   {
+   {PWM_OUTPUT_ACTIVE_LOW, NULL},        /* ch0: mode, no callback */
    {PWM_OUTPUT_ACTIVE_LOW, NULL},        /* ch1: mode, no callback */
-   {PWM_OUTPUT_ACTIVE_LOW, NULL},        /* ch2: mode, no callback */
+   {PWM_OUTPUT_DISABLED, NULL},          /* ch2: mode, no callback */
    {PWM_OUTPUT_DISABLED, NULL},          /* ch3: mode, no callback */
    {PWM_OUTPUT_DISABLED, NULL},          /* ch4: mode, no callback */
-   {PWM_OUTPUT_DISABLED, NULL},          /* ch5: mode, no callback */
-   {PWM_OUTPUT_DISABLED, NULL}           /* ch6: mode, no callback */
+   {PWM_OUTPUT_DISABLED, NULL}           /* ch5: mode, no callback */
   },
 };
 
@@ -104,11 +104,14 @@ int main(void) {
   palSetPad(GPIO_LED_BLUE, PIN_LED_BLUE); /* blue */
 
   /*
-   * Start the PWM driver, route TPM2 output to PTB18, PTB19
+   * Start the PWM driver, route TPM2 output to PTB18, PTB19.
+   * Enable channels now to avoid a blink later.
    */
   pwmStart(&PWM_DRIVER, &pwmcfg);
   palSetPadMode(GPIO_LED_RED, PIN_LED_RED, PAL_MODE_ALTERNATIVE_3);
   palSetPadMode(GPIO_LED_GREEN, PIN_LED_GREEN, PAL_MODE_ALTERNATIVE_3);
+  pwmEnableChannel(&PWM_DRIVER, 0, 0);
+  pwmEnableChannel(&PWM_DRIVER, 1, 0);
 
   /*
    * Create the breathe thread.
