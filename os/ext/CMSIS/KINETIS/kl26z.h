@@ -621,49 +621,81 @@ typedef struct {
 /*                                                              */
 /****************************************************************/
 
-// TODO!
-// /***********  Bits definition for SPIx_C1 register  *************/
-// #define SPIx_C1_SPIE                 ((uint8_t)0x80)    /*!< SPI Interrupt Enable */
-// #define SPIx_C1_SPE                  ((uint8_t)0x40)    /*!< SPI System Enable */
-// #define SPIx_C1_SPTIE                ((uint8_t)0x20)    /*!< SPI Transmit Interrupt Enable */
-// #define SPIx_C1_MSTR                 ((uint8_t)0x10)    /*!< Master/Slave Mode Select */
-// #define SPIx_C1_CPOL                 ((uint8_t)0x08)    /*!< Clock Polarity */
-// #define SPIx_C1_CPHA                 ((uint8_t)0x04)    /*!< Clock Phase */
-// #define SPIx_C1_SSOE                 ((uint8_t)0x02)    /*!< Slave Select Output Enable */
-// #define SPIx_C1_LSBFE                ((uint8_t)0x01)    /*!< LSB First */
+/***********  Bits definition for SPIx_S register  **************/
+#define SPIx_S_SPRF                  ((uint8_t)0x80)    /*!< SPI Read Buffer Full Flag */
+#define SPIx_S_SPMF                  ((uint8_t)0x40)    /*!< SPI Match Flag */
+#define SPIx_S_SPTEF                 ((uint8_t)0x20)    /*!< SPI Transmit Buffer Empty Flag */
+#define SPIx_S_MODF                  ((uint8_t)0x10)    /*!< Master Mode Fault Flag */
+#define SPIx_S_RNFULLF               ((uint8_t)0x08)    /*!< Receive FIFO nearly full flag */
+#define SPIx_S_TNEAREF               ((uint8_t)0x04)    /*!< Transmit FIFO nearly empty flag */
+#define SPIx_S_TXFULLF               ((uint8_t)0x02)    /*!< Transmit FIFO full flag */
+#define SPIx_S_RFIFOEF               ((uint8_t)0x01)    /*!< SPI read FIFO empty flag */
 
-// /***********  Bits definition for SPIx_C2 register  *************/
-// #define SPIx_C2_SPMIE                ((uint8_t)0x80)    /*!< SPI Match Interrupt Enable */
-// #define SPIx_C2_TXDMAE               ((uint8_t)0x20)    /*!< Transmit DMA Enable */
-// #define SPIx_C2_MODFEN               ((uint8_t)0x10)    /*!< Master Mode-Fault Function Enable */
-// #define SPIx_C2_BIDIROE              ((uint8_t)0x08)    /*!< Bidirectional Mode Output Enable */
-// #define SPIx_C2_RXDMAE               ((uint8_t)0x04)    /*!< Receive DMA Enable */
-// #define SPIx_C2_SPISWAI              ((uint8_t)0x02)    /*!< SPI Stop in Wait Mode */
-// #define SPIx_C2_SPC0                 ((uint8_t)0x01)    /*!< SPI Pin Control 0 */
+/***********  Bits definition for SPIx_BR register  *************/
+#define SPIx_BR_SPPR_SHIFT           4                  !< SPI Baud rate Prescaler Divisor 
+#define SPIx_BR_SPPR_MASK            ((uint8_t)((uint8_t)0x7 << SPIx_BR_SPPR_SHIFT))
+#define SPIx_BR_SPPR(x)              ((uint8_t)(((uint8_t)(x) << SPIx_BR_SPPR_SHIFT) & SPIx_BR_SPPR_MASK))
+#define SPIx_BR_SPR_SHIFT            0                  /*!< SPI Baud rate Divisor */
+#define SPIx_BR_SPR_MASK             ((uint8_t)((uint8_t)0x0F << SPIx_BR_SPR_SHIFT))
+#define SPIx_BR_SPR(x)               ((uint8_t)(((uint8_t)(x) << SPIx_BR_SPR_SHIFT) & SPIx_BR_SPR_MASK))
 
-// /***********  Bits definition for SPIx_BR register  *************/
-// #define SPIx_BR_SPPR_SHIFT           4                  !< SPI Baud rate Prescaler Divisor 
-// #define SPIx_BR_SPPR_MASK            ((uint8_t)((uint8_t)0x7 << SPIx_BR_SPPR_SHIFT))
-// #define SPIx_BR_SPPR(x)              ((uint8_t)(((uint8_t)(x) << SPIx_BR_SPPR_SHIFT) & SPIx_BR_SPPR_MASK))
-// #define SPIx_BR_SPR_SHIFT            0                  /*!< SPI Baud rate Divisor */
-// #define SPIx_BR_SPR_MASK             ((uint8_t)((uint8_t)0x0F << SPIx_BR_SPR_SHIFT))
-// #define SPIx_BR_SPR(x)               ((uint8_t)(((uint8_t)(x) << SPIx_BR_SPR_SHIFT) & SPIx_BR_SPR_MASK))
+/***********  Bits definition for SPIx_C2 register  *************/
+#define SPIx_C2_SPMIE                ((uint8_t)0x80)    /*!< SPI Match Interrupt Enable */
+#define SPIx_C2_SPIMODE              ((uint8_t)0x40)    /*!< SPI 8-bit or 16-bit mode */
+#define SPIx_C2_TXDMAE               ((uint8_t)0x20)    /*!< Transmit DMA Enable */
+#define SPIx_C2_MODFEN               ((uint8_t)0x10)    /*!< Master Mode-Fault Function Enable */
+#define SPIx_C2_BIDIROE              ((uint8_t)0x08)    /*!< Bidirectional Mode Output Enable */
+#define SPIx_C2_RXDMAE               ((uint8_t)0x04)    /*!< Receive DMA Enable */
+#define SPIx_C2_SPISWAI              ((uint8_t)0x02)    /*!< SPI Stop in Wait Mode */
+#define SPIx_C2_SPC0                 ((uint8_t)0x01)    /*!< SPI Pin Control 0 */
 
-// /***********  Bits definition for SPIx_S register  **************/
-// #define SPIx_S_SPRF                  ((uint8_t)0x80)    /*!< SPI Read Buffer Full Flag */
-// #define SPIx_S_SPMF                  ((uint8_t)0x40)    /*!< SPI Match Flag */
-// #define SPIx_S_SPTEF                 ((uint8_t)0x20)    /*!< SPI Transmit Buffer Empty Flag */
-// #define SPIx_S_MODF                  ((uint8_t)0x10)    /*!< Master Mode Fault Flag */
+/***********  Bits definition for SPIx_C1 register  *************/
+#define SPIx_C1_SPIE                 ((uint8_t)0x80)    /*!< SPI Interrupt Enable */
+#define SPIx_C1_SPE                  ((uint8_t)0x40)    /*!< SPI System Enable */
+#define SPIx_C1_SPTIE                ((uint8_t)0x20)    /*!< SPI Transmit Interrupt Enable */
+#define SPIx_C1_MSTR                 ((uint8_t)0x10)    /*!< Master/Slave Mode Select */
+#define SPIx_C1_CPOL                 ((uint8_t)0x08)    /*!< Clock Polarity */
+#define SPIx_C1_CPHA                 ((uint8_t)0x04)    /*!< Clock Phase */
+#define SPIx_C1_SSOE                 ((uint8_t)0x02)    /*!< Slave Select Output Enable */
+#define SPIx_C1_LSBFE                ((uint8_t)0x01)    /*!< LSB First */
 
-// /***********  Bits definition for SPIx_D register  **************/
-// #define SPIx_D_DATA_SHIFT            0                  /*!< Data */
-// #define SPIx_D_DATA_MASK             ((uint8_t)((uint8_t)0xFF << SPIx_D_DATA_SHIFT))
-// #define SPIx_D_DATA(x)               ((uint8_t)(((uint8_t)(x) << SPIx_D_DATA_SHIFT) & SPIx_D_DATA_MASK))
+/***********  Bits definition for SPIx_ML register  *************/
+#define SPIx_ML_DATA_SHIFT           0                  /*!< SPI HW Compare value for Match - low byte */
+#define SPIx_ML_DATA_MASK            ((uint8_t)((uint8_t)0xFF << SPIx_ML_DATA_SHIFT))
+#define SPIx_ML_DATA(x)              ((uint8_t)(((uint8_t)(x) << SPIx_ML_DATA_SHIFT) & SPIx_ML_DATA_MASK))
 
-// /***********  Bits definition for SPIx_M register  **************/
-// #define SPIx_M_DATA_SHIFT            0                  /*!< SPI HW Compare value for Match */
-// #define SPIx_M_DATA_MASK             ((uint8_t)((uint8_t)0xFF << SPIx_M_DATA_SHIFT))
-// #define SPIx_M_DATA(x)               ((uint8_t)(((uint8_t)(x) << SPIx_M_DATA_SHIFT) & SPIx_M_DATA_MASK))
+/***********  Bits definition for SPIx_MH register  *************/
+#define SPIx_MH_DATA_SHIFT           0                  /*!< SPI HW Compare value for Match - high byte */
+#define SPIx_MH_DATA_MASK            ((uint8_t)((uint8_t)0xFF << SPIx_MH_DATA_SHIFT))
+#define SPIx_MH_DATA(x)              ((uint8_t)(((uint8_t)(x) << SPIx_MH_DATA_SHIFT) & SPIx_MH_DATA_MASK))
+
+/***********  Bits definition for SPIx_DL register  *************/
+#define SPIx_DL_DATA_SHIFT            0                  /*!< Data - low byte */
+#define SPIx_DL_DATA_MASK             ((uint8_t)((uint8_t)0xFF << SPIx_DL_DATA_SHIFT))
+#define SPIx_DL_DATA(x)               ((uint8_t)(((uint8_t)(x) << SPIx_DL_DATA_SHIFT) & SPIx_DL_DATA_MASK))
+
+/***********  Bits definition for SPIx_DH register  *************/
+#define SPIx_DH_DATA_SHIFT            0                  /*!< Data - high byte */
+#define SPIx_DH_DATA_MASK             ((uint8_t)((uint8_t)0xFF << SPIx_DH_DATA_SHIFT))
+#define SPIx_DH_DATA(x)               ((uint8_t)(((uint8_t)(x) << SPIx_DH_DATA_SHIFT) & SPIx_DH_DATA_MASK))
+
+/***********  Bits definition for SPIx_CI register  *************/
+#define SPIx_CI_TXFERR                ((uint8_t)0x80)    /*!< Transmit FIFO error flag */
+#define SPIx_CI_RXFERR                ((uint8_t)0x40)    /*!< Receive FIFO error flag */
+#define SPIx_CI_TXFOF                 ((uint8_t)0x20)    /*!< Transmit FIFO overflow flag */
+#define SPIx_CI_RXFOF                 ((uint8_t)0x10)    /*!< Receive FIFO overflow flag */
+#define SPIx_CI_TNEAREFCI             ((uint8_t)0x08)    /*!< Transmit FIFO nearly empty flag clear interrupt */
+#define SPIx_CI_RNFULLFCI             ((uint8_t)0x04)    /*!< Receive FIFO nearly full flag clear interrupt */
+#define SPIx_CI_SPTEFCI               ((uint8_t)0x02)    /*!< Transmit FIFO empty flag clear interrupt */
+#define SPIx_CI_SPRFCI                ((uint8_t)0x01)    /*!< Receive FIFO full flag clear interrupt */
+
+/***********  Bits definition for SPIx_C3 register  *************/
+#define SPIx_C3_TNEAREF_MARK          ((uint8_t)0x20)    /*!< Transmit FIFO nearly empty watermark */
+#define SPIx_C3_RNFULLF_MARK          ((uint8_t)0x10)    /*!< Receive FIFO nearly full watermark */
+#define SPIx_C3_INTCLR                ((uint8_t)0x08)    /*!< Interrupt clearing mechanism select */
+#define SPIx_C3_TNEARIEN              ((uint8_t)0x04)    /*!< Transmit FIFO nearly empty interrupt enable */
+#define SPIx_C3_RNFULLIEN             ((uint8_t)0x02)    /*!< Receive FIFO nearly full interrupt enable */
+#define SPIx_C3_FIFOMODE              ((uint8_t)0x01)    /*!< FIFO mode enable */
 
 /****************************************************************/
 /*                                                              */
