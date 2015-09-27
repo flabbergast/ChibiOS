@@ -24,8 +24,8 @@
 /*
  * Board identifier.
  */
-#define BOARD_FREESCALE_FREEDOM_KL25Z
-#define BOARD_NAME                  "Freescale Freedom KL25Z"
+#define BOARD_FREESCALE_FREEDOM_KL26Z
+#define BOARD_NAME                  "Freescale Freedom KL26Z"
 
 /* External 8 MHz crystal. */
 #define KINETIS_XTAL_FREQUENCY      8000000UL
@@ -33,17 +33,21 @@
 /*
  * MCU type
  */
-#define KL25
+#define KL26
 
 /*
  * Onboard features.
  */
-#define GPIO_LED_RED    IOPORT2
-#define PIN_LED_RED     18
-#define GPIO_LED_GREEN  IOPORT2
+#define GPIO_LED_RED    IOPORT5
+#define PIN_LED_RED     17
+#define GPIO_LED_GREEN  IOPORT5
 #define PIN_LED_GREEN   19
 #define GPIO_LED_BLUE   IOPORT4
-#define PIN_LED_BLUE    1
+#define PIN_LED_BLUE    5
+#define GPIO_BUTTON     IOPORT4
+#define PIN_BUTTON      0
+#define GPIO_LIGHTSNS   IOPORT5
+#define PIN_LIGHTSNS    22
 
 #define I2C_INERIAL_SENSOR I2C0
 
