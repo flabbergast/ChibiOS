@@ -416,9 +416,9 @@ int main(void) {
   /*
    * Turn off the RGB LED.
    */
-  palSetPad(IOPORT2, 18); /* red */
-  palSetPad(IOPORT2, 19); /* green */
-  palSetPad(IOPORT4, 1); /* blue */
+  palSetPad(GPIO_LED_RED, PIN_LED_RED); /* red */
+  palSetPad(GPIO_LED_GREEN, PIN_LED_GREEN); /* green */
+  palSetPad(GPIO_LED_BLUE, PIN_LED_BLUE); /* blue */
 
 #if defined(DEBUG_USB)
   sdStart(&SD1, &s0cfg);
@@ -457,7 +457,7 @@ int main(void) {
       shelltp = NULL;           /* Triggers spawning of a new shell.        */
     }
     chThdSleepMilliseconds(1000);
-    palTogglePad(IOPORT4, 1); /* Blue LED */
+    palTogglePad(GPIO_LED_BLUE, PIN_LED_BLUE); /* Blue LED */
   }
 
   return 0;
