@@ -25,9 +25,7 @@ ENTRY(Reset_Handler)
 
 MEMORY
 {
-  flash0   : org = 0x00000c00, len = 0x100
-  flashcfg : org = 0x00000d00, len = 0x10
-  flash    : org = 0x00000d10, len = 128k - 0xd10
+  flash    : org = 0x00000c00, len = 128k - 0xc00
   ram      : org = 0x1FFFE000, len = 16k
 }
 
@@ -39,17 +37,12 @@ SECTIONS
 {
   . = 0;
 
+  _text = .;
+
   .isr : ALIGN(4) SUBALIGN(4)
   {
     KEEP(*(.vectors))
-  } > flash0
-
-  .cfmprotect : ALIGN(4) SUBALIGN(4)
-  {
-    KEEP(*(.cfmconfig))
-  } > flashcfg
-
-  _text = .;
+  } > flash
 
   constructors : ALIGN(4) SUBALIGN(4)
   {
