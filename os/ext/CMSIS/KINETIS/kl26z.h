@@ -622,12 +622,6 @@ typedef struct {
 /****************************************************************/
 
 // TODO!
-// /***********  Bits definition for SPIx_S register  **************/
-// #define SPIx_S_SPRF                  ((uint8_t)0x80)    /*!< SPI Read Buffer Full Flag */
-// #define SPIx_S_SPMF                  ((uint8_t)0x40)    /*!< SPI Match Flag */
-// #define SPIx_S_SPTEF                 ((uint8_t)0x20)    /*!< SPI Transmit Buffer Empty Flag */
-// #define SPIx_S_MODF                  ((uint8_t)0x10)    /*!< Master Mode Fault Flag */
-
 // /***********  Bits definition for SPIx_C1 register  *************/
 // #define SPIx_C1_SPIE                 ((uint8_t)0x80)    /*!< SPI Interrupt Enable */
 // #define SPIx_C1_SPE                  ((uint8_t)0x40)    /*!< SPI System Enable */
@@ -638,7 +632,7 @@ typedef struct {
 // #define SPIx_C1_SSOE                 ((uint8_t)0x02)    /*!< Slave Select Output Enable */
 // #define SPIx_C1_LSBFE                ((uint8_t)0x01)    /*!< LSB First */
 
-// **********  Bits definition for SPIx_C2 register  ************
+// /***********  Bits definition for SPIx_C2 register  *************/
 // #define SPIx_C2_SPMIE                ((uint8_t)0x80)    /*!< SPI Match Interrupt Enable */
 // #define SPIx_C2_TXDMAE               ((uint8_t)0x20)    /*!< Transmit DMA Enable */
 // #define SPIx_C2_MODFEN               ((uint8_t)0x10)    /*!< Master Mode-Fault Function Enable */
@@ -648,16 +642,28 @@ typedef struct {
 // #define SPIx_C2_SPC0                 ((uint8_t)0x01)    /*!< SPI Pin Control 0 */
 
 // /***********  Bits definition for SPIx_BR register  *************/
-// #define SPIx_BR_SPPR                 ((uint8_t)0x70)    /*!< SPI Baud rate Prescaler Divisor */
-// #define SPIx_BR_SPR                  ((uint8_t)0x0F)    /*!< SPI Baud rate Divisor */
+// #define SPIx_BR_SPPR_SHIFT           4                  !< SPI Baud rate Prescaler Divisor 
+// #define SPIx_BR_SPPR_MASK            ((uint8_t)((uint8_t)0x7 << SPIx_BR_SPPR_SHIFT))
+// #define SPIx_BR_SPPR(x)              ((uint8_t)(((uint8_t)(x) << SPIx_BR_SPPR_SHIFT) & SPIx_BR_SPPR_MASK))
+// #define SPIx_BR_SPR_SHIFT            0                  /*!< SPI Baud rate Divisor */
+// #define SPIx_BR_SPR_MASK             ((uint8_t)((uint8_t)0x0F << SPIx_BR_SPR_SHIFT))
+// #define SPIx_BR_SPR(x)               ((uint8_t)(((uint8_t)(x) << SPIx_BR_SPR_SHIFT) & SPIx_BR_SPR_MASK))
 
-// #define SPIx_BR_SPPR_SHIFT           4
+// /***********  Bits definition for SPIx_S register  **************/
+// #define SPIx_S_SPRF                  ((uint8_t)0x80)    /*!< SPI Read Buffer Full Flag */
+// #define SPIx_S_SPMF                  ((uint8_t)0x40)    /*!< SPI Match Flag */
+// #define SPIx_S_SPTEF                 ((uint8_t)0x20)    /*!< SPI Transmit Buffer Empty Flag */
+// #define SPIx_S_MODF                  ((uint8_t)0x10)    /*!< Master Mode Fault Flag */
 
 // /***********  Bits definition for SPIx_D register  **************/
-// #define SPIx_D_DATA                  ((uint8_t)0xFF)    /*!< Data */
+// #define SPIx_D_DATA_SHIFT            0                  /*!< Data */
+// #define SPIx_D_DATA_MASK             ((uint8_t)((uint8_t)0xFF << SPIx_D_DATA_SHIFT))
+// #define SPIx_D_DATA(x)               ((uint8_t)(((uint8_t)(x) << SPIx_D_DATA_SHIFT) & SPIx_D_DATA_MASK))
 
 // /***********  Bits definition for SPIx_M register  **************/
-// #define SPIx_M_DATA                  ((uint8_t)0xFF)    /*!< SPI HW Compare value for Match */
+// #define SPIx_M_DATA_SHIFT            0                  /*!< SPI HW Compare value for Match */
+// #define SPIx_M_DATA_MASK             ((uint8_t)((uint8_t)0xFF << SPIx_M_DATA_SHIFT))
+// #define SPIx_M_DATA(x)               ((uint8_t)(((uint8_t)(x) << SPIx_M_DATA_SHIFT) & SPIx_M_DATA_MASK))
 
 /****************************************************************/
 /*                                                              */
@@ -869,7 +875,63 @@ typedef struct {
 /*                                                              */
 /****************************************************************/
 
-/* Not implemented yet */
+/**********  Bits definition for TPM_SC register  ***************/
+#define TPM_SC_DMA                   ((uint32_t)0x100)  /*!< DMA Enable */
+#define TPM_SC_TOF                   ((uint32_t)0x80)   /*!< Timer Overflow Flag */
+#define TPM_SC_TOIE                  ((uint32_t)0x40)   /*!< Timer Overflow Interrupt Enable */
+#define TPM_SC_CPWMS                 ((uint32_t)0x20)   /*!< Center-aligned PWM Select */
+#define TPM_SC_CMOD_SHIFT            3                  /*!< Clock Mode Selection */
+#define TPM_SC_CMOD_MASK             ((uint32_t)((uint32_t)0x3 << TPM_SC_CMOD_SHIFT))
+#define TPM_SC_CMOD(x)               ((uint32_t)(((uint32_t)(x) << TPM_SC_CMOD_SHIFT) & TPM_SC_CMOD_MASK))
+#define TPM_SC_PS_SHIFT              0                  /*!< Prescale Factor Selection */
+#define TPM_SC_PS_MASK               ((uint32_t)((uint32_t)0x7 << TPM_SC_PS_SHIFT))
+#define TPM_SC_PS(x)                 ((uint32_t)(((uint32_t)(x) << TPM_SC_PS_SHIFT) & TPM_SC_PS_MASK))
+
+/**********  Bits definition for TPM_CNT register  **************/
+#define TPM_CNT_COUNT_SHIFT          0                  /*!< Counter Value */
+#define TPM_CNT_COUNT_MASK           ((uint32_t)((uint32_t)0xFFFF << TPM_CNT_COUNT_SHIFT))
+#define TPM_CNT_COUNT(x)             ((uint32_t)(((uint32_t)(x) << TPM_CNT_COUNT_SHIFT) & TPM_CNT_COUNT_MASK))
+
+/**********  Bits definition for TPM_MOD register  **************/
+#define TPM_MOD_MOD_SHIFT            0                  /*!< Modulo Value */
+#define TPM_MOD_MOD_MASK             ((uint32_t)((uint32_t)0xFFFF << TPM_MOD_MOD_SHIFT))
+#define TPM_MOD_MOD(x)               ((uint32_t)(((uint32_t)(x) << TPM_MOD_MOD_SHIFT) & TPM_MOD_MOD_MASK))
+
+/**********  Bits definition for TPM_CnSC register  *************/
+#define TPM_CnSC_CHF                 ((uint32_t)0x80)   /*!< Channel Flag */
+#define TPM_CnSC_CHIE                ((uint32_t)0x40)   /*!< Channel Interrupt Enable */
+#define TPM_CnSC_MSB                 ((uint32_t)0x20)   /*!< Channel Mode Select */
+#define TPM_CnSC_MSA                 ((uint32_t)0x10)   /*!< Channel Mode Select */
+#define TPM_CnSC_ELSB                ((uint32_t)0x8)    /*!< Edge or Level Select */
+#define TPM_CnSC_ELSA                ((uint32_t)0x4)    /*!< Edge or Level Select */
+#define TPM_CnSC_DMA                 ((uint32_t)0x1)    /*!< DMA Enable */
+
+/**********  Bits definition for TPM_CnV register  **************/
+#define TPM_CnV_VAL_SHIFT            0                  /*!< Channel Value */
+#define TPM_CnV_VAL_MASK             ((uint32_t)((uint32_t)0xFFFF << TPM_CnV_VAL_SHIFT))
+#define TPM_CnV_VAL(x)               ((uint32_t)(((uint32_t)(x) << TPM_CnV_VAL_SHIFT) & TPM_CnV_VAL_MASK))
+
+/*********  Bits definition for TPM_STATUS register  ************/
+#define TPM_STATUS_TOF               ((uint32_t)0x100)  /*!< Timer Overflow Flag */
+#define TPM_STATUS_CH5F              ((uint32_t)0x20)   /*!< Channel 5 Flag */
+#define TPM_STATUS_CH4F              ((uint32_t)0x10)   /*!< Channel 4 Flag */
+#define TPM_STATUS_CH3F              ((uint32_t)0x8)    /*!< Channel 3 Flag */
+#define TPM_STATUS_CH2F              ((uint32_t)0x4)    /*!< Channel 2 Flag */
+#define TPM_STATUS_CH1F              ((uint32_t)0x2)    /*!< Channel 1 Flag */
+#define TPM_STATUS_CH0F              ((uint32_t)0x1)    /*!< Channel 0 Flag */
+
+/**********  Bits definition for TPM_CONF register  *************/
+#define TPM_CONF_TRGSEL_SHIFT        24                 /*!< Trigger Select */
+#define TPM_CONF_TRGSEL_MASK         ((uint32_t)((uint32_t)0xF << TPM_CONF_TRGSEL_SHIFT))
+#define TPM_CONF_TRGSEL(x)           ((uint32_t)(((uint32_t)(x) << TPM_CONF_TRGSEL_SHIFT) & TPM_CONF_TRGSEL_MASK))
+#define TPM_CONF_CROT                ((uint32_t)0x40000) /*!< Counter Reload On Trigger */
+#define TPM_CONF_CSOO                ((uint32_t)0x20000) /*!< Counter Stop On Overflow */
+#define TPM_CONF_CSOT                ((uint32_t)0x10000) /*!< Counter Start on Trigger */
+#define TPM_CONF_GTBEEN              ((uint32_t)0x200)  /*!< Global time base enable */
+#define TPM_CONF_DBGMODE_SHIFT       6                  /*!< Debug Mode */
+#define TPM_CONF_DBGMODE_MASK        ((uint32_t)((uint32_t)0x3 << TPM_CONF_DBGMODE_SHIFT))
+#define TPM_CONF_DBGMODE(x)          ((uint32_t)(((uint32_t)(x) << TPM_CONF_DBGMODE_SHIFT) & TPM_CONF_DBGMODE_MASK))
+#define TPM_CONF_DOZEEN              ((uint32_t)0x20)   /*!< Doze Enable */
 
 /****************************************************************/
 /*                                                              */
