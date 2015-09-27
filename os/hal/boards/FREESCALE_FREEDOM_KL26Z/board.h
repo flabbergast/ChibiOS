@@ -39,9 +39,9 @@
  * Onboard features.
  */
 #define GPIO_LED_RED    IOPORT5
-#define PIN_LED_RED     17
+#define PIN_LED_RED     29
 #define GPIO_LED_GREEN  IOPORT5
-#define PIN_LED_GREEN   19
+#define PIN_LED_GREEN   31
 #define GPIO_LED_BLUE   IOPORT4
 #define PIN_LED_BLUE    5
 #define GPIO_BUTTON     IOPORT4
