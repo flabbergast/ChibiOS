@@ -97,11 +97,14 @@
 #define KINETIS_SPI1_IRQ_VECTOR     Vector6C
 
 /* TPM attributes.*/
+#define KINETIS_HAS_TPM0            TRUE
 #define KINETIS_TPM0_CHANNELS       6
-#define KINETIS_TPM1_CHANNELS       2
-#define KINETIS_TPM2_CHANNELS       2
 #define KINETIS_TPM0_IRQ_VECTOR     Vector84
+#define KINETIS_HAS_TPM1            TRUE
+#define KINETIS_TPM1_CHANNELS       2
 #define KINETIS_TPM1_IRQ_VECTOR     Vector88
+#define KINETIS_HAS_TPM2            TRUE
+#define KINETIS_TPM2_CHANNELS       2
 #define KINETIS_TPM2_IRQ_VECTOR     Vector8C
 
 /* USB attributes.*/
