@@ -25,8 +25,6 @@
 #ifndef _PWM_LLD_H_
 #define _PWM_LLD_H_
 
-#include "kinetis_tpm.h"
-
 #if HAL_USE_PWM || defined(__DOXYGEN__)
 
 /*===========================================================================*/

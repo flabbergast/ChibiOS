@@ -878,6 +878,10 @@ typedef struct {
 #define TPM_SC_PS_MASK               ((uint32_t)((uint32_t)0x7 << TPM_SC_PS_SHIFT))
 #define TPM_SC_PS(x)                 ((uint32_t)(((uint32_t)(x) << TPM_SC_PS_SHIFT) & TPM_SC_PS_MASK))
 
+#define TPM_SC_CMOD_DISABLE          TPM_SC_CMOD(0)
+#define TPM_SC_CMOD_LPTPM_CLK        TPM_SC_CMOD(1)
+#define TPM_SC_CMOD_LPTPM_EXTCLK     TPM_SC_CMOD(2)
+
 /**********  Bits definition for TPM_CNT register  **************/
 #define TPM_CNT_COUNT_SHIFT          0                  /*!< Counter Value */
 #define TPM_CNT_COUNT_MASK           ((uint32_t)((uint32_t)0xFFFF << TPM_CNT_COUNT_SHIFT))
@@ -923,6 +927,9 @@ typedef struct {
 #define TPM_CONF_DBGMODE_MASK        ((uint32_t)((uint32_t)0x3 << TPM_CONF_DBGMODE_SHIFT))
 #define TPM_CONF_DBGMODE(x)          ((uint32_t)(((uint32_t)(x) << TPM_CONF_DBGMODE_SHIFT) & TPM_CONF_DBGMODE_MASK))
 #define TPM_CONF_DOZEEN              ((uint32_t)0x20)   /*!< Doze Enable */
+
+#define TPM_CONF_DBGMODE_CONT        TPM_CONF_DBGMODE(3)
+#define TPM_CONF_DBGMODE_PAUSE       TPM_CONF_DBGMODE(0)
 
 /****************************************************************/
 /*                                                              */
