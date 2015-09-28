@@ -14,6 +14,9 @@
     limitations under the License.
 */
 
+#ifndef _MCUCONF_H_
+#define _MCUCONF_H_
+
 #define K20x_MCUCONF
 
 /*
@@ -51,3 +54,5 @@
  * PWM driver settings.
  */
 #define KINETIS_PWM_USE_TPM0                  TRUE
+
+#endif /* _MCUCONF_H_ */

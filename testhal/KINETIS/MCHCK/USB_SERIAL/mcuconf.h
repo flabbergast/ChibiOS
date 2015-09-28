@@ -14,6 +14,9 @@
     limitations under the License.
 */
 
+#ifndef _MCUCONF_H_
+#define _MCUCONF_H_
+
 #define K20x_MCUCONF
 
 /*
@@ -42,3 +45,5 @@
  * USB driver settings
  */
 #define KINETIS_USB_USE_USB0                  TRUE
+
+#endif /* _MCUCONF_H_ */

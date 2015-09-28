@@ -14,6 +14,9 @@
     limitations under the License.
 */
 
+#ifndef _MCUCONF_H_
+#define _MCUCONF_H_
+
 #define K20x_MCUCONF
 
 /*
@@ -46,3 +49,5 @@
 #define KINETIS_USB_USE_USB0                  TRUE
 /* need to redefine this, since the default is for K20x */
 #define KINETIS_USB_USB0_IRQ_PRIORITY         2
+
+#endif /* _MCUCONF_H_ */
