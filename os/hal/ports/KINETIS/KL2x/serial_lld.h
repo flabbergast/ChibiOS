@@ -126,6 +126,27 @@ typedef struct {
 } SerialConfig;
 
 /**
+ * @brief   Generic UART register structure.
+ * @note    Individual UART register blocks (even within the same chip) can differ.
+ */
+
+typedef struct {
+  volatile uint8_t*  bdh_p;
+  volatile uint8_t*  bdl_p;
+  volatile uint8_t*  c1_p;
+  volatile uint8_t*  c2_p;
+  volatile uint8_t*  c3_p;
+  volatile uint8_t*  c4_p;
+  volatile uint8_t*  s1_p;
+  volatile uint8_t*  s2_p;
+  volatile uint8_t*  d_p;
+  UART_TypeDef *uart_p;
+#if KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_HAS_VLPS
+  UARTLP_TypeDef *uartlp_p;
+#endif /* KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_HAS_VLPS */
+} UART_w_TypeDef;
+
+/**
  * @brief @p SerialDriver specific data.
  */
 #define _serial_driver_data                                                 \
@@ -142,7 +163,7 @@ typedef struct {
   uint8_t                   ob[SERIAL_BUFFERS_SIZE];                        \
   /* End of the mandatory fields.*/                                         \
   /* Pointer to the UART registers block.*/                                 \
-  UART_TypeDef            *uart;
+  UART_w_TypeDef            uart;
 
 /*===========================================================================*/
 /* Driver macros.                                                            */

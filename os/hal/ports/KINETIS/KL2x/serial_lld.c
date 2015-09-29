@@ -75,14 +75,14 @@ static const SerialConfig default_config = {
  * @param[in] sdp       communication channel associated to the UART
  */
 static void serve_interrupt(SerialDriver *sdp) {
-  UART_TypeDef *u = sdp->uart;
-  uint8_t s1 = u->S1;
+  UART_w_TypeDef *u = &(sdp->uart);
+  uint8_t s1 = *(u->s1_p);
 
   if (s1 & UARTx_S1_RDRF) {
     osalSysLockFromISR();
     if (iqIsEmptyI(&sdp->iqueue))
       chnAddFlagsI(sdp, CHN_INPUT_AVAILABLE);
-    if (iqPutI(&sdp->iqueue, u->D) < Q_OK)
+    if (iqPutI(&sdp->iqueue, *(u->d_p)) < Q_OK)
       chnAddFlagsI(sdp, SD_OVERRUN_ERROR);
     osalSysUnlockFromISR();
   }
@@ -98,19 +98,19 @@ static void serve_interrupt(SerialDriver *sdp) {
       osalSysLockFromISR();
       chnAddFlagsI(sdp, CHN_OUTPUT_EMPTY);
       osalSysUnlockFromISR();
-      u->C2 &= ~UARTx_C2_TIE;
+      *(u->c2_p) &= ~UARTx_C2_TIE;
     } else {
-       u->D = b;
+       *(u->d_p) = b;
     }
   }
 
   if (s1 & UARTx_S1_IDLE)
-    u->S1 = UARTx_S1_IDLE;  // Clear IDLE (S1 bits are write-1-to-clear).
+    *(u->s1_p) = UARTx_S1_IDLE;  // Clear IDLE (S1 bits are write-1-to-clear).
 
   if (s1 & (UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF)) {
     // FIXME: need to add set_error()
     // Clear flags (S1 bits are write-1-to-clear).
-    s1 = UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF;
+    *(u->s1_p) = UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF;
   }
 }
 
@@ -118,16 +118,16 @@ static void serve_interrupt(SerialDriver *sdp) {
  * @brief   Attempts a TX preload
  */
 static void preload(SerialDriver *sdp) {
-  UART_TypeDef *u = sdp->uart;
+  UART_w_TypeDef *u = &(sdp->uart);
 
-  if (u->S1 & UARTx_S1_TDRE) {
+  if (*(u->s1_p) & UARTx_S1_TDRE) {
     msg_t b = oqGetI(&sdp->oqueue);
     if (b < Q_OK) {
       chnAddFlagsI(sdp, CHN_OUTPUT_EMPTY);
       return;
     }
-    u->D = b;
-    u->C2 |= UARTx_C2_TIE;
+    *(u->d_p) = b;
+    *(u->c2_p) |= UARTx_C2_TIE;
   }
 }
 
@@ -162,41 +162,42 @@ static void notify3(io_queue_t *qp)
  * @brief   Common UART configuration.
  *
  */
-static void configure_uart(UART_TypeDef *uart, const SerialConfig *config)
-{
+static void configure_uart(SerialDriver *sdp, const SerialConfig *config) {
+
+  UART_w_TypeDef *uart = &(sdp->uart);
   uint32_t uart_clock;
 
-  uart->C1 = 0;
-  uart->C3 = UARTx_C3_ORIE | UARTx_C3_NEIE | UARTx_C3_FEIE | UARTx_C3_PEIE;
-  uart->S1 = UARTx_S1_IDLE | UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF;
-  while (uart->S1 & UARTx_S1_RDRF) {
-    (void)uart->D;
+  *(uart->c1_p) = 0;
+  *(uart->c3_p) = UARTx_C3_ORIE | UARTx_C3_NEIE | UARTx_C3_FEIE | UARTx_C3_PEIE;
+  *(uart->s1_p) = UARTx_S1_IDLE | UARTx_S1_OR | UARTx_S1_NF | UARTx_S1_FE | UARTx_S1_PF;
+  while (*(uart->s1_p) & UARTx_S1_RDRF) {
+    (void)*(uart->d_p);
   }
 
 #if KINETIS_SERIAL_USE_UART0
-    if (uart == UART0) {
+    if (sdp == &SD1) {
         /* UART0 can be clocked from several sources. */
         uart_clock = KINETIS_UART0_CLOCK_FREQ;
     }
 #endif
 #if KINETIS_SERIAL_USE_UART1
-    if (uart == UART1) {
+    if (sdp == &SD2) {
         uart_clock = KINETIS_BUSCLK_FREQUENCY;
     }
 #endif
 #if KINETIS_SERIAL_USE_UART2
-    if (uart == UART2) {
+    if (sdp == &SD3) {
         uart_clock = KINETIS_BUSCLK_FREQUENCY;
     }
 #endif
 
   /* FIXME: change fixed OSR = 16 to dynamic value based on baud */
   uint16_t divisor = (uart_clock / 16) / config->sc_speed;
-  uart->C4 = UARTx_C4_OSR(16 - 1);
-  uart->BDH = UARTx_BDH_SBR(divisor >> 8);
-  uart->BDL = UARTx_BDL_SBR(divisor);
+  *(uart->c4_p) = UARTx_C4_OSR(16 - 1);
+  *(uart->bdh_p) = UARTx_BDH_SBR(divisor >> 8);
+  *(uart->bdl_p) = UARTx_BDL_SBR(divisor);
 
-  uart->C2 = UARTx_C2_RE | UARTx_C2_RIE | UARTx_C2_TE;
+  *(uart->c2_p) = UARTx_C2_RE | UARTx_C2_RIE | UARTx_C2_TE;
 }
 
 /*===========================================================================*/
@@ -244,20 +245,52 @@ void sd_lld_init(void) {
 #if KINETIS_SERIAL_USE_UART0
   /* Driver initialization.*/
   sdObjectInit(&SD1, NULL, notify1);
-  SD1.uart = UART0;
-#endif
+  SD1.uart.bdh_p = &(UART0->BDH);
+  SD1.uart.bdl_p = &(UART0->BDL);
+  SD1.uart.c1_p =  &(UART0->C1);
+  SD1.uart.c2_p =  &(UART0->C2);
+  SD1.uart.c3_p =  &(UART0->C3);
+  SD1.uart.c4_p =  &(UART0->C4);
+  SD1.uart.s1_p =  &(UART0->S1);
+  SD1.uart.s2_p =  &(UART0->S2);
+  SD1.uart.d_p =   &(UART0->D);
+#if KINETIS_SERIAL0_HAS_VLPS
+  SD1.uart.uartlp_p = UART0;
+  SD1.uart.uart_p = NULL;
+#else /* KINETIS_SERIAL0_HAS_VLPS */
+  SD1.uart.uart_p = UART0;
+#endif /* KINETIS_SERIAL0_HAS_VLPS */
+#endif /* KINETIS_SERIAL_USE_UART0 */
 
 #if KINETIS_SERIAL_USE_UART1
   /* Driver initialization.*/
   sdObjectInit(&SD2, NULL, notify2);
-  SD2.uart = UART1;
-#endif
+  SD2.uart.bdh_p = &(UART1->BDH);
+  SD2.uart.bdl_p = &(UART1->BDL);
+  SD2.uart.c1_p =  &(UART1->C1);
+  SD2.uart.c2_p =  &(UART1->C2);
+  SD2.uart.c3_p =  &(UART1->C3);
+  SD2.uart.c4_p =  &(UART1->C4);
+  SD2.uart.s1_p =  &(UART1->S1);
+  SD2.uart.s2_p =  &(UART1->S2);
+  SD2.uart.d_p =   &(UART1->D);
+  SD2.uart.uart_p = UART1;
+#endif /* KINETIS_SERIAL_USE_UART1 */
 
 #if KINETIS_SERIAL_USE_UART2
   /* Driver initialization.*/
   sdObjectInit(&SD3, NULL, notify3);
-  SD3.uart = UART2;
-#endif
+  SD3.uart.bdh_p = &(UART2->BDH);
+  SD3.uart.bdl_p = &(UART2->BDL);
+  SD3.uart.c1_p =  &(UART2->C1);
+  SD3.uart.c2_p =  &(UART2->C2);
+  SD3.uart.c3_p =  &(UART2->C3);
+  SD3.uart.c4_p =  &(UART2->C4);
+  SD3.uart.s1_p =  &(UART2->S1);
+  SD3.uart.s2_p =  &(UART2->S2);
+  SD3.uart.d_p =   &(UART2->D);
+  SD3.uart.uart_p = UART2;
+#endif /* KINETIS_SERIAL_USE_UART2 */
 }
 
 /**
@@ -284,7 +317,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
       SIM->SOPT2 =
               (SIM->SOPT2 & ~SIM_SOPT2_UART0SRC_MASK) |
               SIM_SOPT2_UART0SRC(KINETIS_UART0_CLOCK_SRC);
-      configure_uart(sdp->uart, config);
+      configure_uart(sdp, config);
       nvicEnableVector(UART0_IRQn, KINETIS_SERIAL_UART0_PRIORITY);
     }
 #endif /* KINETIS_SERIAL_USE_UART0 */
@@ -292,7 +325,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 #if KINETIS_SERIAL_USE_UART1
     if (sdp == &SD2) {
       SIM->SCGC4 |= SIM_SCGC4_UART1;
-      configure_uart(sdp->uart, config);
+      configure_uart(sdp, config);
       nvicEnableVector(UART1_IRQn, KINETIS_SERIAL_UART1_PRIORITY);
     }
 #endif /* KINETIS_SERIAL_USE_UART1 */
@@ -300,7 +333,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 #if KINETIS_SERIAL_USE_UART2
     if (sdp == &SD3) {
       SIM->SCGC4 |= SIM_SCGC4_UART2;
-      configure_uart(sdp->uart, config);
+      configure_uart(sdp, config);
       nvicEnableVector(UART2_IRQn, KINETIS_SERIAL_UART2_PRIORITY);
     }
 #endif /* KINETIS_SERIAL_USE_UART2 */

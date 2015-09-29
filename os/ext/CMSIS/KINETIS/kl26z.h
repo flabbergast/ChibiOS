@@ -164,11 +164,24 @@ typedef struct
   __IO uint8_t  S2;
   __IO uint8_t  C3;
   __IO uint8_t  D;
+  __IO uint8_t  C4;
+} UART_TypeDef;
+
+typedef struct
+{
+  __IO uint8_t  BDH;
+  __IO uint8_t  BDL;
+  __IO uint8_t  C1;
+  __IO uint8_t  C2;
+  __IO uint8_t  S1;
+  __IO uint8_t  S2;
+  __IO uint8_t  C3;
+  __IO uint8_t  D;
   __IO uint8_t  MA1;
   __IO uint8_t  MA2;
   __IO uint8_t  C4;
   __IO uint8_t  C5;
-} UART_TypeDef;
+} UARTLP_TypeDef;
 
 typedef struct {
   __I  uint8_t  PERID;               // 0x00
@@ -298,7 +311,7 @@ typedef struct {
 #define SPI1                    ((SPI_TypeDef *)     SPI1_BASE)
 #define I2C0                    ((I2C_TypeDef *)     I2C0_BASE)
 #define I2C1                    ((I2C_TypeDef *)     I2C1_BASE)
-#define UART0                   ((UART_TypeDef *)    UART0_BASE)
+#define UART0                   ((UARTLP_TypeDef *)  UART0_BASE)
 #define UART1                   ((UART_TypeDef *)    UART1_BASE)
 #define UART2                   ((UART_TypeDef *)    UART2_BASE)
 #define GPIOA                   ((GPIO_TypeDef  *)   GPIOA_BASE)
