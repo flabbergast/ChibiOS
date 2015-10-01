@@ -129,6 +129,19 @@ typedef struct
   __IO uint8_t  CHCFG[4];
 } DMAMUX_TypeDef;
 
+typedef struct  {
+  __IO uint32_t MCR;             /* PIT Module Control Register */
+  __I  uint32_t LTMR64H;         /* PIT Module Control Register */
+  __I  uint32_t LTMR64L;         /* PIT Lower Lifetime Timer Register */
+       uint8_t  RESERVED0[244];
+  struct PIT_CHANNEL {
+    __IO uint32_t LDVAL;         /* Timer Load Value Register */
+    __I  uint32_t CVAL;          /* Current Timer Value Register */
+    __IO uint32_t TCTRL;         /* Timer Control Register */
+    __IO uint32_t TFLG;          /* Timer Flag Register */
+  } CHANNEL[2];
+} PIT_TypeDef;
+
 /* Device dependent
   TPM_TypeDef;
 */
@@ -456,6 +469,29 @@ typedef struct
 #define DMAMUX_CHCFGn_SOURCE_SHIFT   0                                                                                      /*!< DMA Channel Source (Slot) (shift) */
 #define DMAMUX_CHCFGn_SOURCE_MASK    ((uint8_t)((uint8_t)0x3F << DMAMUX_CHCFGn_SOURCE_SHIFT))                               /*!< DMA Channel Source (Slot) (mask) */
 #define DMAMUX_CHCFGn_SOURCE(x)      ((uint8_t)(((uint8_t)(x) << DMAMUX_CHCFGn_SOURCE_SHIFT) & DMAMUX_CHCFGn_SOURCE_MASK))  /*!< DMA Channel Source (Slot) */
+
+/****************************************************************/
+/*                                                              */
+/*               Periodic Interrupt Timer (PIT)                 */
+/*                                                              */
+/****************************************************************/
+/***********  Bits definition for PIT_MCR register  *************/
+#define PIT_MCR_MDIS            ((uint32_t)((uint32_t)1 << 1)) /*!< Module Disable */
+#define PIT_MCR_FRZ             ((uint32_t)((uint32_t)1 << 0)) /*!< Freeze */
+/**********  Bits definition for PIT_LDVALn register  ***********/
+#define PIT_LDVALn_TSV_SHIFT    0 /*!< Timer Start Value */
+#define PIT_LDVALn_TSV_MASK     ((uint32_t)((uint32_t)0xFFFFFFFF << PIT_LDVALn_TSV_SHIFT))
+#define PIT_LDVALn_TSV(x)       (((uint32_t)(((uint32_t)(x))<<PIT_LDVALn_TSV_SHIFT))&PIT_LDVALn_TSV_MASK)
+/**********  Bits definition for PIT_CVALn register  ************/
+#define PIT_CVALn_TVL_SHIFT     0 /*!< Current Timer Value */
+#define PIT_CVALn_TVL_MASK      ((uint32_t)((uint32_t)0xFFFFFFFF << PIT_CVALn_TVL_SHIFT))
+#define PIT_CVALn_TVL(x)        (((uint32_t)(((uint32_t)(x))<<PIT_CVALn_TVL_SHIFT))&PIT_CVALn_TVL_MASK)
+/**********  Bits definition for PIT_TCTRLn register  ***********/
+#define PIT_TCTRLn_CHN          ((uint32_t)((uint32_t)1 << 2))  /*!< Chain Mode */
+#define PIT_TCTRLn_TIE          ((uint32_t)((uint32_t)1 << 1))  /*!< Timer Interrupt Enable */
+#define PIT_TCTRLn_TEN          ((uint32_t)((uint32_t)1 << 0))  /*!< Timer Enable */
+/**********  Bits definition for PIT_TFLGn register  ************/
+#define PIT_TFLGn_TIF           ((uint32_t)((uint32_t)1 << 0))  /*!< Timer Interrupt Flag */
 
 /****************************************************************/
 /*                                                              */

@@ -249,7 +249,7 @@ typedef struct {
 #define DMA_BASE                ((uint32_t)0x40008100)
 #define DMAMUX_BASE             ((uint32_t)0x40021000)
 #define I2S0_BASE               ((uint32_t)0x4002F000) // TODO: registers not implemented
-#define PIT_BASE                ((uint32_t)0x40037000) // TODO: registers not implemented
+#define PIT_BASE                ((uint32_t)0x40037000)
 #define TPM0_BASE               ((uint32_t)0x40038000)
 #define TPM1_BASE               ((uint32_t)0x40039000)
 #define TPM2_BASE               ((uint32_t)0x4003A000)
@@ -290,6 +290,7 @@ typedef struct {
 /****************************************************************/
 #define DMA                     ((DMA_TypeDef *)     DMA_BASE)
 #define DMAMUX                  ((DMAMUX_TypeDef *)  DMAMUX_BASE)
+#define PIT                     ((PIT_TypeDef *)     PIT_BASE)
 #define TPM0                    ((TPM_TypeDef *)     TPM0_BASE)
 #define TPM1                    ((TPM_TypeDef *)     TPM1_BASE)
 #define TPM2                    ((TPM_TypeDef *)     TPM2_BASE)
@@ -439,6 +440,14 @@ typedef struct {
 /****************************************************************/
 /*                                                              */
 /*         Direct Memory Access Multiplexer (DMAMUX)            */
+/*                                                              */
+/****************************************************************/
+
+/* Device independent */
+
+/****************************************************************/
+/*                                                              */
+/*               Periodic Interrupt Timer (PIT)                 */
 /*                                                              */
 /****************************************************************/
 
