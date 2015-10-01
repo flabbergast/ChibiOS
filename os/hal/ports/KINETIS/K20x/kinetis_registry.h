@@ -128,6 +128,8 @@
 #define KINETIS_PIT2_IRQ_VECTOR     VectorC0
 #define KINETIS_HAS_PIT3            TRUE
 #define KINETIS_PIT3_IRQ_VECTOR     VectorC4
+#define KINETIS_HAS_PIT             FALSE
+#define KINETIS_PIT_CHANNELS        4
 
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE
@@ -232,6 +234,8 @@
 #define KINETIS_PIT2_IRQ_VECTOR     Vector158
 #define KINETIS_HAS_PIT3            TRUE
 #define KINETIS_PIT3_IRQ_VECTOR     Vector15C
+#define KINETIS_HAS_PIT             FALSE
+#define KINETIS_PIT_CHANNELS        4
 
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE

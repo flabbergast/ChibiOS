@@ -82,7 +82,7 @@ GPTDriver GPTD4;
 static void gpt_lld_serve_interrupt(GPTDriver *gptp) {
 
   /* Clear the interrupt */
-  gptp->channel->TFLG |= PIT_TCTRL_TIE;
+  gptp->channel->TFLG |= PIT_TFLGn_TIF;
 
   if (gptp->state == GPT_ONESHOT) {
     gptp->state = GPT_READY;                /* Back in GPT_READY state.     */
@@ -270,7 +270,7 @@ void gpt_lld_stop(GPTDriver *gptp) {
     gptp->channel->TCTRL = 0;
 
     /* Clear pending interrupts */
-    gptp->channel->TFLG |= PIT_TFLG_TIF;
+    gptp->channel->TFLG |= PIT_TFLGn_TIF;
 
 #if KINETIS_GPT_USE_PIT0
     if (&GPTD1 == gptp) {
@@ -306,13 +306,13 @@ void gpt_lld_stop(GPTDriver *gptp) {
 void gpt_lld_start_timer(GPTDriver *gptp, gptcnt_t interval) {
 
   /* Clear pending interrupts */
-  gptp->channel->TFLG |= PIT_TFLG_TIF;
+  gptp->channel->TFLG |= PIT_TFLGn_TIF;
 
   /* Set the interval */
   gpt_lld_change_interval(gptp, interval);
 
   /* Start the timer */
-  gptp->channel->TCTRL |= PIT_TCTRL_TIE | PIT_TCTRL_TEN;
+  gptp->channel->TCTRL |= PIT_TCTRLn_TIE | PIT_TCTRLn_TEN;
 }
 
 /**
@@ -346,16 +346,16 @@ void gpt_lld_polled_delay(GPTDriver *gptp, gptcnt_t interval) {
   channel->TCTRL = 0;
 
   /* Clear the interrupt flag */
-  channel->TFLG |= PIT_TFLG_TIF;
+  channel->TFLG |= PIT_TFLGn_TIF;
 
   /* Set the interval */
   channel->LDVAL = (gptp->clock / gptp->config->frequency) * interval;
 
   /* Enable Timer but keep interrupts disabled */
-  channel->TCTRL = PIT_TCTRL_TEN;
+  channel->TCTRL = PIT_TCTRLn_TEN;
 
   /* Wait for the interrupt flag to be set */
-  while (!(channel->TFLG & PIT_TFLG_TIF))
+  while (!(channel->TFLG & PIT_TFLGn_TIF))
     ;
 
   /* Disable timer and disable interrupts */
