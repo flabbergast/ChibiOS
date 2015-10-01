@@ -64,9 +64,6 @@
 /* DAC attributes.*/
 #define KINETIS_HAS_DAC0            FALSE
 
-/* DAC attributes.*/
-#define KINETIS_HAS_DAC0            FALSE
-
 /* DMA attributes.*/
 #define KINETIS_DMA0_IRQ_VECTOR     Vector40
 #define KINETIS_DMA1_IRQ_VECTOR     Vector44
@@ -128,8 +125,7 @@
 #define KINETIS_PIT2_IRQ_VECTOR     VectorC0
 #define KINETIS_HAS_PIT3            TRUE
 #define KINETIS_PIT3_IRQ_VECTOR     VectorC4
-#define KINETIS_HAS_PIT             FALSE
-#define KINETIS_PIT_CHANNELS        4
+#define KINETIS_HAS_PIT_COMMON_IRQ  FALSE
 
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE

@@ -70,6 +70,10 @@ GPTDriver GPTD4;
 /* Driver local variables and types.                                         */
 /*===========================================================================*/
 
+#if KINETIS_HAS_PIT_COMMON_IRQ
+static uint8_t active_channels = 0;
+#endif /* KINETIS_HAS_PIT_COMMON_IRQ */
+
 /*===========================================================================*/
 /* Driver local functions.                                                   */
 /*===========================================================================*/
@@ -95,81 +99,88 @@ static void gpt_lld_serve_interrupt(GPTDriver *gptp) {
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
+#if !KINETIS_HAS_PIT_COMMON_IRQ
+
 #if KINETIS_GPT_USE_PIT0
-#if !defined(KINETIS_PIT0_IRQ_VECTOR)
-#error "KINETIS_PIT0_IRQ_VECTOR not defined"
-#endif
 /**
  * @brief   PIT1 interrupt handler.
  *
  * @isr
  */
 OSAL_IRQ_HANDLER(KINETIS_PIT0_IRQ_VECTOR) {
-
   OSAL_IRQ_PROLOGUE();
-
   gpt_lld_serve_interrupt(&GPTD1);
-
   OSAL_IRQ_EPILOGUE();
 }
 #endif /* KINETIS_GPT_USE_PIT0 */
 
 #if KINETIS_GPT_USE_PIT1
-#if !defined(KINETIS_PIT1_IRQ_VECTOR)
-#error "KINETIS_PIT1_IRQ_VECTOR not defined"
-#endif
 /**
  * @brief   PIT1 interrupt handler.
  *
  * @isr
  */
 OSAL_IRQ_HANDLER(KINETIS_PIT1_IRQ_VECTOR) {
-
   OSAL_IRQ_PROLOGUE();
-
   gpt_lld_serve_interrupt(&GPTD2);
-
   OSAL_IRQ_EPILOGUE();
 }
 #endif /* KINETIS_GPT_USE_PIT1 */
 
 #if KINETIS_GPT_USE_PIT2
-#if !defined(KINETIS_PIT2_IRQ_VECTOR)
-#error "KINETIS_PIT2_IRQ_VECTOR not defined"
-#endif
 /**
  * @brief   PIT2 interrupt handler.
  *
  * @isr
  */
 OSAL_IRQ_HANDLER(KINETIS_PIT2_IRQ_VECTOR) {
-
   OSAL_IRQ_PROLOGUE();
-
   gpt_lld_serve_interrupt(&GPTD3);
-
   OSAL_IRQ_EPILOGUE();
 }
 #endif /* KINETIS_GPT_USE_PIT2 */
 
 #if KINETIS_GPT_USE_PIT3
-#if !defined(KINETIS_PIT3_IRQ_VECTOR)
-#error "KINETIS_PIT3_IRQ_VECTOR not defined"
-#endif
 /**
  * @brief   PIT3 interrupt handler.
  *
  * @isr
  */
 OSAL_IRQ_HANDLER(KINETIS_PIT3_IRQ_VECTOR) {
-
   OSAL_IRQ_PROLOGUE();
-
   gpt_lld_serve_interrupt(&GPTD4);
-
   OSAL_IRQ_EPILOGUE();
 }
 #endif /* KINETIS_GPT_USE_PIT3 */
+
+#else /* !KINETIS_HAS_PIT_COMMON_IRQ */
+/**
+ * @brief   Common PIT interrupt handler.
+ *
+ * @isr
+ */
+OSAL_IRQ_HANDLER(KINETIS_PIT_IRQ_VECTOR) {
+  OSAL_IRQ_PROLOGUE();
+#if KINETIS_GPT_USE_PIT0
+  if(GPTD1.channel->TFLG & PIT_TFLGn_TIF)
+    gpt_lld_serve_interrupt(&GPTD1);
+#endif /* KINETIS_GPT_USE_PIT0 */
+#if KINETIS_GPT_USE_PIT1
+  if(GPTD2.channel->TFLG & PIT_TFLGn_TIF)
+    gpt_lld_serve_interrupt(&GPTD2);
+#endif /* KINETIS_GPT_USE_PIT1 */
+#if KINETIS_GPT_USE_PIT2
+  if(GPTD3.channel->TFLG & PIT_TFLGn_TIF)
+    gpt_lld_serve_interrupt(&GPTD3);
+#endif /* KINETIS_GPT_USE_PIT2 */
+#if KINETIS_GPT_USE_PIT3
+  if(GPTD4.channel->TFLG & PIT_TFLGn_TIF)
+    gpt_lld_serve_interrupt(&GPTD4);
+#endif /* KINETIS_GPT_USE_PIT3 */
+  OSAL_IRQ_EPILOGUE();
+}
+
+#endif /* !KINETIS_HAS_PIT_COMMON_IRQ */
 
 /*===========================================================================*/
 /* Driver exported functions.                                                */
@@ -222,6 +233,8 @@ void gpt_lld_start(GPTDriver *gptp) {
     SIM->SCGC6 |= SIM_SCGC6_PIT;
     gptp->clock = KINETIS_SYSCLK_FREQUENCY;
 
+#if !KINETIS_HAS_PIT_COMMON_IRQ
+
 #if KINETIS_GPT_USE_PIT0
     if (&GPTD1 == gptp) {
       nvicEnableVector(PITChannel0_IRQn, KINETIS_GPT_PIT0_IRQ_PRIORITY);
@@ -243,6 +256,10 @@ void gpt_lld_start(GPTDriver *gptp) {
     }
 #endif
 
+#else /* !KINETIS_HAS_PIT_COMMON_IRQ */
+    nvicEnableVector(PIT_IRQn, KINETIS_GPT_PIT_IRQ_PRIORITY);
+    active_channels++;
+#endif /* !KINETIS_HAS_PIT_COMMON_IRQ */
   }
 
   /* Prescaler value calculation.*/
@@ -272,6 +289,8 @@ void gpt_lld_stop(GPTDriver *gptp) {
     /* Clear pending interrupts */
     gptp->channel->TFLG |= PIT_TFLGn_TIF;
 
+#if !KINETIS_HAS_PIT_COMMON_IRQ
+
 #if KINETIS_GPT_USE_PIT0
     if (&GPTD1 == gptp) {
       nvicDisableVector(PITChannel0_IRQn);
@@ -292,6 +311,11 @@ void gpt_lld_stop(GPTDriver *gptp) {
       nvicDisableVector(PITChannel4_IRQn);
     }
 #endif
+
+#else /* !KINETIS_HAS_PIT_COMMON_IRQ */
+    if(--active_channels == 0)
+      nvicDisableVector(PIT_IRQn);
+#endif /* !KINETIS_HAS_PIT_COMMON_IRQ */
   }
 }
 

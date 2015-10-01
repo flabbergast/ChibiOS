@@ -73,11 +73,10 @@
 #define KINETIS_HAS_DMA_ERROR_IRQ   FALSE
 
 /* GPT attributes.*/
-#define KINETIS_HAS_PIT             TRUE
-#define KINETIS_PIT_HANDLER         Vector98
-#define KINETIS_PIT_CHANNELS        2
-#define KINETIS_HAS_PIT0            FALSE
-#define KINETIS_HAS_PIT1            FALSE
+#define KINETIS_PIT_IRQ_VECTOR      Vector98
+#define KINETIS_HAS_PIT_COMMON_IRQ  TRUE
+#define KINETIS_HAS_PIT0            TRUE
+#define KINETIS_HAS_PIT1            TRUE
 #define KINETIS_HAS_PIT2            FALSE
 #define KINETIS_HAS_PIT3            FALSE
 
