@@ -1982,7 +1982,9 @@ typedef struct {
 #define UARTx_BDH_SBR(x)             ((uint8_t)((uint8_t)(x) & UARTx_BDH_SBR_MASK))  /*!< Baud Rate Modulo Divisor */
 
 /*********  Bits definition for UARTx_BDL register  *************/
-#define UARTx_BDL_SBR_MASK           ((uint8_t)0xFF)    /*!< Baud Rate Modulo Divisor */
+#define UARTx_BDL_SBR_SHIFT          0                  /*!< Baud Rate Modulo Divisor */
+#define UARTx_BDL_SBR_MASK           ((uint8_t)((uint8_t)0xFF << UARTx_BDL_SBR_SHIFT))
+#define UARTx_BDL_SBR(x)             ((uint8_t)(((uint8_t)(x) << UARTx_BDL_SBR_SHIFT) & UARTx_BDL_SBR_MASK))
 
 /*********  Bits definition for UARTx_C1 register  **************/
 #define UARTx_C1_LOOPS               ((uint8_t)0x80)    /*!< Loop Mode Select */

@@ -414,6 +414,8 @@ int main(void) {
   chSysInit();
 
 #if defined(DEBUG_USB)
+  palSetPadMode(GPIOA, 1, PAL_MODE_ALTERNATIVE_2);
+  palSetPadMode(GPIOA, 2, PAL_MODE_ALTERNATIVE_2);
   sdStart(&SD1, &s0cfg);
 #endif /* DEBUG_USB */
 
