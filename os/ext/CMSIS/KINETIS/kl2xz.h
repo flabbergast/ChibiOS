@@ -236,6 +236,14 @@ typedef struct
   __IO uint8_t  RPFW;
 } RCM_TypeDef;
 
+typedef struct
+{
+  __IO uint8_t  PMPROT;
+  __IO uint8_t  PMCTRL;
+  __IO uint8_t  STOPCTRL;
+  __I  uint8_t  PMSTAT;
+} SMC_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -703,5 +711,60 @@ typedef struct
 #define RCM_RPFW_RSTFLTSEL_SHIFT      0                                                                                  /*!< Reset Pin Filter Bus Clock Select (shift) */
 #define RCM_RPFW_RSTFLTSEL_MASK       ((uint8_t)((uint8_t)0x1F << RCM_RPFW_RSTFLTSEL_SHIFT))                             /*!< Reset Pin Filter Bus Clock Select (mask) */
 #define RCM_RPFW_RSTFLTSEL(x)         ((uint8_t)(((uint8_t)(x) << RCM_RPFW_RSTFLTSEL_SHIFT) & RCM_RPFW_RSTFLTSEL_MASK))  /*!< Reset Pin Filter Bus Clock Select */
+
+/****************************************************************/
+/*                                                              */
+/*                System Mode Controller (SMC)                  */
+/*                                                              */
+/****************************************************************/
+/*********  Bits definition for SMC_PMPROT register  ************/
+#define SMC_PMPROT_AVLP               ((uint8_t)0x20)   /*!< Allow Very-Low-Power Modes */
+#define SMC_PMPROT_ALLS               ((uint8_t)0x08)   /*!< Allow Low-Leakage Stop Mode */
+#define SMC_PMPROT_AVLLS              ((uint8_t)0x02)   /*!< Allow Very-Low-Leakage Stop Mode */
+
+/*********  Bits definition for SMC_PMCTRL register  ************/
+#define SMC_PMCTRL_RUNM_SHIFT         5                                                                            /*!< Run Mode Control (shift) */
+#define SMC_PMCTRL_RUNM_MASK          ((uint8_t)((uint8_t)0x03 << SMC_PMCTRL_RUNM_SHIFT))                          /*!< Run Mode Control (mask) */
+#define SMC_PMCTRL_RUNM(x)            ((uint8_t)(((uint8_t)(x) << SMC_PMCTRL_RUNM_SHIFT) & SMC_PMCTRL_RUNM_MASK))  /*!< Run Mode Control */
+#define SMC_PMCTRL_STOPA              ((uint8_t)0x08)   /*!< Stop Aborted */
+#define SMC_PMCTRL_STOPM_SHIFT        0                                                                              /*!< Stop Mode Control (shift) */
+#define SMC_PMCTRL_STOPM_MASK         ((uint8_t)((uint8_t)0x07 << SMC_PMCTRL_STOPM_SHIFT))                           /*!< Stop Mode Control (mask) */
+#define SMC_PMCTRL_STOPM(x)           ((uint8_t)(((uint8_t)(x) << SMC_PMCTRL_STOPM_SHIFT) & SMC_PMCTRL_STOPM_MASK))  /*!< Stop Mode Control */
+
+#define SMC_PMCTRL_RUNM_RUN           ((uint8_t)0x00)
+#define SMC_PMCTRL_RUNM_VLPR          ((uint8_t)0x02)
+#define SMC_PMCTRL_STOPM_STOP         ((uint8_t)0x00)
+#define SMC_PMCTRL_STOPM_VLPS         ((uint8_t)0x02)
+#define SMC_PMCTRL_STOPM_LLS          ((uint8_t)0x03)
+#define SMC_PMCTRL_STOPM_VLLSx        ((uint8_t)0x04)
+
+/********  Bits definition for SMC_STOPCTRL register  ***********/
+#define SMC_STOPCTRL_PSTOPO_SHIFT     6                                                                                   /*!< Partial Stop Option (shift) */
+#define SMC_STOPCTRL_PSTOPO_MASK      ((uint8_t)((uint8_t)0x03 << SMC_STOPCTRL_PSTOPO_SHIFT))                             /*!< Partial Stop Option (mask) */
+#define SMC_STOPCTRL_PSTOPO(x)        ((uint8_t)(((uint8_t)(x) << SMC_STOPCTRL_PSTOPO_SHIFT) & SMC_STOPCTRL_PSTOPO_MASK)) /*!< Partial Stop Option */
+#define SMC_STOPCTRL_PORP0            ((uint8_t)0x20)   /*!< POR Power Option */
+#define SMC_STOPCTRL_VLLSM_SHIFT      0                                                                                  /*!< VLLS Mode Control (shift) */
+#define SMC_STOPCTRL_VLLSM_MASK       ((uint8_t)((uint8_t)0x07 << SMC_STOPCTRL_VLLSM_  SHIFT))                           /*!< VLLS Mode Control (mask) */
+#define SMC_STOPCTRL_VLLSM(x)         ((uint8_t)(((uint8_t)(x) << SMC_STOPCTRL_VLLSM_SHIFT) & SMC_STOPCTRL_VLLSM_MASK))  /*!< VLLS Mode Control */
+
+#define SMC_STOPCTRL_PSTOPO_STOP      ((uint8_t)0x00)
+#define SMC_STOPCTRL_PSTOPO_PSTOP1    ((uint8_t)0x01)
+#define SMC_STOPCTRL_PSTOPO_PSTOP2    ((uint8_t)0x02)
+#define SMC_STOPCTRL_VLLSM_VLLS0      ((uint8_t)0x00)
+#define SMC_STOPCTRL_VLLSM_VLLS1      ((uint8_t)0x01)
+#define SMC_STOPCTRL_VLLSM_VLLS2      ((uint8_t)0x03)
+
+/*********  Bits definition for SMC_PMSTAT register  ************/
+#define SMC_PMSTAT_PMSTAT_SHIFT       0                                                                                /*!< Power Mode Status (shift) */
+#define SMC_PMSTAT_PMSTAT_MASK        ((uint8_t)((uint8_t)0x7F << SMC_PMSTAT_PMSTAT_  SHIFT))                          /*!< Power Mode Status (mask) */
+#define SMC_PMSTAT_PMSTAT(x)          ((uint8_t)(((uint8_t)(x) << SMC_PMSTAT_PMSTAT_SHIFT) & SMC_PMSTAT_PMSTAT_MASK))  /*!< Power Mode Status */
+
+#define SMC_PMSTAT_RUN                ((uint8_t)0x01)
+#define SMC_PMSTAT_STOP               ((uint8_t)0x02)
+#define SMC_PMSTAT_VLPR               ((uint8_t)0x04)
+#define SMC_PMSTAT_VLPW               ((uint8_t)0x08)
+#define SMC_PMSTAT_VLPS               ((uint8_t)0x10)
+#define SMC_PMSTAT_LLS                ((uint8_t)0x20)
+#define SMC_PMSTAT_VLLS               ((uint8_t)0x40)
 
 #endif /* _KL2xZ_H_ */

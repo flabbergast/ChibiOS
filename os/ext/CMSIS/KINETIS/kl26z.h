@@ -277,7 +277,7 @@ typedef struct {
 #define SPI1_BASE               ((uint32_t)0x40077000)
 #define LLWU_BASE               ((uint32_t)0x4007C000)
 #define PMC_BASE                ((uint32_t)0x4007D000)
-#define SMC_BASE                ((uint32_t)0x4007E000) // TODO: registers not implemented
+#define SMC_BASE                ((uint32_t)0x4007E000)
 #define RCM_BASE                ((uint32_t)0x4007F000)
 #define GPIOA_BASE              ((uint32_t)0x400FF000)
 #define GPIOB_BASE              ((uint32_t)0x400FF040)
@@ -315,6 +315,7 @@ typedef struct {
 #define UART0                   ((UARTLP_TypeDef *)  UART0_BASE)
 #define UART1                   ((UART_TypeDef *)    UART1_BASE)
 #define UART2                   ((UART_TypeDef *)    UART2_BASE)
+#define SMC                     ((SMC_TypeDef  *)    SMC_BASE)
 #define RCM                     ((RCM_TypeDef  *)    RCM_BASE)
 #define GPIOA                   ((GPIO_TypeDef  *)   GPIOA_BASE)
 #define GPIOB                   ((GPIO_TypeDef  *)   GPIOB_BASE)
@@ -1066,6 +1067,14 @@ typedef struct {
 /****************************************************************/
 /*                                                              */
 /*                 Reset Control Module (RCM)                   */
+/*                                                              */
+/****************************************************************/
+
+/* Device independent */
+
+/****************************************************************/
+/*                                                              */
+/*                System Mode Controller (SMC)                  */
 /*                                                              */
 /****************************************************************/
 
