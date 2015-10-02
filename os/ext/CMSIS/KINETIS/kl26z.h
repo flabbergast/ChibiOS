@@ -278,7 +278,7 @@ typedef struct {
 #define LLWU_BASE               ((uint32_t)0x4007C000)
 #define PMC_BASE                ((uint32_t)0x4007D000)
 #define SMC_BASE                ((uint32_t)0x4007E000) // TODO: registers not implemented
-#define RCM_BASE                ((uint32_t)0x4007F000) // TODO: registers not implemented
+#define RCM_BASE                ((uint32_t)0x4007F000)
 #define GPIOA_BASE              ((uint32_t)0x400FF000)
 #define GPIOB_BASE              ((uint32_t)0x400FF040)
 #define GPIOC_BASE              ((uint32_t)0x400FF080)
@@ -315,6 +315,7 @@ typedef struct {
 #define UART0                   ((UARTLP_TypeDef *)  UART0_BASE)
 #define UART1                   ((UART_TypeDef *)    UART1_BASE)
 #define UART2                   ((UART_TypeDef *)    UART2_BASE)
+#define RCM                     ((RCM_TypeDef  *)    RCM_BASE)
 #define GPIOA                   ((GPIO_TypeDef  *)   GPIOA_BASE)
 #define GPIOB                   ((GPIO_TypeDef  *)   GPIOB_BASE)
 #define GPIOC                   ((GPIO_TypeDef  *)   GPIOC_BASE)
@@ -654,7 +655,7 @@ typedef struct {
 #define SPIx_S_RFIFOEF               ((uint8_t)0x01)    /*!< SPI read FIFO empty flag */
 
 /***********  Bits definition for SPIx_BR register  *************/
-#define SPIx_BR_SPPR_SHIFT           4                  !< SPI Baud rate Prescaler Divisor 
+#define SPIx_BR_SPPR_SHIFT           4                  /*!< SPI Baud rate Prescaler Divisor */
 #define SPIx_BR_SPPR_MASK            ((uint8_t)((uint8_t)0x7 << SPIx_BR_SPPR_SHIFT))
 #define SPIx_BR_SPPR(x)              ((uint8_t)(((uint8_t)(x) << SPIx_BR_SPPR_SHIFT) & SPIx_BR_SPPR_MASK))
 #define SPIx_BR_SPR_SHIFT            0                  /*!< SPI Baud rate Divisor */
@@ -1061,5 +1062,13 @@ typedef struct {
 
 /******** Bits definition for USBx_CONTROL register *************/
 #define USBx_CONTROL_DPPULLUPNONOTG  ((uint8_t)0x10) /*!< Control pull-ups in device mode */
+
+/****************************************************************/
+/*                                                              */
+/*                 Reset Control Module (RCM)                   */
+/*                                                              */
+/****************************************************************/
+
+/* Device independent */
 
 #endif /* _KL26Z_H_ */

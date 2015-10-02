@@ -227,6 +227,15 @@ typedef struct
   USBOTG_TypeDef;
 */
 
+typedef struct
+{
+  __I  uint8_t  SRS0;
+  __I  uint8_t  SRS1;
+       uint8_t  RESERVED0[2];
+  __IO uint8_t  RPFC;
+  __IO uint8_t  RPFW;
+} RCM_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -663,5 +672,36 @@ typedef struct
 /****************************************************************/
 
 /* Device dependent */
+
+/****************************************************************/
+/*                                                              */
+/*                 Reset Control Module (RCM)                   */
+/*                                                              */
+/****************************************************************/
+/**********  Bits definition for RCM_SRS0 register  *************/
+#define RCM_SRS0_POR                  ((uint8_t)0x80)   /*!< Power-On Reset */
+#define RCM_SRS0_PIN                  ((uint8_t)0x40)   /*!< External Reset Pin */
+#define RCM_SRS0_WDOG                 ((uint8_t)0x20)   /*!< Watchdog */
+#define RCM_SRS0_LOL                  ((uint8_t)0x08)   /*!< Loss-of-Lock Reset */
+#define RCM_SRS0_LOC                  ((uint8_t)0x04)   /*!< Loss-of-Clock Reset */
+#define RCM_SRS0_LVD                  ((uint8_t)0x02)   /*!< Low-Voltage Detect Reset */
+#define RCM_SRS0_WAKEUP               ((uint8_t)0x01)   /*!< Low Leakage Wakeup Reset */
+
+/**********  Bits definition for RCM_SRS1 register  *************/
+#define RCM_SRS1_SACKERR              ((uint8_t)0x20)   /*!< Stop Mode Acknowledge Error Reset */
+#define RCM_SRS1_MDM_AP               ((uint8_t)0x08)   /*!< MDM-AP System Reset Request */
+#define RCM_SRS1_SW                   ((uint8_t)0x04)   /*!< Software */
+#define RCM_SRS1_LOCKUP               ((uint8_t)0x02)   /*!< Core Lockup */
+
+/**********  Bits definition for RCM_RPFC register  *************/
+#define RCM_RPFC_RSTFLTSS             ((uint8_t)0x04)   /*!< Reset Pin Filter Select in Stop Mode */
+#define RCM_RPFC_RSTFLTSRW_SHIFT      0                                                                                  /*!< Reset Pin Filter Select in Run and Wait Modes (shift) */
+#define RCM_RPFC_RSTFLTSRW_MASK       ((uint8_t)((uint8_t)0x03 << RCM_RPFC_RSTFLTSRW_SHIFT))                             /*!< Reset Pin Filter Select in Run and Wait Modes (mask) */
+#define RCM_RPFC_RSTFLTSRW(x)         ((uint8_t)(((uint8_t)(x) << RCM_RPFC_RSTFLTSRW_SHIFT) & RCM_RPFC_RSTFLTSRW_MASK))  /*!< Reset Pin Filter Select in Run and Wait Modes */
+
+/**********  Bits definition for RCM_RPFW register  *************/
+#define RCM_RPFW_RSTFLTSEL_SHIFT      0                                                                                  /*!< Reset Pin Filter Bus Clock Select (shift) */
+#define RCM_RPFW_RSTFLTSEL_MASK       ((uint8_t)((uint8_t)0x1F << RCM_RPFW_RSTFLTSEL_SHIFT))                             /*!< Reset Pin Filter Bus Clock Select (mask) */
+#define RCM_RPFW_RSTFLTSEL(x)         ((uint8_t)(((uint8_t)(x) << RCM_RPFW_RSTFLTSEL_SHIFT) & RCM_RPFW_RSTFLTSEL_MASK))  /*!< Reset Pin Filter Bus Clock Select */
 
 #endif /* _KL2xZ_H_ */
