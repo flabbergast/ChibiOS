@@ -269,6 +269,16 @@ typedef struct
   __IO uint32_t IER;
 } RTC_TypeDef;
 
+typedef struct
+{
+  __IO uint8_t  CR0;
+  __IO uint8_t  CR1;
+  __IO uint8_t  FPR;
+  __IO uint8_t  SCR;
+  __IO uint8_t  DACCR;
+  __IO uint8_t  MUXCR;
+} CMP_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -895,5 +905,57 @@ typedef struct
 #define RTC_IER_TAIE              ((uint32_t)0x04)    /*!< Time Alarm Interrupt Enable */
 #define RTC_IER_TOIE              ((uint32_t)0x02)    /*!< Time Overflow Interrupt Enable */
 #define RTC_IER_TIIE              ((uint32_t)0x01)    /*!< Time Invalid Interrupt Enable */
+
+/****************************************************************/
+/*                                                              */
+/*                       Comparator (CMP)                       */
+/*                                                              */
+/****************************************************************/
+/**********  Bits definition for CMP_CR0 register  **************/
+#define CMP_CR0_FILTER_CNT_SHIFT  4                                                                                 /*!< Filter Sample Count (shift) */
+#define CMP_CR0_FILTER_CNT_MASK   ((uint8_t)((uint8_t)0x07 << CMP_CR0_FILTER_CNT_SHIFT))                            /*!< Filter Sample Count (mask) */
+#define CMP_CR0_FILTER_CNT(x)     ((uint8_t)(((uint8_t)(x) << CMP_CR0_FILTER_CNT_SHIFT) & CMP_CR0_FILTER_CNT_MASK)) /*!< Filter Sample Count */
+#define CMP_CR0_HYSTCTR_SHIFT     0                                                                                 /*!< Comparator hard block hysteresis control (shift) */
+#define CMP_CR0_HYSTCTR_MASK      ((uint8_t)((uint8_t)0x03 << CMP_CR0_HYSTCTR_SHIFT))                               /*!< Comparator hard block hysteresis control (mask) */
+#define CMP_CR0_HYSTCTR(x)        ((uint8_t)(((uint8_t)(x) << CMP_CR0_HYSTCTR_SHIFT) & CMP_CR0_HYSTCTR_MASK))       /*!< Comparator hard block hysteresis control */
+
+/**********  Bits definition for CMP_CR1 register  **************/
+#define CMP_CR1_SE                ((uint8_t)0x80)  /*!< Sample Enable */
+#define CMP_CR1_WE                ((uint8_t)0x40)  /*!< Windowing Enable */
+#define CMP_CR1_TRIGM             ((uint8_t)0x20)  /*!< Trigger Mode Enable */
+#define CMP_CR1_PMODE             ((uint8_t)0x10)  /*!< Power Mode Select */
+#define CMP_CR1_INV               ((uint8_t)0x08)  /*!< Comparator INVERT */
+#define CMP_CR1_COS               ((uint8_t)0x04)  /*!< Comparator Output Select */
+#define CMP_CR1_OPE               ((uint8_t)0x02)  /*!< Comparator Output Pin Enable */
+#define CMP_CR1_EN                ((uint8_t)0x01)  /*!< Comparator Module Enable */
+
+/**********  Bits definition for CMP_FPR register  **************/
+#define CMP_CR0_FILT_PER_SHIFT    0                                                                             /*!< Filter Sample Period (shift) */
+#define CMP_CR0_FILT_PER_MASK     ((uint8_t)((uint8_t)0xFF << CMP_CR0_FILT_PER_SHIFT))                          /*!< Filter Sample Period (mask) */
+#define CMP_CR0_FILT_PER(x)       ((uint8_t)(((uint8_t)(x) << CMP_CR0_FILT_PER_SHIFT) & CMP_CR0_FILT_PER_MASK)) /*!< Filter Sample Period */
+
+/**********  Bits definition for CMP_SCR register  **************/
+#define CMP_SCR_DMAEN             ((uint8_t)0x40)  /*!< DMA Enable Control */
+#define CMP_SCR_IER               ((uint8_t)0x10)  /*!< Comparator Interrupt Enable Rising */
+#define CMP_SCR_IEF               ((uint8_t)0x08)  /*!< Comparator Interrupt Enable Falling */
+#define CMP_SCR_CFR               ((uint8_t)0x04)  /*!< Analog Comparator Flag Rising */
+#define CMP_SCR_CFF               ((uint8_t)0x02)  /*!< Analog Comparator Flag Falling */
+#define CMP_SCR_COUT              ((uint8_t)0x01)  /*!< Analog Comparator Output */
+
+/**********  Bits definition for CMP_DACCR register  ************/
+#define CMP_DACCR_DACEN           ((uint8_t)0x80)  /*!< DAC Enable */
+#define CMP_DACCR_VRSEL           ((uint8_t)0x40)  /*!< Supply Voltage Reference Source Select */
+#define CMP_DACCR_VOSEL_SHIFT     0                                                                           /*!< DAC Output Voltage Select (shift) */
+#define CMP_DACCR_VOSEL_MASK      ((uint8_t)((uint8_t)0x3F << CMP_DACCR_VOSEL_SHIFT))                         /*!< DAC Output Voltage Select (mask) */
+#define CMP_DACCR_VOSEL(x)        ((uint8_t)(((uint8_t)(x) << CMP_DACCR_VOSEL_SHIFT) & CMP_DACCR_VOSEL_MASK)) /*!< DAC Output Voltage Select */
+
+/**********  Bits definition for CMP_MUXCR register  ************/
+#define CMP_MUXCR_PSTM            ((uint8_t)0x80)  /*!< Pass Through Mode Enable */
+#define CMP_MUXCR_PSEL_SHIFT      3                                                                         /*!< Plus Input Mux Control (shift) */
+#define CMP_MUXCR_PSEL_MASK       ((uint8_t)((uint8_t)0x07 << CMP_MUXCR_PSEL_SHIFT))                        /*!< Plus Input Mux Control (mask) */
+#define CMP_MUXCR_PSEL(x)         ((uint8_t)(((uint8_t)(x) << CMP_MUXCR_PSEL_SHIFT) & CMP_MUXCR_PSEL_MASK)) /*!< Plus Input Mux Control */
+#define CMP_MUXCR_MSEL_SHIFT      0                                                                         /*!< Minus Input Mux Control (shift) */
+#define CMP_MUXCR_MSEL_MASK       ((uint8_t)((uint8_t)0x07 << CMP_MUXCR_MSEL_SHIFT))                        /*!< Minus Input Mux Control (mask) */
+#define CMP_MUXCR_MSEL(x)         ((uint8_t)(((uint8_t)(x) << CMP_MUXCR_MSEL_SHIFT) & CMP_MUXCR_MSEL_MASK)) /*!< Minus Input Mux Control */
 
 #endif /* _KL2xZ_H_ */

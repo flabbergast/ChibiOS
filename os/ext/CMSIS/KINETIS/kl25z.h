@@ -268,7 +268,7 @@ typedef struct {
 #define UART1_BASE              ((uint32_t)0x4006B000)
 #define UART2_BASE              ((uint32_t)0x4006C000)
 #define USBOTG_BASE             ((uint32_t)0x40072000)
-#define CMP_DAC_BASE            ((uint32_t)0x40073000) // TODO: registers not implemented
+#define CMP_BASE                ((uint32_t)0x40073000)
 #define SPI0_BASE               ((uint32_t)0x40076000)
 #define SPI1_BASE               ((uint32_t)0x40077000)
 #define LLWU_BASE               ((uint32_t)0x4007C000)
@@ -304,6 +304,7 @@ typedef struct {
 #define PORTD                   ((PORT_TypeDef  *)   PORTD_BASE)
 #define PORTE                   ((PORT_TypeDef  *)   PORTE_BASE)
 #define USBOTG                  ((USBOTG_TypeDef *)  USBOTG_BASE)
+#define CMP                     ((CMP_TypeDef *)     CMP_BASE)
 #define MCG                     ((MCG_TypeDef  *)    MCG_BASE)
 #define OSC0                    ((OSC_TypeDef  *)    OSC0_BASE)
 #define SPI0                    ((SPI_TypeDef *)     SPI0_BASE)
@@ -1066,6 +1067,14 @@ typedef struct {
 /****************************************************************/
 /*                                                              */
 /*                     Real Time Clock (RTC)                    */
+/*                                                              */
+/****************************************************************/
+
+/* Device independent */
+
+/****************************************************************/
+/*                                                              */
+/*                       Comparator (CMP)                       */
 /*                                                              */
 /****************************************************************/
 
