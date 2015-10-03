@@ -244,6 +244,19 @@ typedef struct
   __I  uint8_t  PMSTAT;
 } SMC_TypeDef;
 
+typedef struct
+{
+  struct {
+    __IO uint8_t  DATL;
+    __IO uint8_t  DATH;
+  } DAT[2];
+       uint8_t RESERVED0[28];
+  __IO uint8_t  SR;
+  __IO uint8_t  C0;
+  __IO uint8_t  C1;
+  __IO uint8_t  C2;
+} DAC_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -744,7 +757,7 @@ typedef struct
 #define SMC_STOPCTRL_PSTOPO(x)        ((uint8_t)(((uint8_t)(x) << SMC_STOPCTRL_PSTOPO_SHIFT) & SMC_STOPCTRL_PSTOPO_MASK)) /*!< Partial Stop Option */
 #define SMC_STOPCTRL_PORP0            ((uint8_t)0x20)   /*!< POR Power Option */
 #define SMC_STOPCTRL_VLLSM_SHIFT      0                                                                                  /*!< VLLS Mode Control (shift) */
-#define SMC_STOPCTRL_VLLSM_MASK       ((uint8_t)((uint8_t)0x07 << SMC_STOPCTRL_VLLSM_  SHIFT))                           /*!< VLLS Mode Control (mask) */
+#define SMC_STOPCTRL_VLLSM_MASK       ((uint8_t)((uint8_t)0x07 << SMC_STOPCTRL_VLLSM_SHIFT))                             /*!< VLLS Mode Control (mask) */
 #define SMC_STOPCTRL_VLLSM(x)         ((uint8_t)(((uint8_t)(x) << SMC_STOPCTRL_VLLSM_SHIFT) & SMC_STOPCTRL_VLLSM_MASK))  /*!< VLLS Mode Control */
 
 #define SMC_STOPCTRL_PSTOPO_STOP      ((uint8_t)0x00)
@@ -756,7 +769,7 @@ typedef struct
 
 /*********  Bits definition for SMC_PMSTAT register  ************/
 #define SMC_PMSTAT_PMSTAT_SHIFT       0                                                                                /*!< Power Mode Status (shift) */
-#define SMC_PMSTAT_PMSTAT_MASK        ((uint8_t)((uint8_t)0x7F << SMC_PMSTAT_PMSTAT_  SHIFT))                          /*!< Power Mode Status (mask) */
+#define SMC_PMSTAT_PMSTAT_MASK        ((uint8_t)((uint8_t)0x7F << SMC_PMSTAT_PMSTAT_SHIFT))                            /*!< Power Mode Status (mask) */
 #define SMC_PMSTAT_PMSTAT(x)          ((uint8_t)(((uint8_t)(x) << SMC_PMSTAT_PMSTAT_SHIFT) & SMC_PMSTAT_PMSTAT_MASK))  /*!< Power Mode Status */
 
 #define SMC_PMSTAT_RUN                ((uint8_t)0x01)
@@ -766,5 +779,43 @@ typedef struct
 #define SMC_PMSTAT_VLPS               ((uint8_t)0x10)
 #define SMC_PMSTAT_LLS                ((uint8_t)0x20)
 #define SMC_PMSTAT_VLLS               ((uint8_t)0x40)
+
+/****************************************************************/
+/*                                                              */
+/*              Digital-to-Analog Converter (DAC)               */
+/*                                                              */
+/****************************************************************/
+/*********  Bits definition for DACx_DATnL register  ************/
+#define DACx_DATnL_DATA_SHIFT         0                                                                            /*!< DAC Data Low Register (shift) */
+#define DACx_DATnL_DATA_MASK          ((uint8_t)((uint8_t)0xFF << DACx_DATnL_DATA_SHIFT))                          /*!< DAC Data Low Register (mask) */
+#define DACx_DATnL_DATA(x)            ((uint8_t)(((uint8_t)(x) << DACx_DATnL_DATA_SHIFT) & DACx_DATnL_DATA_MASK))  /*!< DAC Data Low Register */
+
+/*********  Bits definition for DACx_DATnH register  ************/
+#define DACx_DATnH_DATA_SHIFT         0                                                                            /*!< DAC Data High Register (shift) */
+#define DACx_DATnH_DATA_MASK          ((uint8_t)((uint8_t)0x0F << DACx_DATnH_DATA_SHIFT))                          /*!< DAC Data High Register (mask) */
+#define DACx_DATnH_DATA(x)            ((uint8_t)(((uint8_t)(x) << DACx_DATnH_DATA_SHIFT) & DACx_DATnH_DATA_MASK))  /*!< DAC Data High Register */
+
+/**********  Bits definition for DACx_SR register  **************/
+#define DACx_SR_DACBFRPTF             ((uint8_t)0x02)  /*!< DAC Buffer Read Pointer Top Position Flag */
+#define DACx_SR_DACBFRPBF             ((uint8_t)0x01)  /*!< DAC Buffer Read Pointer Bottom Position Flag */
+
+/**********  Bits definition for DACx_C0 register  **************/
+#define DACx_C0_DACEN                 ((uint8_t)0x80)  /*!< DAC Enable */
+#define DACx_C0_DACRFS                ((uint8_t)0x40)  /*!< DAC Reference Select */
+#define DACx_C0_DACTRGSEL             ((uint8_t)0x20)  /*!< DAC Trigger Select */
+#define DACx_C0_DACSWTRG              ((uint8_t)0x10)  /*!< DAC Software Trigger */
+#define DACx_C0_LPEN                  ((uint8_t)0x08)  /*!< DAC Low Power Control */
+#define DACx_C0_DACBTIEN              ((uint8_t)0x02)  /*!< DAC Buffer Read Pointer Top Flag Interrupt Enable */
+#define DACx_C0_DACBBIEN              ((uint8_t)0x01)  /*!< DAC Buffer Read Pointer Bottom Flag Interrupt Enable */
+
+/**********  Bits definition for DACx_C1 register  **************/
+#define DACx_C1_DMAEN                 ((uint8_t)0x80)  /*!< DMA Enable Select */
+/* Device dependent bits */
+/* #define DACx_C1_DACBFMD            ((uint8_t)0x04)*//*!< DAC Buffer Work Mode Select */
+#define DACx_C1_DACBFEN               ((uint8_t)0x01)  /*!< DAC Buffer Enable */
+
+/**********  Bits definition for DACx_C2 register  **************/
+#define DACx_C2_DACBFRP               ((uint8_t)0x10)  /*!< DAC Buffer Read Pointer */
+#define DACx_C2_DACBFUP               ((uint8_t)0x01)  /*!< DAC Buffer Upper Limit */
 
 #endif /* _KL2xZ_H_ */

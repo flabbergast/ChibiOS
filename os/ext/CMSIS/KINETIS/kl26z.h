@@ -255,7 +255,7 @@ typedef struct {
 #define TPM2_BASE               ((uint32_t)0x4003A000)
 #define ADC0_BASE               ((uint32_t)0x4003B000)
 #define RTC_BASE                ((uint32_t)0x4003D000) // TODO: registers not implemented
-#define DAC0_BASE               ((uint32_t)0x4003F000) // TODO: registers not implemented
+#define DAC0_BASE               ((uint32_t)0x4003F000)
 #define LPTMR0_BASE             ((uint32_t)0x40040000)
 #define TSI0_BASE               ((uint32_t)0x40045000)
 #define SIM_BASE                ((uint32_t)0x40047000)
@@ -295,6 +295,7 @@ typedef struct {
 #define TPM1                    ((TPM_TypeDef *)     TPM1_BASE)
 #define TPM2                    ((TPM_TypeDef *)     TPM2_BASE)
 #define ADC0                    ((ADC_TypeDef *)     ADC0_BASE)
+#define DAC0                    ((DAC_TypeDef *)     DAC0_BASE)
 #define LPTMR0                  ((LPTMR_TypeDef *)   LPTMR0_BASE)
 #define TSI0                    ((TSI_TypeDef *)     TSI0_BASE)
 #define SIM                     ((SIM_TypeDef  *)    SIM_BASE)
@@ -1079,5 +1080,20 @@ typedef struct {
 /****************************************************************/
 
 /* Device independent */
+
+/****************************************************************/
+/*                                                              */
+/*              Digital-to-Analog Converter (DAC)               */
+/*                                                              */
+/****************************************************************/
+
+/* Mostly Device independent */
+
+#define DACx_C1_DACBFMD_SHIFT         2     /*!< DAC Buffer Work Mode Select */
+#define DACx_C1_DACBFMD_MASK          ((uint8_t)((uint8_t)0x01 << DACx_C1_DACBFMD_  SHIFT))
+#define DACx_C1_DACBFMD(x)            ((uint8_t)(((uint8_t)(x) << DACx_C1_DACBFMD_SHIFT) & DACx_C1_DACBFMD_MASK))
+
+#define DACx_C1_DACBFMD_MODE_NORMAL   0
+#define DACx_C1_DACBFMD_MODE_OTS      1
 
 #endif /* _KL26Z_H_ */
