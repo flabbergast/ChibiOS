@@ -150,7 +150,13 @@ void kl2x_clock_init(void) {
   PORTA->PCR[18] &= ~0x01000700; /* Set PA18 to analog (default) */
   PORTA->PCR[19] &= ~0x01000700; /* Set PA19 to analog (default) */
 
+  /* Internal capacitors for crystal */
+#if defined(KINETIS_BOARD_OSCILLATOR_SETTING)
+  OSC0->CR = KINETIS_BOARD_OSCILLATOR_SETTING;
+#else /* KINETIS_BOARD_OSCILLATOR_SETTING */
+  /* Disable the internal capacitors */
   OSC0->CR = 0;
+#endif /* KINETIS_BOARD_OSCILLATOR_SETTING */
 
   /* From KL25P80M48SF0RM section 24.5.1.1 "Initializing the MCG". */
   /* To change from FEI mode to FEE mode: */
@@ -212,8 +218,13 @@ void kl2x_clock_init(void) {
 
   /* Start in FEI mode */
 
-  /* Disable capacitors for crystal */
+  /* Internal capacitors for crystal */
+#if defined(KINETIS_BOARD_OSCILLATOR_SETTING)
+  OSC0->CR = KINETIS_BOARD_OSCILLATOR_SETTING;
+#else /* KINETIS_BOARD_OSCILLATOR_SETTING */
+  /* Disable the internal capacitors */
   OSC0->CR = 0;
+#endif /* KINETIS_BOARD_OSCILLATOR_SETTING */
 
   /* From KL25P80M48SF0RM section 24.5.1.1 "Initializing the MCG". */
   /* To change from FEI mode to FBE mode: */

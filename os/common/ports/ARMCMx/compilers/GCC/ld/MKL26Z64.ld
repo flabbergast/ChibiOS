@@ -1,14 +1,14 @@
 /*
-    ChibiOS/RT - Copyright (C) 2006-2014 Giovanni Di Sirio.
+    ChibiOS - Copyright (C) 2006..2015 Giovanni Di Sirio.
 
-    This file is part of ChibiOS/RT.
+    This file is part of ChibiOS.
 
-    ChibiOS/RT is free software; you can redistribute it and/or modify
+    ChibiOS is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
-    ChibiOS/RT is distributed in the hope that it will be useful,
+    ChibiOS is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -18,18 +18,17 @@
 */
 
 /*
- * MK20DX256 memory setup.
+ * KL25Z64 memory setup.
  */
 
 ENTRY(Reset_Handler)
 
 MEMORY
 {
-  flash0   : org = 0x00000000, len = 256k
-  flashcfg : org = 0x00000400, len = 0x10
-  flash    : org = 0x00000410, len = 128k - 0x410
-/* I think this is wrong, should be 1FFF8000 */
-  ram      : org = 0x1FFFE000, len = 64k
+  flash0   :  org = 0x00000000,  len = 0xc0
+  flashcfg :  org = 0x00000400,  len = 0x10
+  flash    :  org = 0x00000410,  len = 64k - 0x410
+  ram      :  org = 0x1FFFF800,  len = 8k
 }
 
 __ram_start__           = ORIGIN(ram);

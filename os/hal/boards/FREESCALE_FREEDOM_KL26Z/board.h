@@ -18,7 +18,7 @@
 #define _BOARD_H_
 
 /*
- * Setup for Freescale Freedom KL25Z board.
+ * Setup for Freescale Freedom KL26Z board.
  */
 
 /*
