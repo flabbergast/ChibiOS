@@ -250,7 +250,7 @@ typedef struct {
 #define TPM1_BASE               ((uint32_t)0x40039000)
 #define TPM2_BASE               ((uint32_t)0x4003A000)
 #define ADC0_BASE               ((uint32_t)0x4003B000)
-#define RTC_BASE                ((uint32_t)0x4003D000) // TODO: registers not implemented
+#define RTC_BASE                ((uint32_t)0x4003D000)
 #define DAC0_BASE               ((uint32_t)0x4003F000)
 #define LPTMR0_BASE             ((uint32_t)0x40040000)
 #define TSI0_BASE               ((uint32_t)0x40045000)
@@ -291,6 +291,7 @@ typedef struct {
 #define TPM1                    ((TPM_TypeDef *)     TPM1_BASE)
 #define TPM2                    ((TPM_TypeDef *)     TPM2_BASE)
 #define ADC0                    ((ADC_TypeDef *)     ADC0_BASE)
+#define RTC0                    ((RTC_TypeDef *)     RTC0_BASE)
 #define DAC0                    ((DAC_TypeDef *)     DAC0_BASE)
 #define LPTMR0                  ((LPTMR_TypeDef *)   LPTMR0_BASE)
 #define TSI0                    ((TSI_TypeDef *)     TSI0_BASE)
@@ -1061,5 +1062,13 @@ typedef struct {
 
 #define DACx_C1_DACBFMD_MODE_NORMAL   0
 #define DACx_C1_DACBFMD_MODE_OTS      1
+
+/****************************************************************/
+/*                                                              */
+/*                     Real Time Clock (RTC)                    */
+/*                                                              */
+/****************************************************************/
+
+/* Device independent */
 
 #endif /* _KL25Z_H_ */

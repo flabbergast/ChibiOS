@@ -257,6 +257,18 @@ typedef struct
   __IO uint8_t  C2;
 } DAC_TypeDef;
 
+typedef struct
+{
+  __IO uint32_t TSR;
+  __IO uint32_t TPR;
+  __IO uint32_t TAR;
+  __IO uint32_t TCR;
+  __IO uint32_t CR;
+  __IO uint32_t SR;
+  __IO uint32_t LR;
+  __IO uint32_t IER;
+} RTC_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -817,5 +829,71 @@ typedef struct
 /**********  Bits definition for DACx_C2 register  **************/
 #define DACx_C2_DACBFRP               ((uint8_t)0x10)  /*!< DAC Buffer Read Pointer */
 #define DACx_C2_DACBFUP               ((uint8_t)0x01)  /*!< DAC Buffer Upper Limit */
+
+/****************************************************************/
+/*                                                              */
+/*                     Real Time Clock (RTC)                    */
+/*                                                              */
+/****************************************************************/
+/**********  Bits definition for RTC_TSR register  **************/
+#define RTC_TSR_TSR_SHIFT         0                                                                     /*!< RTC Time Seconds Register (shift) */
+#define RTC_TSR_TSR_MASK          ((uint32_t)((uint32_t)0xFFFFFFFF << RTC_TSR_TSR_SHIFT))               /*!< RTC Time Seconds Register (mask) */
+#define RTC_TSR_TSR(x)            ((uint32_t)(((uint32_t)(x) << RTC_TSR_TSR_SHIFT) & RTC_TSR_TSR_MASK)) /*!< RTC Time Seconds Register */
+
+/**********  Bits definition for RTC_TPR register  **************/
+#define RTC_TPR_TPR_SHIFT         0                                                                     /*!< RTC Time Prescaler Register (shift) */
+#define RTC_TPR_TPR_MASK          ((uint32_t)((uint32_t)0xFFFF << RTC_TPR_TPR_SHIFT))                   /*!< RTC Time Prescaler Register (mask) */
+#define RTC_TPR_TPR(x)            ((uint32_t)(((uint32_t)(x) << RTC_TPR_TPR_SHIFT) & RTC_TPR_TPR_MASK)) /*!< RTC Time Prescaler Register */
+
+/**********  Bits definition for RTC_TAR register  **************/
+#define RTC_TAR_TAR_SHIFT         0                                                                     /*!< RTC Time Alarm Register (shift) */
+#define RTC_TAR_TAR_MASK          ((uint32_t)((uint32_t)0xFFFFFFFF << RTC_TAR_TAR_SHIFT))               /*!< RTC Time Alarm Register (mask) */
+#define RTC_TAR_TAR(x)            ((uint32_t)(((uint32_t)(x) << RTC_TAR_TAR_SHIFT) & RTC_TAR_TAR_MASK)) /*!< RTC Time Alarm Register */
+
+/**********  Bits definition for RTC_TCR register  **************/
+#define RTC_TCR_CIC_SHIFT         24                                                                    /*!< Compensation Interval Counter (shift) */
+#define RTC_TCR_CIC_MASK          ((uint32_t)((uint32_t)0xFF << RTC_TCR_CIC_SHIFT))                     /*!< Compensation Interval Counter (mask) */
+#define RTC_TCR_CIC(x)            ((uint32_t)(((uint32_t)(x) << RTC_TCR_CIC_SHIFT) & RTC_TCR_CIC_MASK)) /*!< Compensation Interval Counter */
+#define RTC_TCR_TCV_SHIFT         16                                                                    /*!< Time Compensation Value (shift) */
+#define RTC_TCR_TCV_MASK          ((uint32_t)((uint32_t)0xFF << RTC_TCR_TCV_SHIFT))                     /*!< Time Compensation Value (mask) */
+#define RTC_TCR_TCV(x)            ((uint32_t)(((uint32_t)(x) << RTC_TCR_TCV_SHIFT) & RTC_TCR_TCV_MASK)) /*!< Time Compensation Value */
+#define RTC_TCR_CIR_SHIFT         8                                                                     /*!< Compensation Interval Register (shift) */
+#define RTC_TCR_CIR_MASK          ((uint32_t)((uint32_t)0xFF << RTC_TCR_CIR_SHIFT))                     /*!< Compensation Interval Register (mask) */
+#define RTC_TCR_CIR(x)            ((uint32_t)(((uint32_t)(x) << RTC_TCR_CIR_SHIFT) & RTC_TCR_CIR_MASK)) /*!< Compensation Interval Register */
+#define RTC_TCR_TCR_SHIFT         0                                                                     /*!< Time Compensation Register (shift) */
+#define RTC_TCR_TCR_MASK          ((uint32_t)((uint32_t)0xFF << RTC_TCR_TCR_SHIFT))                     /*!< Time Compensation Register (mask) */
+#define RTC_TCR_TCR(x)            ((uint32_t)(((uint32_t)(x) << RTC_TCR_TCR_SHIFT) & RTC_TCR_TCR_MASK)) /*!< Time Compensation Register */
+
+/***********  Bits definition for RTC_CR register  **************/
+#define RTC_CR_SC2P               ((uint32_t)0x2000)  /*!< Oscillator 2pF Load Configure */
+#define RTC_CR_SC4P               ((uint32_t)0x1000)  /*!< Oscillator 4pF Load Configure */
+#define RTC_CR_SC8P               ((uint32_t)0x0800)  /*!< Oscillator 8pF Load Configure */
+#define RTC_CR_SC16P              ((uint32_t)0x0400)  /*!< Oscillator 16pF Load Configure */
+#define RTC_CR_CLKO               ((uint32_t)0x0200)  /*!< Clock Output */
+#define RTC_CR_OSCE               ((uint32_t)0x0100)  /*!< Oscillator Enable */
+#define RTC_CR_WPS                ((uint32_t)0x0010)  /*!< Wakeup Pin Select */
+#define RTC_CR_UM                 ((uint32_t)0x0008)  /*!< Update Mode */
+#define RTC_CR_SUP                ((uint32_t)0x0004)  /*!< Supervisor Access */
+#define RTC_CR_WPE                ((uint32_t)0x0002)  /*!< Wakeup Pin Enable */
+#define RTC_CR_SWR                ((uint32_t)0x0001)  /*!< Software Reset */
+
+/***********  Bits definition for RTC_SR register  **************/
+#define RTC_SR_TCE                ((uint32_t)0x10)    /*!< Time Counter Enable */
+#define RTC_SR_TAF                ((uint32_t)0x04)    /*!< Time Alarm Flag */
+#define RTC_SR_TOF                ((uint32_t)0x02)    /*!< Time Overflow Flag */
+#define RTC_SR_TIF                ((uint32_t)0x01)    /*!< Time Invalid Flag */
+
+/***********  Bits definition for RTC_LR register  **************/
+#define RTC_LR_LRL                ((uint32_t)0x40)    /*!< Lock Register Lock */
+#define RTC_LR_SRL                ((uint32_t)0x20)    /*!< Status Register Lock */
+#define RTC_LR_CRL                ((uint32_t)0x10)    /*!< Control Register Lock */
+#define RTC_LR_TCL                ((uint32_t)0x08)    /*!< Time Compensation Lock */
+
+/**********  Bits definition for RTC_IER register  **************/
+#define RTC_IER_WPON              ((uint32_t)0x80)    /*!< Wakeup Pin On */
+#define RTC_IER_TSIE              ((uint32_t)0x10)    /*!< Time Seconds Interrupt Enable */
+#define RTC_IER_TAIE              ((uint32_t)0x04)    /*!< Time Alarm Interrupt Enable */
+#define RTC_IER_TOIE              ((uint32_t)0x02)    /*!< Time Overflow Interrupt Enable */
+#define RTC_IER_TIIE              ((uint32_t)0x01)    /*!< Time Invalid Interrupt Enable */
 
 #endif /* _KL2xZ_H_ */
