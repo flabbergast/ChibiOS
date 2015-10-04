@@ -68,7 +68,7 @@ static void pwm_lld_serve_interrupt(PWMDriver *pwmp) {
   sr = pwmp->tpm->STATUS;
   pwmp->tpm->STATUS = 0xFFFFFFFF;
 
-  if (((sr & TPM_SC_TOF) != 0) &&
+  if (((sr & TPM_STATUS_TOF) != 0) &&
       (pwmp->config->callback != NULL))
     pwmp->config->callback(pwmp);
   if (((sr & TPM_STATUS_CH0F) != 0) &&
