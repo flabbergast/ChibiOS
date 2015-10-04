@@ -135,8 +135,13 @@ void k20x_clock_init(void) {
    * Start in FEI mode
    */
 
-  /* Disable capacitors for crystal */
-  OSC->CR = 0;
+  /* Internal capacitors for crystal */
+#if defined(KINETIS_BOARD_OSCILLATOR_SETTING)
+  OSC0->CR = KINETIS_BOARD_OSCILLATOR_SETTING;
+#else /* KINETIS_BOARD_OSCILLATOR_SETTING */
+  /* Disable the internal capacitors */
+  OSC0->CR = 0;
+#endif /* KINETIS_BOARD_OSCILLATOR_SETTING */
 
   /* TODO: need to add more flexible calculation, specially regarding
    *       divisors which may not be available depending on the XTAL

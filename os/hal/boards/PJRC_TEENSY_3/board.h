@@ -30,6 +30,9 @@
 /* External 16 MHz crystal */
 #define KINETIS_XTAL_FREQUENCY      16000000UL
 
+/* Use internal capacitors for the crystal */
+#define KINETIS_BOARD_OSCILLATOR_SETTING OSC_CR_SC8P|OSC_CR_SC2P
+
 /*
  * MCU type
  */

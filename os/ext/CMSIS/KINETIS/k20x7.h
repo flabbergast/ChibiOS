@@ -240,7 +240,7 @@ typedef struct
 #define WDOG                    ((WDOG_TypeDef  *)   WDOG_BASE)
 #define USBOTG                  ((USBOTG_TypeDef *)  USBOTG_BASE)
 #define MCG                     ((MCG_TypeDef  *)    MCG_BASE)
-#define OSC                     ((OSC_TypeDef  *)    OSC0_BASE)
+#define OSC0                    ((OSC_TypeDef  *)    OSC0_BASE)
 #define SPI0                    ((SPI_TypeDef *)     SPI0_BASE)
 #define SPI1                    ((SPI_TypeDef *)     SPI1_BASE)
 #define I2C0                    ((I2C_TypeDef *)     I2C0_BASE)
