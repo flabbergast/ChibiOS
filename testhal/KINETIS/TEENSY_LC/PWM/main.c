@@ -19,21 +19,25 @@
 
 static void pwmpcb(PWMDriver *pwmp) {
   (void)pwmp;
-  palSetPad(GPIOB, GPIOB_LED);
+  palSetPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
 }
 
 static void pwmc0cb(PWMDriver *pwmp) {
   (void)pwmp;
-  palClearPad(GPIOB, GPIOB_LED);
+  palClearPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
 }
 
 static PWMConfig pwmcfg = {
-  24000000,           /* 24MHz PWM clock frequency.   */
-  12000,              /* Initial PWM period 1ms     */
-  pwmpcb,
+  12000000,          /* 12MHz PWM clock frequency.   */
+  12000,             /* Initial PWM period 1ms     */
+  pwmpcb,            /* Callback on counter overflow */
   {
-    {PWM_OUTPUT_DISABLED, pwmc0cb},
-    {PWM_OUTPUT_DISABLED, NULL},
+    {PWM_OUTPUT_DISABLED, pwmc0cb},     /* ch2: mode, callback! */
+    {PWM_OUTPUT_DISABLED, NULL},        /* ch2: mode, no callback */
+    {PWM_OUTPUT_DISABLED, NULL},        /* ch2: mode, no callback */
+    {PWM_OUTPUT_DISABLED, NULL},        /* ch3: mode, no callback */
+    {PWM_OUTPUT_DISABLED, NULL},        /* ch4: mode, no callback */
+    {PWM_OUTPUT_DISABLED, NULL}         /* ch5: mode, no callback */
   },
 };
 
@@ -85,9 +89,9 @@ int main(void) {
   pwmEnablePeriodicNotification(&PWM_DRIVER);
 
   /*
-   * Starts the PWM channel 0; turn the LED off.
+   * Starts the PWM channel 0, turn the LED off.
    */
-  pwmEnableChannel(&PWM_DRIVER, 0, PWM_PERCENTAGE_TO_WIDTH(&PWM_DRIVER, 0));
+  pwmEnableChannel(&PWM_DRIVER, 0, 0);
   pwmEnableChannelNotification(&PWM_DRIVER, 0); // MUST be before EnableChannel...
   
   /*
