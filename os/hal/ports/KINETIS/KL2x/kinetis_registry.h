@@ -60,6 +60,7 @@
 /* ADC attributes.*/
 #define KINETIS_HAS_ADC0            TRUE
 #define KINETIS_ADC0_IRC_VECTOR     Vector7C
+#define KINETIS_HAS_ADC1            FALSE
 
 /* DAC attributes.*/
 #define KINETIS_HAS_DAC0            TRUE
@@ -79,7 +80,6 @@
 #define KINETIS_HAS_PIT1            TRUE
 #define KINETIS_HAS_PIT2            FALSE
 #define KINETIS_HAS_PIT3            FALSE
-
 
 /* I2C attributes.*/
 #define KINETIS_HAS_I2C0            TRUE
@@ -117,6 +117,9 @@
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE
 #define KINETIS_USB_IRQ_VECTOR      VectorA0
+
+/* FTFA attributes.*/
+#define KINETIS_FTFA_IRQ_VECTOR     Vector54
 
 /*===========================================================================*/
 /* KL25                                                                      */

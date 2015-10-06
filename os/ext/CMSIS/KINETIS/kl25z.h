@@ -244,6 +244,7 @@ typedef struct {
 /*                  Peripheral memory map                       */
 /****************************************************************/
 #define DMA_BASE                ((uint32_t)0x40008100)
+#define FTFA_BASE               ((uint32_t)0x40020000)
 #define DMAMUX_BASE             ((uint32_t)0x40021000)
 #define PIT_BASE                ((uint32_t)0x40037000)
 #define TPM0_BASE               ((uint32_t)0x40038000)
@@ -285,6 +286,7 @@ typedef struct {
 /*                 Peripheral declaration                       */
 /****************************************************************/
 #define DMA                     ((DMA_TypeDef *)     DMA_BASE)
+#define FTFA                    ((FTFA_TypeDef *)    FTFA_BASE)
 #define DMAMUX                  ((DMAMUX_TypeDef *)  DMAMUX_BASE)
 #define PIT                     ((PIT_TypeDef *)     PIT_BASE)
 #define TPM0                    ((TPM_TypeDef *)     TPM0_BASE)
@@ -1075,6 +1077,14 @@ typedef struct {
 /****************************************************************/
 /*                                                              */
 /*                       Comparator (CMP)                       */
+/*                                                              */
+/****************************************************************/
+
+/* Device independent */
+
+/****************************************************************/
+/*                                                              */
+/*                  Flash Memory Module (FTFA)                  */
 /*                                                              */
 /****************************************************************/
 

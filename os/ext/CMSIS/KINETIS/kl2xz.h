@@ -279,6 +279,30 @@ typedef struct
   __IO uint8_t  MUXCR;
 } CMP_TypeDef;
 
+typedef struct
+{
+  __IO uint8_t  FSTAT;
+  __IO uint8_t  FCNFG;
+  __I  uint8_t  FSEC;
+  __I  uint8_t  FOPT;
+  __IO uint8_t  FCCOB3;
+  __IO uint8_t  FCCOB2;
+  __IO uint8_t  FCCOB1;
+  __IO uint8_t  FCCOB0;
+  __IO uint8_t  FCCOB7;
+  __IO uint8_t  FCCOB6;
+  __IO uint8_t  FCCOB5;
+  __IO uint8_t  FCCOB4;
+  __IO uint8_t  FCCOBB;
+  __IO uint8_t  FCCOBA;
+  __IO uint8_t  FCCOB9;
+  __IO uint8_t  FCCOB8;
+  __IO uint8_t  FPROT3;
+  __IO uint8_t  FPROT2;
+  __IO uint8_t  FPROT1;
+  __IO uint8_t  FPROT0;
+} FTFA_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -957,5 +981,44 @@ typedef struct
 #define CMP_MUXCR_MSEL_SHIFT      0                                                                         /*!< Minus Input Mux Control (shift) */
 #define CMP_MUXCR_MSEL_MASK       ((uint8_t)((uint8_t)0x07 << CMP_MUXCR_MSEL_SHIFT))                        /*!< Minus Input Mux Control (mask) */
 #define CMP_MUXCR_MSEL(x)         ((uint8_t)(((uint8_t)(x) << CMP_MUXCR_MSEL_SHIFT) & CMP_MUXCR_MSEL_MASK)) /*!< Minus Input Mux Control */
+
+/****************************************************************/
+/*                                                              */
+/*                  Flash Memory Module (FTFA)                  */
+/*                                                              */
+/****************************************************************/
+/**********  Bits definition for FTFA_FSTAT register  ***********/
+#define FTFA_FSTAT_CCIF           ((uint8_t)0x80)  /*!< Command Complete Interrupt Flag */
+#define FTFA_FSTAT_RDCOLERR       ((uint8_t)0x40)  /*!< Flash Read Collision Error Flag */
+#define FTFA_FSTAT_ACCERR         ((uint8_t)0x20)  /*!< Flash Access Error Flag */
+#define FTFA_FSTAT_FPVIOL         ((uint8_t)0x10)  /*!< Flash Protection Violation Flag */
+#define FTFA_FSTAT_MGSTAT0        ((uint8_t)0x01)  /*!< Memory Controller Command Completion Status Flag */
+
+/**********  Bits definition for FTFA_FCNFG register  ***********/
+#define FTFA_FCNFG_CCIE           ((uint8_t)0x80)  /*!< Command Complete Interrupt Enable */
+#define FTFA_FCNFG_RDCOLLIE       ((uint8_t)0x40)  /*!< Read Collision Error Interrupt Enable */
+#define FTFA_FCNFG_ERSAREQ        ((uint8_t)0x20)  /*!< Erase All Request */
+#define FTFA_FCNFG_ERSSUSP        ((uint8_t)0x10)  /*!< Erase Suspend */
+
+/**********  Bits definition for FTFA_FSEC register  ************/
+#define FTFA_FSEC_KEYEN_MASK      ((uint8_t)0xC0)  /*!< Backdoor Key Security Enable */
+#define FTFA_FSEC_MEEN_MASK       ((uint8_t)0x30)  /*!< Mass Erase Enable Bits */
+#define FTFA_FSEC_FSLACC_MASK     ((uint8_t)0x0C)  /*!< Freescale Failure Analysis Access Code */
+#define FTFA_FSEC_SEC_MASK        ((uint8_t)0x03)  /*!< Flash Security */
+#define FTFA_FSEC_KEYEN_ENABLED   ((uint8_t)0x80)
+#define FTFA_FSEC_MEEN_DISABLED   ((uint8_t)0x20)
+#define FTFA_FSEC_SEC_UNSECURE    ((uint8_t)0x02)
+
+/**********  Bits definition for FTFA_FOPT register  ************/
+#define FTFA_FOPT_BOOTSRC_SEL_MASK ((uint8_t)0xC0) /*!< Boot Source Selection */
+#define FTFA_FOPT_FAST_INIT        ((uint8_t)0x20) /*!< Initialization Speed */
+#define FTFA_FOPT_RESET_PIN_CFG    ((uint8_t)0x08) /*!< Enables/disables control for the RESET pin */
+#define FTFA_FOPT_NMI_DIS          ((uint8_t)0x04) /*!< Enables/disables control for the NMI function */
+#define FTFA_FOPT_BOOTPIN_OPT      ((uint8_t)0x02) /*!< External pin selects boot options */
+#define FTFA_FOPT_LPBOOT_MASK      ((uint8_t)0x11) /*!< Reset value of OUTDIV1 in SIM_CLKDIV1 and RUNM in SMC_PMCTRL */
+#define FTFA_FOPT_LPBOOT_DIV8      ((uint8_t)0x00)
+#define FTFA_FOPT_LPBOOT_DIV4      ((uint8_t)0x01)
+#define FTFA_FOPT_LPBOOT_DIV2      ((uint8_t)0x10)
+#define FTFA_FOPT_LPBOOT_DIV1      ((uint8_t)0x11)
 
 #endif /* _KL2xZ_H_ */
