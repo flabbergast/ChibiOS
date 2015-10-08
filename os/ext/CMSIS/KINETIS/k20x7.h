@@ -238,7 +238,7 @@ typedef struct
 #define PORTD                   ((PORT_TypeDef  *)   PORTD_BASE)
 #define PORTE                   ((PORT_TypeDef  *)   PORTE_BASE)
 #define WDOG                    ((WDOG_TypeDef  *)   WDOG_BASE)
-#define USBOTG                  ((USBOTG_TypeDef *)  USBOTG_BASE)
+#define USB0                    ((USBOTG_TypeDef *)  USBOTG_BASE)
 #define MCG                     ((MCG_TypeDef  *)    MCG_BASE)
 #define OSC0                    ((OSC_TypeDef  *)    OSC0_BASE)
 #define SPI0                    ((SPI_TypeDef *)     SPI0_BASE)

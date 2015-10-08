@@ -309,7 +309,7 @@ typedef struct {
 #define PORTC                   ((PORT_TypeDef  *)   PORTC_BASE)
 #define PORTD                   ((PORT_TypeDef  *)   PORTD_BASE)
 #define PORTE                   ((PORT_TypeDef  *)   PORTE_BASE)
-#define USBOTG                  ((USBOTG_TypeDef *)  USBOTG_BASE)
+#define USB0                    ((USBOTG_TypeDef *)  USBOTG_BASE)
 #define CMP                     ((CMP_TypeDef *)     CMP_BASE)
 #define MCG                     ((MCG_TypeDef  *)    MCG_BASE)
 #define OSC0                    ((OSC_TypeDef  *)    OSC0_BASE)

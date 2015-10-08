@@ -365,7 +365,7 @@ struct USBDriver {
  *
  * @notapi
  */
-#define usb_lld_get_frame_number(usbp) ((USBOTG->FRMNUMH<<8)|USBOTG->FRMNUML)
+#define usb_lld_get_frame_number(usbp) ((USB0->FRMNUMH<<8)|USB0->FRMNUML)
 
 /**
  * @brief   Returns the exact size of a receive transaction.

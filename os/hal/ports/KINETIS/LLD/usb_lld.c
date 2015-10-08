@@ -321,7 +321,7 @@ void usb_packet_receive(USBDriver *usbp, usbep_t ep, size_t n)
  */
 OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
   USBDriver *usbp = &USBD1;
-  uint8_t istat = USBOTG->ISTAT;
+  uint8_t istat = USB0->ISTAT;
 
   OSAL_IRQ_PROLOGUE();
   /* 04 - Bit2 - Start Of Frame token received */
@@ -331,14 +331,14 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
     // usb_debug_putX('a');
 #endif /* DEBUG_USB */
     _usb_isr_invoke_sof_cb(usbp);
-    USBOTG->ISTAT = USBx_INTEN_SOFTOKEN;
+    USB0->ISTAT = USBx_INTEN_SOFTOKEN;
   }
   /* 08 - Bit3 - Token processing completed */
   while(istat & USBx_ISTAT_TOKDNE) {
 #if defined(DEBUG_USB)
     usb_debug_putX('|');
 #endif /* DEBUG_USB */
-    uint8_t stat = USBOTG->STAT;
+    uint8_t stat = USB0->STAT;
     uint8_t ep = stat >> 4;
     if(ep > KINETIS_USB_ENDPOINTS) {
 #if defined(DEBUG_USB)
@@ -461,9 +461,9 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
 #endif /* DEBUG_USB */
         break;
     }
-    USBOTG->ISTAT = USBx_ISTAT_TOKDNE;
-    USBOTG->CTL = USBx_CTL_USBENSOFEN;
-    istat = USBOTG->ISTAT;
+    USB0->ISTAT = USBx_ISTAT_TOKDNE;
+    USB0->CTL = USBx_CTL_USBENSOFEN;
+    istat = USB0->ISTAT;
   }
   /* 01 - Bit0 - Valid USB Reset received */
   if(istat & USBx_ISTAT_USBRST) {
@@ -472,7 +472,7 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
 #endif /* DEBUG_USB */
     _usb_reset(usbp);
     _usb_isr_invoke_event_cb(usbp, USB_EVENT_RESET);
-    USBOTG->ISTAT = USBx_ISTAT_USBRST;
+    USB0->ISTAT = USBx_ISTAT_USBRST;
     OSAL_IRQ_EPILOGUE();
     return;
   }
@@ -481,23 +481,23 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
 #if defined(DEBUG_USB)
     usb_debug_putX('d');
 #endif /* DEBUG_USB */
-    USBOTG->ISTAT = USBx_ISTAT_STALL;
+    USB0->ISTAT = USBx_ISTAT_STALL;
   }
   /* 02 - Bit1 - ERRSTAT condition triggered */
   if(istat & USBx_ISTAT_ERROR) {
 #if defined(DEBUG_USB)
     usb_debug_putX('e');
 #endif /* DEBUG_USB */
-    uint8_t err = USBOTG->ERRSTAT;
-    USBOTG->ERRSTAT = err;
-    USBOTG->ISTAT = USBx_ISTAT_ERROR;
+    uint8_t err = USB0->ERRSTAT;
+    USB0->ERRSTAT = err;
+    USB0->ISTAT = USBx_ISTAT_ERROR;
   }
   /* 10 - Bit4 - Constant IDLE on USB bus detected */
   if(istat & USBx_ISTAT_SLEEP) {
 #if defined(DEBUG_USB)
     usb_debug_putX('f');
 #endif /* DEBUG_USB */
-    USBOTG->ISTAT = USBx_ISTAT_SLEEP;
+    USB0->ISTAT = USBx_ISTAT_SLEEP;
   }
   /* 20 - Bit5 and 40 - 6 are not used */
 
@@ -590,31 +590,31 @@ void usb_lld_start(USBDriver *usbp) {
       SIM->SCGC4 |= SIM_SCGC4_USBOTG;  /* Enable Clock */
 
       /* Reset USB module, wait for completion */
-      USBOTG->USBTRC0 = USBx_USBTRC0_USBRESET;
-      while ((USBOTG->USBTRC0 & USBx_USBTRC0_USBRESET));
+      USB0->USBTRC0 = USBx_USBTRC0_USBRESET;
+      while ((USB0->USBTRC0 & USBx_USBTRC0_USBRESET));
 
       /* Set BDT Address */
-      USBOTG->BDTPAGE1 = ((uint32_t)_bdt) >> 8;
-      USBOTG->BDTPAGE2 = ((uint32_t)_bdt) >> 16;
-      USBOTG->BDTPAGE3 = ((uint32_t)_bdt) >> 24;
+      USB0->BDTPAGE1 = ((uint32_t)_bdt) >> 8;
+      USB0->BDTPAGE2 = ((uint32_t)_bdt) >> 16;
+      USB0->BDTPAGE3 = ((uint32_t)_bdt) >> 24;
 
       /* Clear all ISR flags */
-      USBOTG->ISTAT = 0xFF;
-      USBOTG->ERRSTAT = 0xFF;
-      USBOTG->OTGISTAT = 0xFF;
+      USB0->ISTAT = 0xFF;
+      USB0->ERRSTAT = 0xFF;
+      USB0->OTGISTAT = 0xFF;
 
       /* Enable USB */
-      USBOTG->CTL = USBx_CTL_ODDRST | USBx_CTL_USBENSOFEN;
-      USBOTG->USBCTRL = 0;
+      USB0->CTL = USBx_CTL_ODDRST | USBx_CTL_USBENSOFEN;
+      USB0->USBCTRL = 0;
 
       /* Enable reset interrupt */
-      USBOTG->INTEN = USBx_INTEN_USBRSTEN;
+      USB0->INTEN = USBx_INTEN_USBRSTEN;
 
       /* Enable interrupt in NVIC */
       nvicEnableVector(USB_OTG_IRQn, KINETIS_USB_USB0_IRQ_PRIORITY);
 
       /* Enable D+ pullup */
-      USBOTG->CONTROL = USBx_CONTROL_DPPULLUPNONOTG;
+      USB0->CONTROL = USBx_CONTROL_DPPULLUPNONOTG;
     }
 #endif
   }
@@ -653,23 +653,23 @@ void usb_lld_reset(USBDriver *usbp) {
 #endif /* DEBUG_USB */
 
   /* Reset BDT ODD/EVEN bits */
-  USBOTG->CTL = USBx_CTL_ODDRST;
+  USB0->CTL = USBx_CTL_ODDRST;
 
   /* EP0 initialization.*/
   usbp->epc[0] = &ep0config;
   usb_lld_init_endpoint(usbp, 0);
 
   /* Clear all pending interrupts */
-  USBOTG->ERRSTAT = 0xFF;
-  USBOTG->ISTAT = 0xFF;
+  USB0->ERRSTAT = 0xFF;
+  USB0->ISTAT = 0xFF;
 
   /* Set the address to zero during enumeration */
   usbp->address = 0;
-  USBOTG->ADDR = 0;
+  USB0->ADDR = 0;
 
   /* Enable other interrupts */
-  USBOTG->ERREN = 0xFF;
-  USBOTG->INTEN = USBx_INTEN_TOKDNEEN |
+  USB0->ERREN = 0xFF;
+  USB0->INTEN = USBx_INTEN_TOKDNEEN |
     USBx_INTEN_SOFTOKEN |
     USBx_INTEN_STALLEN |
     USBx_INTEN_ERROREN |
@@ -677,7 +677,7 @@ void usb_lld_reset(USBDriver *usbp) {
     USBx_INTEN_SLEEPEN;
 
   /* "is this necessary?", Paul from PJRC */
-  USBOTG->CTL = USBx_CTL_USBENSOFEN;
+  USB0->CTL = USBx_CTL_USBENSOFEN;
 }
 
 /**
@@ -692,7 +692,7 @@ void usb_lld_set_address(USBDriver *usbp) {
   usb_debug_putX('g');
   usb_debug_phexX((uint8_t)usbp->address);
 #endif /* DEBUG_USB */
-  USBOTG->ADDR = usbp->address&0x7F;
+  USB0->ADDR = usbp->address&0x7F;
 }
 
 /**
@@ -750,7 +750,7 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
   if((epc->ep_mode & USB_EP_MODE_TYPE) != USB_EP_MODE_TYPE_CTRL)
     mask |= USBx_ENDPTn_EPCTLDIS;
 
-  USBOTG->ENDPT[ep].V = mask;
+  USB0->ENDPT[ep].V = mask;
 }
 
 /**
@@ -767,7 +767,7 @@ void usb_lld_disable_endpoints(USBDriver *usbp) {
 #endif /* DEBUG_USB */
   uint8_t i;
   for(i=1;i<KINETIS_USB_ENDPOINTS;i++)
-    USBOTG->ENDPT[i].V = 0;
+    USB0->ENDPT[i].V = 0;
 }
 
 /**
@@ -789,9 +789,9 @@ usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep) {
 #endif /* DEBUG_USB */
   if(ep > USB_MAX_ENDPOINTS)
     return EP_STATUS_DISABLED;
-  if(!(USBOTG->ENDPT[ep].V & (USBx_ENDPTn_EPRXEN)))
+  if(!(USB0->ENDPT[ep].V & (USBx_ENDPTn_EPRXEN)))
     return EP_STATUS_DISABLED;
-  else if(USBOTG->ENDPT[ep].V & USBx_ENDPTn_EPSTALL)
+  else if(USB0->ENDPT[ep].V & USBx_ENDPTn_EPSTALL)
     return EP_STATUS_STALLED;
   return EP_STATUS_ACTIVE;
 }
@@ -815,9 +815,9 @@ usbepstatus_t usb_lld_get_status_in(USBDriver *usbp, usbep_t ep) {
 #endif /* DEBUG_USB */
   if(ep > USB_MAX_ENDPOINTS)
     return EP_STATUS_DISABLED;
-  if(!(USBOTG->ENDPT[ep].V & (USBx_ENDPTn_EPTXEN)))
+  if(!(USB0->ENDPT[ep].V & (USBx_ENDPTn_EPTXEN)))
     return EP_STATUS_DISABLED;
-  else if(USBOTG->ENDPT[ep].V & USBx_ENDPTn_EPSTALL)
+  else if(USB0->ENDPT[ep].V & USBx_ENDPTn_EPSTALL)
     return EP_STATUS_STALLED;
   return EP_STATUS_ACTIVE;
 }
@@ -938,7 +938,7 @@ void usb_lld_stall_out(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('q');
 #endif /* DEBUG_USB */
-  USBOTG->ENDPT[ep].V |= USBx_ENDPTn_EPSTALL;
+  USB0->ENDPT[ep].V |= USBx_ENDPTn_EPSTALL;
 }
 
 /**
@@ -954,7 +954,7 @@ void usb_lld_stall_in(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('r');
 #endif /* DEBUG_USB */
-  USBOTG->ENDPT[ep].V |= USBx_ENDPTn_EPSTALL;
+  USB0->ENDPT[ep].V |= USBx_ENDPTn_EPSTALL;
 }
 
 /**
@@ -970,7 +970,7 @@ void usb_lld_clear_out(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('s');
 #endif /* DEBUG_USB */
-  USBOTG->ENDPT[ep].V &= ~USBx_ENDPTn_EPSTALL;
+  USB0->ENDPT[ep].V &= ~USBx_ENDPTn_EPSTALL;
 }
 
 /**
@@ -986,7 +986,7 @@ void usb_lld_clear_in(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('t');
 #endif /* DEBUG_USB */
-  USBOTG->ENDPT[ep].V &= ~USBx_ENDPTn_EPSTALL;
+  USB0->ENDPT[ep].V &= ~USBx_ENDPTn_EPSTALL;
 }
 
 #endif /* HAL_USE_USB */
