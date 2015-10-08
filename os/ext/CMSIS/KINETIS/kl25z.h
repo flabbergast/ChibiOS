@@ -964,70 +964,70 @@ typedef struct {
 /*                  Timer/PWM Module (TPM)                      */
 /*                                                              */
 /****************************************************************/
-/**********  Bits definition for TPM_SC register  ***************/
-#define TPM_SC_DMA                   ((uint32_t)0x100)  /*!< DMA Enable */
-#define TPM_SC_TOF                   ((uint32_t)0x80)   /*!< Timer Overflow Flag */
-#define TPM_SC_TOIE                  ((uint32_t)0x40)   /*!< Timer Overflow Interrupt Enable */
-#define TPM_SC_CPWMS                 ((uint32_t)0x20)   /*!< Center-aligned PWM Select */
-#define TPM_SC_CMOD_SHIFT            3                  /*!< Clock Mode Selection */
-#define TPM_SC_CMOD_MASK             ((uint32_t)((uint32_t)0x3 << TPM_SC_CMOD_SHIFT))
-#define TPM_SC_CMOD(x)               ((uint32_t)(((uint32_t)(x) << TPM_SC_CMOD_SHIFT) & TPM_SC_CMOD_MASK))
-#define TPM_SC_PS_SHIFT              0                  /*!< Prescale Factor Selection */
-#define TPM_SC_PS_MASK               ((uint32_t)((uint32_t)0x7 << TPM_SC_PS_SHIFT))
-#define TPM_SC_PS(x)                 ((uint32_t)(((uint32_t)(x) << TPM_SC_PS_SHIFT) & TPM_SC_PS_MASK))
+/**********  Bits definition for TPMx_SC register  ***************/
+#define TPMx_SC_DMA                   ((uint32_t)0x100)  /*!< DMA Enable */
+#define TPMx_SC_TOF                   ((uint32_t)0x80)   /*!< Timer Overflow Flag */
+#define TPMx_SC_TOIE                  ((uint32_t)0x40)   /*!< Timer Overflow Interrupt Enable */
+#define TPMx_SC_CPWMS                 ((uint32_t)0x20)   /*!< Center-aligned PWM Select */
+#define TPMx_SC_CMOD_SHIFT            3                  /*!< Clock Mode Selection */
+#define TPMx_SC_CMOD_MASK             ((uint32_t)((uint32_t)0x3 << TPMx_SC_CMOD_SHIFT))
+#define TPMx_SC_CMOD(x)               ((uint32_t)(((uint32_t)(x) << TPMx_SC_CMOD_SHIFT) & TPMx_SC_CMOD_MASK))
+#define TPMx_SC_PS_SHIFT              0                  /*!< Prescale Factor Selection */
+#define TPMx_SC_PS_MASK               ((uint32_t)((uint32_t)0x7 << TPMx_SC_PS_SHIFT))
+#define TPMx_SC_PS(x)                 ((uint32_t)(((uint32_t)(x) << TPMx_SC_PS_SHIFT) & TPMx_SC_PS_MASK))
 
-#define TPM_SC_CMOD_DISABLE          TPM_SC_CMOD(0)
-#define TPM_SC_CMOD_LPTPM_CLK        TPM_SC_CMOD(1)
-#define TPM_SC_CMOD_LPTPM_EXTCLK     TPM_SC_CMOD(2)
+#define TPMx_SC_CMOD_DISABLE          TPMx_SC_CMOD(0)
+#define TPMx_SC_CMOD_LPTPM_CLK        TPMx_SC_CMOD(1)
+#define TPMx_SC_CMOD_LPTPM_EXTCLK     TPMx_SC_CMOD(2)
 
-/**********  Bits definition for TPM_CNT register  **************/
-#define TPM_CNT_COUNT_SHIFT          0                  /*!< Counter Value */
-#define TPM_CNT_COUNT_MASK           ((uint32_t)((uint32_t)0xFFFF << TPM_CNT_COUNT_SHIFT))
-#define TPM_CNT_COUNT(x)             ((uint32_t)(((uint32_t)(x) << TPM_CNT_COUNT_SHIFT) & TPM_CNT_COUNT_MASK))
+/**********  Bits definition for TPMx_CNT register  **************/
+#define TPMx_CNT_COUNT_SHIFT          0                  /*!< Counter Value */
+#define TPMx_CNT_COUNT_MASK           ((uint32_t)((uint32_t)0xFFFF << TPMx_CNT_COUNT_SHIFT))
+#define TPMx_CNT_COUNT(x)             ((uint32_t)(((uint32_t)(x) << TPMx_CNT_COUNT_SHIFT) & TPMx_CNT_COUNT_MASK))
 
-/**********  Bits definition for TPM_MOD register  **************/
-#define TPM_MOD_MOD_SHIFT            0                  /*!< Modulo Value */
-#define TPM_MOD_MOD_MASK             ((uint32_t)((uint32_t)0xFFFF << TPM_MOD_MOD_SHIFT))
-#define TPM_MOD_MOD(x)               ((uint32_t)(((uint32_t)(x) << TPM_MOD_MOD_SHIFT) & TPM_MOD_MOD_MASK))
+/**********  Bits definition for TPMx_MOD register  **************/
+#define TPMx_MOD_MOD_SHIFT            0                  /*!< Modulo Value */
+#define TPMx_MOD_MOD_MASK             ((uint32_t)((uint32_t)0xFFFF << TPMx_MOD_MOD_SHIFT))
+#define TPMx_MOD_MOD(x)               ((uint32_t)(((uint32_t)(x) << TPMx_MOD_MOD_SHIFT) & TPMx_MOD_MOD_MASK))
 
-/**********  Bits definition for TPM_CnSC register  *************/
-#define TPM_CnSC_CHF                 ((uint32_t)0x80)   /*!< Channel Flag */
-#define TPM_CnSC_CHIE                ((uint32_t)0x40)   /*!< Channel Interrupt Enable */
-#define TPM_CnSC_MSB                 ((uint32_t)0x20)   /*!< Channel Mode Select */
-#define TPM_CnSC_MSA                 ((uint32_t)0x10)   /*!< Channel Mode Select */
-#define TPM_CnSC_ELSB                ((uint32_t)0x8)    /*!< Edge or Level Select */
-#define TPM_CnSC_ELSA                ((uint32_t)0x4)    /*!< Edge or Level Select */
-#define TPM_CnSC_DMA                 ((uint32_t)0x1)    /*!< DMA Enable */
+/**********  Bits definition for TPMx_CnSC register  *************/
+#define TPMx_CnSC_CHF                 ((uint32_t)0x80)   /*!< Channel Flag */
+#define TPMx_CnSC_CHIE                ((uint32_t)0x40)   /*!< Channel Interrupt Enable */
+#define TPMx_CnSC_MSB                 ((uint32_t)0x20)   /*!< Channel Mode Select */
+#define TPMx_CnSC_MSA                 ((uint32_t)0x10)   /*!< Channel Mode Select */
+#define TPMx_CnSC_ELSB                ((uint32_t)0x8)    /*!< Edge or Level Select */
+#define TPMx_CnSC_ELSA                ((uint32_t)0x4)    /*!< Edge or Level Select */
+#define TPMx_CnSC_DMA                 ((uint32_t)0x1)    /*!< DMA Enable */
 
-/**********  Bits definition for TPM_CnV register  **************/
-#define TPM_CnV_VAL_SHIFT            0                  /*!< Channel Value */
-#define TPM_CnV_VAL_MASK             ((uint32_t)((uint32_t)0xFFFF << TPM_CnV_VAL_SHIFT))
-#define TPM_CnV_VAL(x)               ((uint32_t)(((uint32_t)(x) << TPM_CnV_VAL_SHIFT) & TPM_CnV_VAL_MASK))
+/**********  Bits definition for TPMx_CnV register  **************/
+#define TPMx_CnV_VAL_SHIFT            0                  /*!< Channel Value */
+#define TPMx_CnV_VAL_MASK             ((uint32_t)((uint32_t)0xFFFF << TPMx_CnV_VAL_SHIFT))
+#define TPMx_CnV_VAL(x)               ((uint32_t)(((uint32_t)(x) << TPMx_CnV_VAL_SHIFT) & TPMx_CnV_VAL_MASK))
 
-/*********  Bits definition for TPM_STATUS register  ************/
-#define TPM_STATUS_TOF               ((uint32_t)0x100)  /*!< Timer Overflow Flag */
-#define TPM_STATUS_CH5F              ((uint32_t)0x20)   /*!< Channel 5 Flag */
-#define TPM_STATUS_CH4F              ((uint32_t)0x10)   /*!< Channel 4 Flag */
-#define TPM_STATUS_CH3F              ((uint32_t)0x8)    /*!< Channel 3 Flag */
-#define TPM_STATUS_CH2F              ((uint32_t)0x4)    /*!< Channel 2 Flag */
-#define TPM_STATUS_CH1F              ((uint32_t)0x2)    /*!< Channel 1 Flag */
-#define TPM_STATUS_CH0F              ((uint32_t)0x1)    /*!< Channel 0 Flag */
+/*********  Bits definition for TPMx_STATUS register  ************/
+#define TPMx_STATUS_TOF               ((uint32_t)0x100)  /*!< Timer Overflow Flag */
+#define TPMx_STATUS_CH5F              ((uint32_t)0x20)   /*!< Channel 5 Flag */
+#define TPMx_STATUS_CH4F              ((uint32_t)0x10)   /*!< Channel 4 Flag */
+#define TPMx_STATUS_CH3F              ((uint32_t)0x8)    /*!< Channel 3 Flag */
+#define TPMx_STATUS_CH2F              ((uint32_t)0x4)    /*!< Channel 2 Flag */
+#define TPMx_STATUS_CH1F              ((uint32_t)0x2)    /*!< Channel 1 Flag */
+#define TPMx_STATUS_CH0F              ((uint32_t)0x1)    /*!< Channel 0 Flag */
 
-/**********  Bits definition for TPM_CONF register  *************/
-#define TPM_CONF_TRGSEL_SHIFT        24                 /*!< Trigger Select */
-#define TPM_CONF_TRGSEL_MASK         ((uint32_t)((uint32_t)0xF << TPM_CONF_TRGSEL_SHIFT))
-#define TPM_CONF_TRGSEL(x)           ((uint32_t)(((uint32_t)(x) << TPM_CONF_TRGSEL_SHIFT) & TPM_CONF_TRGSEL_MASK))
-#define TPM_CONF_CROT                ((uint32_t)0x40000) /*!< Counter Reload On Trigger */
-#define TPM_CONF_CSOO                ((uint32_t)0x20000) /*!< Counter Stop On Overflow */
-#define TPM_CONF_CSOT                ((uint32_t)0x10000) /*!< Counter Start on Trigger */
-#define TPM_CONF_GTBEEN              ((uint32_t)0x200)  /*!< Global time base enable */
-#define TPM_CONF_DBGMODE_SHIFT       6                  /*!< Debug Mode */
-#define TPM_CONF_DBGMODE_MASK        ((uint32_t)((uint32_t)0x3 << TPM_CONF_DBGMODE_SHIFT))
-#define TPM_CONF_DBGMODE(x)          ((uint32_t)(((uint32_t)(x) << TPM_CONF_DBGMODE_SHIFT) & TPM_CONF_DBGMODE_MASK))
-#define TPM_CONF_DOZEEN              ((uint32_t)0x20)   /*!< Doze Enable */
+/**********  Bits definition for TPMx_CONF register  *************/
+#define TPMx_CONF_TRGSEL_SHIFT        24                 /*!< Trigger Select */
+#define TPMx_CONF_TRGSEL_MASK         ((uint32_t)((uint32_t)0xF << TPMx_CONF_TRGSEL_SHIFT))
+#define TPMx_CONF_TRGSEL(x)           ((uint32_t)(((uint32_t)(x) << TPMx_CONF_TRGSEL_SHIFT) & TPMx_CONF_TRGSEL_MASK))
+#define TPMx_CONF_CROT                ((uint32_t)0x40000) /*!< Counter Reload On Trigger */
+#define TPMx_CONF_CSOO                ((uint32_t)0x20000) /*!< Counter Stop On Overflow */
+#define TPMx_CONF_CSOT                ((uint32_t)0x10000) /*!< Counter Start on Trigger */
+#define TPMx_CONF_GTBEEN              ((uint32_t)0x200)  /*!< Global time base enable */
+#define TPMx_CONF_DBGMODE_SHIFT       6                  /*!< Debug Mode */
+#define TPMx_CONF_DBGMODE_MASK        ((uint32_t)((uint32_t)0x3 << TPMx_CONF_DBGMODE_SHIFT))
+#define TPMx_CONF_DBGMODE(x)          ((uint32_t)(((uint32_t)(x) << TPMx_CONF_DBGMODE_SHIFT) & TPMx_CONF_DBGMODE_MASK))
+#define TPMx_CONF_DOZEEN              ((uint32_t)0x20)   /*!< Doze Enable */
 
-#define TPM_CONF_DBGMODE_CONT        TPM_CONF_DBGMODE(3)
-#define TPM_CONF_DBGMODE_PAUSE       TPM_CONF_DBGMODE(0)
+#define TPMx_CONF_DBGMODE_CONT        TPMx_CONF_DBGMODE(3)
+#define TPMx_CONF_DBGMODE_PAUSE       TPMx_CONF_DBGMODE(0)
 
 /****************************************************************/
 /*                                                              */
