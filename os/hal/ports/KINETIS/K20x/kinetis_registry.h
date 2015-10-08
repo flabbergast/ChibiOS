@@ -74,11 +74,6 @@
 #define KINETIS_DMA_ERROR_IRQ_VECTOR Vector50
 
 /* EXT attributes.*/
-#define KINETIS_HAS_PORTA           TRUE
-#define KINETIS_HAS_PORTB           TRUE
-#define KINETIS_HAS_PORTC           TRUE
-#define KINETIS_HAS_PORTD           TRUE
-#define KINETIS_HAS_PORTE           TRUE
 #define KINETIS_PORTA_IRQ_VECTOR    VectorE0
 #define KINETIS_PORTB_IRQ_VECTOR    VectorE4
 #define KINETIS_PORTC_IRQ_VECTOR    VectorE8
@@ -176,11 +171,6 @@
 #define KINETIS_DMA_ERROR_IRQ_VECTOR Vector50
 
 /* EXT attributes.*/
-#define KINETIS_HAS_PORTA           TRUE
-#define KINETIS_HAS_PORTB           TRUE
-#define KINETIS_HAS_PORTC           TRUE
-#define KINETIS_HAS_PORTD           TRUE
-#define KINETIS_HAS_PORTE           TRUE
 #define KINETIS_PORTA_IRQ_VECTOR    Vector19C
 #define KINETIS_PORTB_IRQ_VECTOR    Vector1A0
 #define KINETIS_PORTC_IRQ_VECTOR    Vector1A4

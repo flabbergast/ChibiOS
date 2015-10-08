@@ -108,7 +108,7 @@ void _pal_lld_setpadmode(ioportid_t port,
 
   PORT_TypeDef *portcfg = NULL;
 
-  chDbgAssert(pad <= 31, "pal_lld_setpadmode() #1, invalid pad");
+  chDbgAssert(pad < PADS_PER_PORT, "pal_lld_setpadmode() #1, invalid pad");
 
   if (mode == PAL_MODE_OUTPUT_PUSHPULL)
     port->PDDR |= ((uint32_t) 1 << pad);

@@ -127,11 +127,6 @@
 #if defined(KL25) || defined(__DOXYGEN__)
 
 /* EXT attributes.*/
-#define KINETIS_HAS_PORTA           TRUE
-#define KINETIS_HAS_PORTB           FALSE
-#define KINETIS_HAS_PORTC           FALSE
-#define KINETIS_HAS_PORTD           TRUE
-#define KINETIS_HAS_PORTE           FALSE
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 #define KINETIS_PORTD_IRQ_VECTOR    VectorBC
 #define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
@@ -145,11 +140,6 @@
 #elif defined(KL26) /* defined(KL25) */
 
 /* EXT attributes.*/
-#define KINETIS_HAS_PORTA           TRUE
-#define KINETIS_HAS_PORTB           FALSE
-#define KINETIS_HAS_PORTC           TRUE
-#define KINETIS_HAS_PORTD           TRUE
-#define KINETIS_HAS_PORTE           FALSE
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 /* Common IRQ vector for PORTC and PORTD */
 #define KINETIS_PORTC_IRQ_VECTOR    VectorBC
@@ -166,11 +156,6 @@
 #elif defined(KL27) /* defined(KL26) */
 
 /* EXT attributes.*/
-#define KINETIS_HAS_PORTA           TRUE
-#define KINETIS_HAS_PORTB           FALSE
-#define KINETIS_HAS_PORTC           TRUE
-#define KINETIS_HAS_PORTD           TRUE
-#define KINETIS_HAS_PORTE           FALSE
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 /* Common IRQ vector for PORTC and PORTD */
 #define KINETIS_PORTC_IRQ_VECTOR    VectorBC
