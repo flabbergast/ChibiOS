@@ -450,7 +450,7 @@ int main(void) {
       shelltp = NULL;           /* Triggers spawning of a new shell.        */
     }
     chThdSleepMilliseconds(1000);
-    palTogglePad(IOPORT3, PORTC_TEENSY_PIN13);
+    palTogglePad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
   }
 
   return 0;

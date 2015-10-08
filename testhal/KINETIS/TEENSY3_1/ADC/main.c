@@ -24,7 +24,7 @@ static virtual_timer_t vt;
 static void ledoff(void *p) {
 
   (void)p;
-  palClearPad(IOPORT3, PORTC_TEENSY_PIN13);
+  palClearPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
 }
 
 static void adc_end_cb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
@@ -64,7 +64,7 @@ static void adc_end_cb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
   int32_t delta = (((vamb - v25) * 1000000) / m);
   int32_t temp = 25000 - delta;
 
-  palSetPad(IOPORT3, PORTC_TEENSY_PIN13);
+  palSetPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
   chSysLockFromISR();
   chVTResetI(&vt);
   if (temp < 19000) {

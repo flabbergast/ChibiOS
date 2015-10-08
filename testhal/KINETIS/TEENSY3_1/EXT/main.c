@@ -18,7 +18,7 @@
 static void ledoff(void *p) {
 
   (void)p;
-  palClearPad(GPIOC, PORTC_TEENSY_PIN13);
+  palClearPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
 }
 
 static virtual_timer_t vt;
@@ -27,7 +27,7 @@ static virtual_timer_t vt;
 static void extcb1(EXTDriver *extp, expchannel_t channel) {
   (void)extp;
   (void)channel;
-  palSetPad(GPIOC, PORTC_TEENSY_PIN13);
+  palSetPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
   chSysLockFromISR();
   chVTResetI(&vt);
   /* LED set to OFF after 500mS.*/

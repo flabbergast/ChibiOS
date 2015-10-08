@@ -18,15 +18,15 @@
 static void pwmpcb(PWMDriver *pwmp) {
 
   (void)pwmp;
-  palSetPad(IOPORT4, PORTD_TEENSY_PIN14);
-  palTogglePad(IOPORT3, PORTC_TEENSY_PIN15);
+  palSetPad(TEENSY_PIN14_IOPORT, TEENSY_PIN14);
+  palTogglePad(TEENSY_PIN15_IOPORT, TEENSY_PIN15);
 }
 
 static void pwmc1cb(PWMDriver *pwmp) {
 
   (void)pwmp;
-  //~ palSetPad(IOPORT3, PORTC_TEENSY_PIN13);
-  palClearPad(IOPORT4, PORTD_TEENSY_PIN14);
+  //~ palSetPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
+  palClearPad(TEENSY_PIN14_IOPORT, TEENSY_PIN14);
 }
 
 static PWMConfig pwmcfg = {
@@ -87,7 +87,7 @@ int main(void) {
    * Normal main() thread activity, in this demo it does nothing.
    */
   while (TRUE) {
-    palTogglePad(IOPORT3, PORTC_TEENSY_PIN13);
+    palTogglePad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
     chThdSleepMilliseconds(5);
   }
   return 0;

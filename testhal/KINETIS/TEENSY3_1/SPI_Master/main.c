@@ -24,7 +24,7 @@ static THD_FUNCTION(Thread1, arg) {
   chRegSetThreadName("Blinker");
   while (TRUE) {
     if (spiOk) {
-      palTogglePad(IOPORT3, PORTC_TEENSY_PIN13);
+      palTogglePad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
       spiOk=0;
     }
     chThdSleepMilliseconds(500);
@@ -34,14 +34,14 @@ static THD_FUNCTION(Thread1, arg) {
 static void spicb(SPIDriver *spip) {
 
   (void)spip;
-  //~ palSetPad(IOPORT3, PORTC_TEENSY_PIN13);
-  palTogglePad(IOPORT4, PORTD_TEENSY_PIN14);
+  //~ palSetPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
+  palTogglePad(TEENSY_PIN14_IOPORT, TEENSY_PIN14);
 }
 
 static SPIConfig spicfg = {
   spicb,
-  IOPORT3,
-  PORTC_TEENSY_PIN10,
+  TEENSY_PIN10_IOPORT,
+  TEENSY_PIN10,
   KINETIS_SPI_TAR_8BIT_SLOW
 };
 
@@ -82,6 +82,6 @@ int main(void) {
     spiUnselect(&SPID1);                  /* Slave Select de-assertion.       */
     spiReleaseBus(&SPID1);                /* Ownership release.               */
     chThdSleepMilliseconds(2000);
-    palTogglePad(IOPORT3, PORTC_TEENSY_PIN13);
+    palTogglePad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
   }
 }

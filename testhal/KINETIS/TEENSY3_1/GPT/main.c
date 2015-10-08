@@ -21,7 +21,7 @@
 static void gpt1cb(GPTDriver *gptp) {
 
   (void)gptp;
-  palTogglePad(GPIOC, PORTC_TEENSY_PIN13);
+  palTogglePad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
 }
 
 static const GPTConfig gpt1cfg = {

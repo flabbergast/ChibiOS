@@ -73,7 +73,7 @@ int main(void) {
 
   while (!chThdShouldTerminateX()) {
     chThdSleepMilliseconds(1000);
-    palTogglePad(IOPORT3, PORTC_TEENSY_PIN13);
+    palTogglePad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
     sdPut(&SD1,'B');
   }
 

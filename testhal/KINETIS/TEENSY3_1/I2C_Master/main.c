@@ -24,7 +24,7 @@ static THD_FUNCTION(Thread1, arg) {
   chRegSetThreadName("Blinker");
   while (TRUE) {
     if (i2cOk) {
-      palTogglePad(IOPORT3, PORTC_TEENSY_PIN13);
+      palTogglePad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
       i2cOk=0;
     }
     chThdSleepMilliseconds(500);
