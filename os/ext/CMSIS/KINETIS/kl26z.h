@@ -89,7 +89,7 @@ typedef struct
   __IO uint8_t  C4;
   __IO uint8_t  C5;
   __IO uint8_t  C6;
-  __IO uint8_t  S;
+  __I  uint8_t  S;
        uint8_t  RESERVED0[1];
   __IO uint8_t  SC;
        uint8_t  RESERVED1[1];
@@ -160,7 +160,7 @@ typedef struct
   __IO uint8_t  BDL;
   __IO uint8_t  C1;
   __IO uint8_t  C2;
-  __IO uint8_t  S1;
+  __I  uint8_t  S1;
   __IO uint8_t  S2;
   __IO uint8_t  C3;
   __IO uint8_t  D;
@@ -365,7 +365,49 @@ typedef struct {
 #define SIM_SOPT2_RTCCLKOUTSEL       ((uint32_t)0x00000010)    /*!< RTC clock out select */
 
 /*******  Bits definition for SIM_SOPT4 register  ************/
-// TODO: missing: SOPT4, SOPT5, SOPT7, SDID
+#define SIM_SOPT4_TPM2CLKSEL         ((uint32_t)0x04000000)    /*!< TPM2 External Clock Pin Select */
+#define SIM_SOPT4_TPM1CLKSEL         ((uint32_t)0x02000000)    /*!< TPM1 External Clock Pin Select */
+#define SIM_SOPT4_TPM0CLKSEL         ((uint32_t)0x01000000)    /*!< TPM0 External Clock Pin Select */
+#define SIM_SOPT4_TPM2CH0SRC         ((uint32_t)0x00100000)    /*!< TPM2 channel 0 input capture source select */
+#define SIM_SOPT4_TPM1CH0SRC_SHIFT   18                                                                                       /*!< TPM1 channel 0 input capture source select (shift) */
+#define SIM_SOPT4_TPM1CH0SRC_MASK    ((uint32_t)((uint32_t)0x03 << SIM_SOPT4_TPM1CH0SRC_SHIFT))                               /*!< TPM1 channel 0 input capture source select (mask) */
+#define SIM_SOPT4_TPM1CH0SRC(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT4_TPM1CH0SRC_SHIFT) & SIM_SOPT4_TPM1CH0SRC_MASK))  /*!< TPM1 channel 0 input capture source select */
+
+/*******  Bits definition for SIM_SOPT5 register  ************/
+#define SIM_SOPT5_UART2ODE           ((uint32_t)0x00040000)    /*!< UART2 Open Drain Enable */
+#define SIM_SOPT5_UART1ODE           ((uint32_t)0x00020000)    /*!< UART1 Open Drain Enable */
+#define SIM_SOPT5_UART0ODE           ((uint32_t)0x00010000)    /*!< UART0 Open Drain Enable */
+#define SIM_SOPT5_UART1RXSRC         ((uint32_t)0x00000040)    /*!< UART1 receive data source select */
+#define SIM_SOPT5_UART1TXSRC_SHIFT   4                                                                                        /*!< UART1 transmit data source select (shift) */
+#define SIM_SOPT5_UART1TXSRC_MASK    ((uint32_t)((uint32_t)0x03 << SIM_SOPT5_UART1TXSRC_SHIFT))                               /*!< UART1 transmit data source select (mask) */
+#define SIM_SOPT5_UART1TXSRC(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT5_UART1TXSRC_SHIFT) & SIM_SOPT5_UART1TXSRC_MASK))  /*!< UART1 transmit data source select */
+#define SIM_SOPT5_UART0RXSRC         ((uint32_t)0x00000040)    /*!< UART0 receive data source select */
+#define SIM_SOPT5_UART0TXSRC_SHIFT   0                                                                                        /*!< UART0 transmit data source select (shift) */
+#define SIM_SOPT5_UART0TXSRC_MASK    ((uint32_t)((uint32_t)0x03 << SIM_SOPT5_UART0TXSRC_SHIFT))                               /*!< UART0 transmit data source select (mask) */
+#define SIM_SOPT5_UART0TXSRC(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT5_UART0TXSRC_SHIFT) & SIM_SOPT5_UART0TXSRC_MASK))  /*!< UART0 transmit data source select */
+
+/*******  Bits definition for SIM_SOPT7 register  ************/
+#define SIM_SOPT7_ADC0ALTTRGEN       ((uint32_t)0x00000080)    /*!< ADC0 Alternate Trigger Enable */
+#define SIM_SOPT7_ADC0PRETRGSEL      ((uint32_t)0x00000010)    /*!< ADC0 Pretrigger Select */
+#define SIM_SOPT7_ADC0TRGSEL_SHIFT   0                                                                                        /*!< ADC0 Trigger Select (shift) */
+#define SIM_SOPT7_ADC0TRGSEL_MASK    ((uint32_t)((uint32_t)0x0F << SIM_SOPT7_ADC0TRGSEL_SHIFT))                               /*!< ADC0 Trigger Select (mask) */
+#define SIM_SOPT7_ADC0TRGSEL(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT7_ADC0TRGSEL_SHIFT) & SIM_SOPT7_ADC0TRGSEL_MASK))  /*!< ADC0 Trigger Select */
+
+/********  Bits definition for SIM_SDID register  ************/
+#define SIM_SDID_FAMID_SHIFT         28                                                      /*!< Kinetis family ID (shift) */
+#define SIM_SDID_FAMID_MASK          ((uint32_t)((uint32_t)0x0F << SIM_SDID_FAMID_SHIFT))    /*!< Kinetis family ID (mask) */
+#define SIM_SDID_SUBFAMID_SHIFT      24                                                      /*!< Kinetis Sub-Family ID (shift) */
+#define SIM_SDID_SUBFAMID_MASK       ((uint32_t)((uint32_t)0x0F << SIM_SDID_SUBFAMID_SHIFT)) /*!< Kinetis Sub-Family ID (mask) */
+#define SIM_SDID_SERIESID_SHIFT      20                                                      /*!< Kinetis Series ID (shift) */
+#define SIM_SDID_SERIESID_MASK       ((uint32_t)((uint32_t)0x0F << SIM_SDID_SERIESID_SHIFT)) /*!< Kinetis Series ID (mask) */
+#define SIM_SDID_SRAMSIZE_SHIFT      16                                                      /*!< System SRAM Size (shift) */
+#define SIM_SDID_SRAMSIZE_MASK       ((uint32_t)((uint32_t)0x0F << SIM_SDID_SRAMSIZE_SHIFT)) /*!< System SRAM Size (mask) */
+#define SIM_SDID_REVID_SHIFT         12                                                      /*!< Device revision number (shift) */
+#define SIM_SDID_REVID_MASK          ((uint32_t)((uint32_t)0x0F << SIM_SDID_REVID_SHIFT))    /*!< Device revision number (mask) */
+#define SIM_SDID_DIEID_SHIFT         7                                                       /*!< Device die number (shift) */
+#define SIM_SDID_DIEID_MASK          ((uint32_t)((uint32_t)0x1F << SIM_SDID_DIEID_SHIFT))    /*!< Device die number (mask) */
+#define SIM_SDID_PINID_SHIFT         0                                                       /*!< Pincount identification (shift) */
+#define SIM_SDID_PINID_MASK          ((uint32_t)((uint32_t)0x0F << SIM_SDID_PINID_SHIFT))    /*!< Pincount identification (mask) */
 
 /*******  Bits definition for SIM_SCGC4 register  ************/
 #define SIM_SCGC4_SPI1               ((uint32_t)0x00800000)    /*!< SPI1 Clock Gate Control */
@@ -399,7 +441,7 @@ typedef struct {
 #define SIM_SCGC6_DMAMUX             ((uint32_t)0x00000002)    /*!< DMA Mux Clock Gate Control */
 #define SIM_SCGC6_FTF                ((uint32_t)0x00000001)    /*!< Flash Memory Clock Gate Control */
 
-/*******  Bits definition for SIM_SCGC6 register  ************/
+/*******  Bits definition for SIM_SCGC7 register  ************/
 #define SIM_SCGC7_DMA                ((uint32_t)0x00000100)    /*!< DMA Clock Gate Control */
 
 /******  Bits definition for SIM_CLKDIV1 register  ***********/
@@ -410,7 +452,39 @@ typedef struct {
 #define SIM_CLKDIV1_OUTDIV4_MASK     ((uint32_t)((uint32_t)0x07 << SIM_CLKDIV1_OUTDIV4_SHIFT))                          	 /*!< Clock 4 output divider value (mask) */
 #define SIM_CLKDIV1_OUTDIV4(x)       ((uint32_t)(((uint32_t)(x) << SIM_CLKDIV1_OUTDIV4_SHIFT) & SIM_CLKDIV1_OUTDIV4_MASK))  /*!< Clock 4 output divider value */
 
-// TODO: Missing: FCFG1, FCFG2, UIDMH, UIDML, UIDL, COPC, SRVCOP
+/*******  Bits definition for SIM_FCFG1 register  ************/
+#define SIM_FCFG1_PFSIZE_SHIFT       24                                                       /*!< Program Flash Size (shift) */
+#define SIM_FCFG1_PFSIZE_MASK        ((uint32_t)((uint32_t)0x0F << SIM_FCFG1_PFSIZE_SHIFT))   /*!< Program Flash Size (mask) */
+#define SIM_FCFG1_FLASHDOZE          ((uint32_t)0x00000002)    /*!< Flash Doze */
+#define SIM_FCFG1_FLASHDIS           ((uint32_t)0x00000001)    /*!< Flash Disable */
+
+/*******  Bits definition for SIM_FCFG2 register  ************/
+#define SIM_FCFG2_MAXADDR0_SHIFT     24                                                        /*!< Max address lock (shift) */
+#define SIM_FCFG2_MAXADDR0_MASK      ((uint32_t)((uint32_t)0x7F << SIM_FCFG2_MAXADDR0_SHIFT))  /*!< Max address lock (mask) */
+#define SIM_FCFG2_MAXADDR1_SHIFT     16                                                        /*!< Max address lock (block 1) (shift) */
+#define SIM_FCFG2_MAXADDR1_MASK      ((uint32_t)((uint32_t)0x7F << SIM_FCFG2_MAXADDR1_SHIFT))  /*!< Max address lock (block 1) (mask) */
+
+/*******  Bits definition for SIM_UIDMH register  ************/
+#define SIM_UIDMH_UID_MASK           ((uint32_t)0x0000FFFF)   /*!< Unique Identification */
+
+/*******  Bits definition for SIM_UIDML register  ************/
+#define SIM_UIDML_UID_MASK           ((uint32_t)0xFFFFFFFF)   /*!< Unique Identification */
+
+/*******  Bits definition for SIM_UIDL register  *************/
+#define SIM_UIDL_UID_MASK            ((uint32_t)0xFFFFFFFF)   /*!< Unique Identification */
+
+/*******  Bits definition for SIM_COPC register  *************/
+#define SIM_COPC_COPT_SHIFT          2                                                                          /*!< COP Watchdog Timeout (shift) */
+#define SIM_COPC_COPT_MASK           ((uint32_t)((uint32_t)0x03 << SIM_COPC_COPT_SHIFT))                        /*!< COP Watchdog Timeout (mask) */
+#define SIM_COPC_COPT(x)             ((uint32_t)(((uint32_t)(x) << SIM_COPC_COPT_SHIFT) & SIM_COPC_COPT_MASK))  /*!< COP Watchdog Timeout */
+#define SIM_COPC_COPCLKS             ((uint32_t)0x00000002)   /*!< COP Clock Select */
+#define SIM_COPC_COPW                ((uint32_t)0x00000001)   /*!< COP windowed mode */
+
+/*******  Bits definition for SIM_SRVCOP register  ***********/
+#define SIM_SRVCOP_SRVCOP_SHIFT      0                                                                                  /*!< Sevice COP Register (shift) */
+#define SIM_SRVCOP_SRVCOP_MASK       ((uint32_t)((uint32_t)0xFF << SIM_SRVCOP_SRVCOP_SHIFT))                            /*!< Sevice COP Register (mask) */
+#define SIM_SRVCOP_SRVCOP(x)         ((uint32_t)(((uint32_t)(x) << SIM_SRVCOP_SRVCOP_SHIFT) & SIM_SRVCOP_SRVCOP_MASK))  /*!< Sevice COP Register */
+
 
 /****************************************************************/
 /*                                                              */
