@@ -28,8 +28,7 @@ MEMORY
   flash0   : org = 0x00000000, len = 256k
   flashcfg : org = 0x00000400, len = 0x10
   flash    : org = 0x00000410, len = 128k - 0x410
-/* I think this is wrong, should be 1FFF8000 */
-  ram      : org = 0x1FFFE000, len = 64k
+  ram      : org = 0x1FFF8000, len = 64k
 }
 
 __ram_start__           = ORIGIN(ram);
