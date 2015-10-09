@@ -281,6 +281,7 @@ typedef struct {
 #define GPIOC_BASE              ((uint32_t)0x400FF080)
 #define GPIOD_BASE              ((uint32_t)0x400FF0C0)
 #define GPIOE_BASE              ((uint32_t)0x400FF100)
+#define MCM_BASE                ((uint32_t)0xF0003000)
 
 /****************************************************************/
 /*                 Peripheral declaration                       */
@@ -323,6 +324,7 @@ typedef struct {
 #define GPIOC                   ((GPIO_TypeDef  *)   GPIOC_BASE)
 #define GPIOD                   ((GPIO_TypeDef  *)   GPIOD_BASE)
 #define GPIOE                   ((GPIO_TypeDef  *)   GPIOE_BASE)
+#define MCM                     ((MCM_TypeDef *)     MCM_BASE)
 
 /****************************************************************/
 /*           Peripheral Registers Bits Definition               */

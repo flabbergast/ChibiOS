@@ -303,6 +303,16 @@ typedef struct
   __IO uint8_t  FPROT0;
 } FTFA_TypeDef;
 
+typedef struct
+{
+       uint32_t RESERVED0[2];
+  __I  uint16_t PLASC;      // 0x08
+  __I  uint16_t PLAMC;      // 0x0A
+  __IO uint32_t PLACR;      // 0x0C
+       uint32_t RESERVED1[12];
+  __IO uint32_t CPO;        // 0x40
+} MCM_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -1020,5 +1030,31 @@ typedef struct
 #define FTFA_FOPT_LPBOOT_DIV4      ((uint8_t)0x01)
 #define FTFA_FOPT_LPBOOT_DIV2      ((uint8_t)0x10)
 #define FTFA_FOPT_LPBOOT_DIV1      ((uint8_t)0x11)
+
+/****************************************************************/
+/*                                                              */
+/*             Miscellaneous Control Module (MCM)               */
+/*                                                              */
+/****************************************************************/
+/**********  Bits definition for MCM_PLASC register  ************/
+#define MCM_PLASC_ASC_MASK         ((uint16_t)0xFF) /*!< Crossbar Switch (AXBS) Slave Configuration */
+
+/**********  Bits definition for MCM_PLAMC register  ************/
+#define MCM_PLASC_AMC_MASK         ((uint16_t)0xFF) /*!< Crossbar Switch (AXBS) Master Configuration */
+
+/**********  Bits definition for MCM_PLACR register  ************/
+#define MCM_PLACR_ESFC             ((uint32_t)0x00010000) /*!< Enable Stalling Flash Controller */
+#define MCM_PLACR_DFCS             ((uint32_t)0x00008000) /*!< Disable Flash Controller Speculation */
+#define MCM_PLACR_EFDS             ((uint32_t)0x00004000) /*!< Enable Flash Data Speculation */
+#define MCM_PLACR_DFCC             ((uint32_t)0x00002000) /*!< Disable Flash Controller Cache */
+#define MCM_PLACR_DFCIC            ((uint32_t)0x00001000) /*!< Disable Flash Controller Instruction Caching */
+#define MCM_PLACR_DFCDA            ((uint32_t)0x00000800) /*!< Disable Flash Controller Data Caching */
+#define MCM_PLACR_CFCC             ((uint32_t)0x00000400) /*!< Clear Flash Controller Cache */
+#define MCM_PLACR_ARB              ((uint32_t)0x00000200) /*!< Arbitration select */
+
+/**********  Bits definition for MCM_CPO register  **************/
+#define MCM_CPO_CPOWOI             ((uint32_t)0x00000004) /*!< Compute Operation wakeup on interrupt */
+#define MCM_CPO_CPOACK             ((uint32_t)0x00000002) /*!< Compute Operation acknowledge */
+#define MCM_CPO_CPOREQ             ((uint32_t)0x00000001) /*!< Compute Operation request */
 
 #endif /* _KL2xZ_H_ */
