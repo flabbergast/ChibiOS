@@ -814,7 +814,9 @@ typedef struct {
 #define I2Cx_F_MULT_MASK             ((uint8_t)0xC0)    /*!< Multiplier factor */
 #define I2Cx_F_MULT_SHIFT            6
 #define I2Cx_F_MULT(x)               ((uint8_t)(((uint8_t)(x) << I2Cx_F_MULT_SHIFT) & I2Cx_F_MULT_MASK)
-#define I2Cx_F_ICR                   ((uint8_t)0x3F)    /*!< Clock rate */
+#define I2Cx_F_ICR_MASK              ((uint8_t)0x3F)    /*!< Clock rate */
+#define I2Cx_F_ICR_SHIFT             0
+#define I2Cx_F_ICR(x)                ((uint8_t)(((uint8_t)(x) << I2Cx_F_ICR_SHIFT) & I2Cx_F_ICR_MASK)
 
 /***********  Bits definition for I2Cx_C1 register  *************/
 #define I2Cx_C1_IICEN                ((uint8_t)0x80)    /*!< I2C Enable */
@@ -969,6 +971,8 @@ typedef struct {
 #define UARTx_D_R2T2                 ((uint8_t)0x04)    /*!< Read receive data buffer 2 or write transmit data buffer 2 */
 #define UARTx_D_R1T1                 ((uint8_t)0x02)    /*!< Read receive data buffer 1 or write transmit data buffer 1 */
 #define UARTx_D_R0T0                 ((uint8_t)0x01)    /*!< Read receive data buffer 0 or write transmit data buffer 0 */
+#define UARTx_D_RT_SHIFT             0
+#define UARTx_D_RT_MASK              ((uint8_t)0xFF)
 
 /*********  Bits definition for UARTx_MA1 register  *************/
 #define UARTx_MA1_MA_SHIFT           0                  /*!< Match Address */
@@ -981,11 +985,11 @@ typedef struct {
 #define UARTx_MA2_MA(x)              ((uint8_t)(((uint8_t)(x) << UARTx_MA2_MA_SHIFT) & UARTx_MA2_MA_MASK))
 
 /*********  Bits definition for UARTx_C4 register  **************/
-#define UARTx_C4_MAEN1               ((uint8_t)0x80)    /*!< Match Address Mode Enable 1 */
 #define UARTx_C4_TDMAS               ((uint8_t)0x80)    /*!< Transmitter DMA Select */
+#define UARTx_C4_RDMAS               ((uint8_t)0x20)    /*!< Receiver Full DMA Select */
+#define UARTx_C4_MAEN1               ((uint8_t)0x80)    /*!< Match Address Mode Enable 1 */
 #define UARTx_C4_MAEN2               ((uint8_t)0x40)    /*!< Match Address Mode Enable 2 */
 #define UARTx_C4_M10                 ((uint8_t)0x20)    /*!< 10-bit Mode Select */
-#define UARTx_C4_RDMAS               ((uint8_t)0x80)    /*!< Receiver Full DMA Select */
 #define UARTx_C4_OSR_SHIFT           0                  /*!< Over Sampling Ratio */
 #define UARTx_C4_OSR_MASK            ((uint8_t)((uint8_t)0x1F << UARTx_C4_OSR_SHIFT))
 #define UARTx_C4_OSR(x)              ((uint8_t)(((uint8_t)(x) << UARTx_C4_OSR_SHIFT) & UARTx_C4_OSR_MASK))
@@ -1076,15 +1080,6 @@ typedef struct {
 /*                         USB OTG                              */
 /*                                                              */
 /****************************************************************/
-
-/********  Bits definition for USBx_STAT register  *************/
-#define USBx_STAT_ENDP_MASK         ((uint8_t)0xF0) /*!< Endpoint address mask*/
-#define USBx_STAT_ENDP_SHIFT        ((uint8_t)0x04) /*!< Endpoint address shift*/
-#define USBx_STAT_TX_MASK           ((uint8_t)0x08) /*!< Transmit indicator mask*/
-#define USBx_STAT_TX_SHIFT          ((uint8_t)0x03) /*!< Transmit indicator shift*/
-#define USBx_STAT_ODD_MASK          ((uint8_t)0x04) /*!< EVEN/ODD bank indicator mask*/
-#define USBx_STAT_ODD_SHIFT         ((uint8_t)0x02) /*!< EVEN/ODD bank indicator shift */
-
 /********  Bits definition for USBx_ISTAT register  *************/
 #define USBx_ISTAT_STALL             ((uint8_t)0x80) /*!< Stall interrupt */
 #define USBx_ISTAT_ATTACH            ((uint8_t)0x40) /*!< Attach interrupt */
@@ -1094,25 +1089,6 @@ typedef struct {
 #define USBx_ISTAT_SOFTOK            ((uint8_t)0x04) /*!< Received start of frame */
 #define USBx_ISTAT_ERROR             ((uint8_t)0x02) /*!< Error (must check ERRSTAT!) */
 #define USBx_ISTAT_USBRST            ((uint8_t)0x01) /*!< USB reset detected */
-
-/********  Bits definition for USBx_ERRSTAT register  ***********/
-#define USBx_ERRSTAT_BTSERR          ((uint8_t)0x80) /*!< Bit stuff error detected */
-#define USBx_ERRSTAT_DMAERR          ((uint8_t)0x20) /*!< DMA request was not given */
-#define USBx_ERRSTAT_BTOERR          ((uint8_t)0x10) /*!< BUS turnaround timeout error */
-#define USBx_ERRSTAT_DFN8            ((uint8_t)0x08) /*!< Received data not 8-bit sized */
-#define USBx_ERRSTAT_CRC16           ((uint8_t)0x04) /*!< Packet with CRC16 error */
-#define USBx_ERRSTAT_CRC5EOF         ((uint8_t)0x02) /*!< CRC5 (device) or EOF (host) error */
-#define USBx_ERRSTAT_PIDERR          ((uint8_t)0x01) /*!< PID check field fail */
-
-/******** Bits definition for USBx_CTL register *****************/
-#define USBx_CTL_JSTATE              ((uint8_t)0x80) /*!< Live USB differential receiver JSTATE signal */
-#define USBx_CTL_SE0                 ((uint8_t)0x40) /*!< Live USB single ended zero signal */
-#define USBx_CTL_TXSUSPENDTOKENBUS   ((uint8_t)0x20) /*!<  */
-#define USBx_CTL_RESET               ((uint8_t)0x10) /*!< Generates an USB reset signal (host mode) */
-#define USBx_CTL_HOSTMODEEN          ((uint8_t)0x08) /*!< Operate in Host mode */
-#define USBx_CTL_RESUME              ((uint8_t)0x04) /*!< Executes resume signaling */
-#define USBx_CTL_ODDRST              ((uint8_t)0x02) /*!< Reset all BDT ODD ping/pong bits */
-#define USBx_CTL_USBENSOFEN          ((uint8_t)0x01) /*!< USB Enable! */
 
 /******** Bits definition for USBx_INTEN register ***************/
 #define USBx_INTEN_STALLEN           ((uint8_t)0x80) /*!< STALL interrupt enable */
@@ -1124,6 +1100,33 @@ typedef struct {
 #define USBx_INTEN_ERROREN           ((uint8_t)0x02) /*!< ERROR interrupt enable */
 #define USBx_INTEN_USBRSTEN          ((uint8_t)0x01) /*!< USBRST interrupt enable */
 
+/********  Bits definition for USBx_ERRSTAT register  ***********/
+#define USBx_ERRSTAT_BTSERR          ((uint8_t)0x80) /*!< Bit stuff error detected */
+#define USBx_ERRSTAT_DMAERR          ((uint8_t)0x20) /*!< DMA request was not given */
+#define USBx_ERRSTAT_BTOERR          ((uint8_t)0x10) /*!< BUS turnaround timeout error */
+#define USBx_ERRSTAT_DFN8            ((uint8_t)0x08) /*!< Received data not 8-bit sized */
+#define USBx_ERRSTAT_CRC16           ((uint8_t)0x04) /*!< Packet with CRC16 error */
+#define USBx_ERRSTAT_CRC5EOF         ((uint8_t)0x02) /*!< CRC5 (device) or EOF (host) error */
+#define USBx_ERRSTAT_PIDERR          ((uint8_t)0x01) /*!< PID check field fail */
+
+/********  Bits definition for USBx_STAT register  *************/
+#define USBx_STAT_ENDP_MASK         ((uint8_t)0xF0) /*!< Endpoint address mask*/
+#define USBx_STAT_ENDP_SHIFT        ((uint8_t)0x04) /*!< Endpoint address shift*/
+#define USBx_STAT_TX_MASK           ((uint8_t)0x08) /*!< Transmit indicator mask*/
+#define USBx_STAT_TX_SHIFT          ((uint8_t)0x03) /*!< Transmit indicator shift*/
+#define USBx_STAT_ODD_MASK          ((uint8_t)0x04) /*!< EVEN/ODD bank indicator mask*/
+#define USBx_STAT_ODD_SHIFT         ((uint8_t)0x02) /*!< EVEN/ODD bank indicator shift */
+
+/******** Bits definition for USBx_CTL register *****************/
+#define USBx_CTL_JSTATE              ((uint8_t)0x80) /*!< Live USB differential receiver JSTATE signal */
+#define USBx_CTL_SE0                 ((uint8_t)0x40) /*!< Live USB single ended zero signal */
+#define USBx_CTL_TXSUSPENDTOKENBUS   ((uint8_t)0x20) /*!<  */
+#define USBx_CTL_RESET               ((uint8_t)0x10) /*!< Generates an USB reset signal (host mode) */
+#define USBx_CTL_HOSTMODEEN          ((uint8_t)0x08) /*!< Operate in Host mode */
+#define USBx_CTL_RESUME              ((uint8_t)0x04) /*!< Executes resume signaling */
+#define USBx_CTL_ODDRST              ((uint8_t)0x02) /*!< Reset all BDT ODD ping/pong bits */
+#define USBx_CTL_USBENSOFEN          ((uint8_t)0x01) /*!< USB Enable! */
+
 /******** Bits definition for USBx_ENDPTn register **************/
 #define USBx_ENDPTn_HOSTWOHUB        ((uint8_t)0x80)
 #define USBx_ENDPTn_RETRYDIS         ((uint8_t)0x40)
@@ -1133,18 +1136,18 @@ typedef struct {
 #define USBx_ENDPTn_EPSTALL          ((uint8_t)0x02) /*!< Endpoint is called and in STALL */
 #define USBx_ENDPTn_EPHSHK           ((uint8_t)0x01) /*!< Enable handshaking during transaction */
 
-/******** Bits definition for USBx_CTRL register ****************/
-#define USBx_CTRL_SUSP               ((uint8_t)0x80) /*!< USB transceiver in suspend state */
-#define USBx_CTRL_PDE                ((uint8_t)0x40) /*!< Enable weak pull-downs */
+/******** Bits definition for USBx_USBCTRL register *************/
+#define USBx_USBCTRL_SUSP            ((uint8_t)0x80) /*!< USB transceiver in suspend state */
+#define USBx_USBCTRL_PDE             ((uint8_t)0x40) /*!< Enable weak pull-downs */
+
+/******** Bits definition for USBx_CONTROL register *************/
+#define USBx_CONTROL_DPPULLUPNONOTG  ((uint8_t)0x10) /*!< Control pull-ups in device mode */
 
 /******** Bits definition for USBx_USBTRC0 register *************/
 #define USBx_USBTRC0_USBRESET        ((uint8_t)0x80) /*!< USB reset */
 #define USBx_USBTRC0_USBRESMEN       ((uint8_t)0x20) /*!< Asynchronous resume interrupt enable */
 #define USBx_USBTRC0_SYNC_DET        ((uint8_t)0x02) /*!< Synchronous USB interrupt detect */
 #define USBx_USBTRC0_USB_RESUME_INT  ((uint8_t)0x01) /*!< USB asynchronous interrupt */
-
-/******** Bits definition for USBx_CONTROL register *************/
-#define USBx_CONTROL_DPPULLUPNONOTG  ((uint8_t)0x10) /*!< Control pull-ups in device mode */
 
 /****************************************************************/
 /*                                                              */
