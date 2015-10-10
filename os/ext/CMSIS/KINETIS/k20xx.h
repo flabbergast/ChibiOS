@@ -461,6 +461,33 @@ typedef struct {
   __IO uint8_t  USBFRMADJUST;        // 0x114
 } USBOTG_TypeDef;
 
+typedef struct
+{
+  __IO uint8_t  FSTAT;
+  __IO uint8_t  FCNFG;
+  __I  uint8_t  FSEC;
+  __I  uint8_t  FOPT;
+  __IO uint8_t  FCCOB3;
+  __IO uint8_t  FCCOB2;
+  __IO uint8_t  FCCOB1;
+  __IO uint8_t  FCCOB0;
+  __IO uint8_t  FCCOB7;
+  __IO uint8_t  FCCOB6;
+  __IO uint8_t  FCCOB5;
+  __IO uint8_t  FCCOB4;
+  __IO uint8_t  FCCOBB;
+  __IO uint8_t  FCCOBA;
+  __IO uint8_t  FCCOB9;
+  __IO uint8_t  FCCOB8;
+  __IO uint8_t  FPROT3;
+  __IO uint8_t  FPROT2;
+  __IO uint8_t  FPROT1;
+  __IO uint8_t  FPROT0;
+       uint8_t  RESERVED0[2];
+  __IO uint8_t  FEPROT;
+  __IO uint8_t  FDPROT;
+} FTFL_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -2208,5 +2235,40 @@ typedef struct {
 
 /******** Bits definition for USBx_CONTROL register *************/
 #define USBx_CONTROL_DPPULLUPNONOTG  ((uint8_t)0x10) /*!< Control pull-ups in device mode */
+
+/****************************************************************/
+/*                                                              */
+/*                  Flash Memory Module (FTFL)                  */
+/*                                                              */
+/****************************************************************/
+/**********  Bits definition for FTFL_FSTAT register  ***********/
+#define FTFL_FSTAT_CCIF           ((uint8_t)0x80)  /*!< Command Complete Interrupt Flag */
+#define FTFL_FSTAT_RDCOLERR       ((uint8_t)0x40)  /*!< Flash Read Collision Error Flag */
+#define FTFL_FSTAT_ACCERR         ((uint8_t)0x20)  /*!< Flash Access Error Flag */
+#define FTFL_FSTAT_FPVIOL         ((uint8_t)0x10)  /*!< Flash Protection Violation Flag */
+#define FTFL_FSTAT_MGSTAT0        ((uint8_t)0x01)  /*!< Memory Controller Command Completion Status Flag */
+
+/**********  Bits definition for FTFL_FCNFG register  ***********/
+#define FTFL_FCNFG_CCIE           ((uint8_t)0x80)  /*!< Command Complete Interrupt Enable */
+#define FTFL_FCNFG_RDCOLLIE       ((uint8_t)0x40)  /*!< Read Collision Error Interrupt Enable */
+#define FTFL_FCNFG_ERSAREQ        ((uint8_t)0x20)  /*!< Erase All Request */
+#define FTFL_FCNFG_ERSSUSP        ((uint8_t)0x10)  /*!< Erase Suspend */
+#define FTFL_FCNFG_PFLSH          ((uint8_t)0x04)  /*!< Flash memory configuration */
+#define FTFL_FCNFG_RAMRDY         ((uint8_t)0x02)  /*!< RAM Ready */
+#define FTFL_FCNFG_EEERDY         ((uint8_t)0x01)  /*!< EEPROM backup data has been copied to the FlexRAM and is therefore available for read access */
+
+/**********  Bits definition for FTFL_FSEC register  ************/
+#define FTFL_FSEC_KEYEN_MASK      ((uint8_t)0xC0)  /*!< Backdoor Key Security Enable */
+#define FTFL_FSEC_MEEN_MASK       ((uint8_t)0x30)  /*!< Mass Erase Enable Bits */
+#define FTFL_FSEC_FSLACC_MASK     ((uint8_t)0x0C)  /*!< Freescale Failure Analysis Access Code */
+#define FTFL_FSEC_SEC_MASK        ((uint8_t)0x03)  /*!< Flash Security */
+#define FTFL_FSEC_KEYEN_ENABLED   ((uint8_t)0x80)
+#define FTFL_FSEC_MEEN_DISABLED   ((uint8_t)0x20)
+#define FTFL_FSEC_SEC_UNSECURE    ((uint8_t)0x02)
+
+/**********  Bits definition for FTFL_FOPT register  ************/
+#define FTFL_FOPT_NMI_DIS          ((uint8_t)0x04) /*!< Enables/disables control for the NMI function */
+#define FTFL_FOPT_EZPORT_DIS       ((uint8_t)0x02) /*!< EzPort operation */
+#define FTFL_FOPT_LPBOOT           ((uint8_t)0x01) /*!< Normal/low-power boot*/
 
 #endif

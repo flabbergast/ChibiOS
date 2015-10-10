@@ -170,6 +170,7 @@ typedef struct
 /****************************************************************/
 #define AXBS_BASE               ((uint32_t)0x40004000)  //
 #define DMA_BASE                ((uint32_t)0x40008000)
+#define FTFL_BASE               ((uint32_t)0x40020000)
 #define DMAMUX_BASE             ((uint32_t)0x40021000)
 #define FCAN0_BASE              ((uint32_t)0x40024000)  //
 #define SPI0_BASE               ((uint32_t)0x4002C000)
@@ -220,6 +221,7 @@ typedef struct
 /*                 Peripheral declaration                       */
 /****************************************************************/
 #define DMA                     ((DMA_TypeDef *)     DMA_BASE)
+#define FTFL                    ((FTFL_TypeDef *)    FTFL_BASE)
 #define DMAMUX                  ((DMAMUX_TypeDef *)  DMAMUX_BASE)
 #define PIT                     ((PIT_TypeDef *)     PIT_BASE)
 #define FTM0                    ((FTM_TypeDef *)     FTM0_BASE)
