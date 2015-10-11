@@ -324,15 +324,17 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
   uint8_t istat = USB0->ISTAT;
 
   OSAL_IRQ_PROLOGUE();
+
   /* 04 - Bit2 - Start Of Frame token received */
-  if(istat & USBx_INTEN_SOFTOKEN) {
+  if(istat & USBx_ISTAT_SOFTOK) {
 #if defined(DEBUG_USB)
     /* Note: this runs every 1ms, so a lot of output. */
     // usb_debug_putX('a');
 #endif /* DEBUG_USB */
     _usb_isr_invoke_sof_cb(usbp);
-    USB0->ISTAT = USBx_INTEN_SOFTOKEN;
+    USB0->ISTAT = USBx_ISTAT_SOFTOK;
   }
+
   /* 08 - Bit3 - Token processing completed */
   while(istat & USBx_ISTAT_TOKDNE) {
 #if defined(DEBUG_USB)
@@ -377,9 +379,7 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
 
         /* Call SETUP function (ChibiOS core), which sends back stuff */
         _usb_isr_invoke_setup_cb(usbp, ep);
-        /* Release Buffer */
-        epc->out_state->data_bank ^= DATA1;
-        bd->desc = BDT_DESC(epc->out_maxsize,epc->out_state->data_bank);
+        /* Buffer is released by the above callback. */
       } break;
       case BDT_PID_IN:                                                 // IN
       {
@@ -465,6 +465,7 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
     USB0->CTL = USBx_CTL_USBENSOFEN;
     istat = USB0->ISTAT;
   }
+
   /* 01 - Bit0 - Valid USB Reset received */
   if(istat & USBx_ISTAT_USBRST) {
 #if defined(DEBUG_USB)
@@ -483,6 +484,7 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
 #endif /* DEBUG_USB */
     USB0->ISTAT = USBx_ISTAT_STALL;
   }
+
   /* 02 - Bit1 - ERRSTAT condition triggered */
   if(istat & USBx_ISTAT_ERROR) {
 #if defined(DEBUG_USB)
@@ -492,6 +494,7 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
     USB0->ERRSTAT = err;
     USB0->ISTAT = USBx_ISTAT_ERROR;
   }
+
   /* 10 - Bit4 - Constant IDLE on USB bus detected */
   if(istat & USBx_ISTAT_SLEEP) {
 #if defined(DEBUG_USB)
@@ -590,7 +593,7 @@ void usb_lld_start(USBDriver *usbp) {
       SIM->SCGC4 |= SIM_SCGC4_USBOTG;  /* Enable Clock */
 
       /* Reset USB module, wait for completion */
-      USB0->USBTRC0 = USBx_USBTRC0_USBRESET;
+      USB0->USBTRC0 |= USBx_USBTRC0_USBRESET;
       while ((USB0->USBTRC0 & USBx_USBTRC0_USBRESET));
 
       /* Set BDT Address */
@@ -602,13 +605,14 @@ void usb_lld_start(USBDriver *usbp) {
       USB0->ISTAT = 0xFF;
       USB0->ERRSTAT = 0xFF;
       USB0->OTGISTAT = 0xFF;
+      USB0->USBTRC0 |= 0x40; //a hint was given that this is an undocumented interrupt bit
 
       /* Enable USB */
       USB0->CTL = USBx_CTL_ODDRST | USBx_CTL_USBENSOFEN;
       USB0->USBCTRL = 0;
 
       /* Enable reset interrupt */
-      USB0->INTEN = USBx_INTEN_USBRSTEN;
+      USB0->INTEN |= USBx_INTEN_USBRSTEN;
 
       /* Enable interrupt in NVIC */
       nvicEnableVector(USB_OTG_IRQn, KINETIS_USB_USB0_IRQ_PRIORITY);
