@@ -366,7 +366,9 @@ extern "C" {
                            iomode_t mode);
   uint8_t _pal_lld_readpad(ioportid_t port,
                            uint8_t pad);
-
+  void _pal_lld_writepad(ioportid_t port,
+                         uint8_t pad,
+                         uint8_t bit);
 #ifdef __cplusplus
 }
 #endif
