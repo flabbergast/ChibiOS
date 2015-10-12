@@ -499,11 +499,49 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
   /* 10 - Bit4 - Constant IDLE on USB bus detected */
   if(istat & USBx_ISTAT_SLEEP) {
 #if defined(DEBUG_USB)
-    usb_debug_putX('f');
+    usb_debug_putX('S');
 #endif /* DEBUG_USB */
+    /* This seems to fire a few times before the device is
+     * configured - need to ignore those occurences somehow. */
+    /* The other option would be to only activate INTEN_SLEEPEN
+     * on CONFIGURED event, but that would need to be done in
+     * user firmware. */
+    if(usbp->state == USB_ACTIVE) {
+      _usb_suspend(usbp);
+      /* Enable interrupt on resume */
+      USB0->INTEN |= USBx_INTEN_RESUMEEN;
+    }
+
+    // low-power version (check!):
+    // enable wakeup interrupt on resume USB signaling
+    //  (check that it was a wakeup int with USBx_USBTRC0_USB_RESUME_INT)
+    //? USB0->USBTRC0 |= USBx_USBTRC0_USBRESMEN
+    // suspend the USB module
+    //? USB0->USBCTRL |= USBx_USBCTRL_SUSP;
+
+    USB0->ISTAT = USBx_ISTAT_RESUME;
     USB0->ISTAT = USBx_ISTAT_SLEEP;
   }
-  /* 20 - Bit5 and 40 - 6 are not used */
+
+  /* 20 - Bit5 - Resume - Only allowed in sleep=suspend mode */
+  if(istat & USBx_ISTAT_RESUME) {
+#if defined(DEBUG_USB)
+    usb_debug_putX('R');
+#endif /* DEBUG_USB */
+    /* Disable interrupt on resume (should be disabled
+     * during normal operation according to datasheet). */
+    USB0->INTEN &= ~USBx_INTEN_RESUMEEN;
+
+    // low power version (check!):
+    // desuspend the USB module
+    //? USB0->USBCTRL &= ~USBx_USBCTRL_SUSP;
+    // maybe also
+    //? USB0->CTL = USBx_CTL_USBENSOFEN;
+    _usb_wakeup(usbp);
+    USB0->ISTAT = USBx_ISTAT_RESUME;
+  }
+
+  /* 40 - Bit6 - ATTACH - used */
 
   OSAL_IRQ_EPILOGUE();
 }
@@ -606,7 +644,7 @@ void usb_lld_start(USBDriver *usbp) {
       USB0->ISTAT = 0xFF;
       USB0->ERRSTAT = 0xFF;
       USB0->OTGISTAT = 0xFF;
-      // USB0->USBTRC0 |= 0x40; //a hint was given that this is an undocumented interrupt bit
+      USB0->USBTRC0 |= 0x40; //a hint was given that this is an undocumented interrupt bit
 
       /* Enable USB */
       USB0->CTL = USBx_CTL_ODDRST | USBx_CTL_USBENSOFEN;
