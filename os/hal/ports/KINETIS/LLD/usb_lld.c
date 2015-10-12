@@ -380,6 +380,8 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
         /* Call SETUP function (ChibiOS core), which sends back stuff */
         _usb_isr_invoke_setup_cb(usbp, ep);
         /* Buffer is released by the above callback. */
+        /* from Paul: "unfreeze the USB, now that we're ready" */
+        USB0->CTL = USBx_CTL_USBENSOFEN;
       } break;
       case BDT_PID_IN:                                                 // IN
       {
@@ -462,7 +464,6 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
         break;
     }
     USB0->ISTAT = USBx_ISTAT_TOKDNE;
-    USB0->CTL = USBx_CTL_USBENSOFEN;
     istat = USB0->ISTAT;
   }
 
@@ -472,11 +473,11 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
      usb_debug_putX('c');
 #endif /* DEBUG_USB */
     _usb_reset(usbp);
-    _usb_isr_invoke_event_cb(usbp, USB_EVENT_RESET);
     USB0->ISTAT = USBx_ISTAT_USBRST;
     OSAL_IRQ_EPILOGUE();
     return;
   }
+
   /* 80 - Bit7 - STALL handshake received */
   if(istat & USBx_ISTAT_STALL) {
 #if defined(DEBUG_USB)
@@ -605,7 +606,7 @@ void usb_lld_start(USBDriver *usbp) {
       USB0->ISTAT = 0xFF;
       USB0->ERRSTAT = 0xFF;
       USB0->OTGISTAT = 0xFF;
-      USB0->USBTRC0 |= 0x40; //a hint was given that this is an undocumented interrupt bit
+      // USB0->USBTRC0 |= 0x40; //a hint was given that this is an undocumented interrupt bit
 
       /* Enable USB */
       USB0->CTL = USBx_CTL_ODDRST | USBx_CTL_USBENSOFEN;
