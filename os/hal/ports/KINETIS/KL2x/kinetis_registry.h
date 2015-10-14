@@ -59,7 +59,7 @@
 
 /* ADC attributes.*/
 #define KINETIS_HAS_ADC0            TRUE
-#define KINETIS_ADC0_IRC_VECTOR     Vector7C
+#define KINETIS_ADC0_IRQ_VECTOR     Vector7C
 #define KINETIS_HAS_ADC1            FALSE
 
 /* DAC attributes.*/

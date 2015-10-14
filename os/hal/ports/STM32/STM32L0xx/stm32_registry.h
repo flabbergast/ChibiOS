@@ -141,8 +141,8 @@
 /* RTC attributes.*/
 #define STM32_HAS_RTC                       TRUE
 #define STM32_RTC_HAS_SUBSECONDS            TRUE
-#define STM32_RTC_HAS_PERIODIC_WAKEUPS      FALSE
-#define STM32_RTC_NUM_ALARMS                1
+#define STM32_RTC_HAS_PERIODIC_WAKEUPS      TRUE
+#define STM32_RTC_NUM_ALARMS                2
 #define STM32_RTC_HAS_INTERRUPTS            FALSE
 
 /* SDIO attributes.*/
@@ -230,7 +230,7 @@
                                              STM32_DMA_STREAM_ID_MSK(1, 6))
 #define STM32_USART2_RX_DMA_CHN             0x00440000
 #define STM32_USART2_TX_DMA_MSK             (STM32_DMA_STREAM_ID_MSK(1, 4) |\
-                                             STM32_DMA_STREAM_ID_MSK(1, 7)
+                                             STM32_DMA_STREAM_ID_MSK(1, 7))
 #define STM32_USART2_TX_DMA_CHN             0x04004000
 
 #define STM32_HAS_USART3                    FALSE
@@ -368,8 +368,8 @@
 /* RTC attributes.*/
 #define STM32_HAS_RTC                       TRUE
 #define STM32_RTC_HAS_SUBSECONDS            TRUE
-#define STM32_RTC_HAS_PERIODIC_WAKEUPS      FALSE
-#define STM32_RTC_NUM_ALARMS                1
+#define STM32_RTC_HAS_PERIODIC_WAKEUPS      TRUE
+#define STM32_RTC_NUM_ALARMS                2
 #define STM32_RTC_HAS_INTERRUPTS            FALSE
 
 /* SDIO attributes.*/
@@ -459,7 +459,7 @@
                                              STM32_DMA_STREAM_ID_MSK(1, 6))
 #define STM32_USART2_RX_DMA_CHN             0x00440000
 #define STM32_USART2_TX_DMA_MSK             (STM32_DMA_STREAM_ID_MSK(1, 4) |\
-                                             STM32_DMA_STREAM_ID_MSK(1, 7)
+                                             STM32_DMA_STREAM_ID_MSK(1, 7))
 #define STM32_USART2_TX_DMA_CHN             0x04004000
 
 #define STM32_HAS_USART3                    FALSE
@@ -603,8 +603,8 @@
 /* RTC attributes.*/
 #define STM32_HAS_RTC                       TRUE
 #define STM32_RTC_HAS_SUBSECONDS            TRUE
-#define STM32_RTC_HAS_PERIODIC_WAKEUPS      FALSE
-#define STM32_RTC_NUM_ALARMS                1
+#define STM32_RTC_HAS_PERIODIC_WAKEUPS      TRUE
+#define STM32_RTC_NUM_ALARMS                2
 #define STM32_RTC_HAS_INTERRUPTS            FALSE
 
 /* SDIO attributes.*/
@@ -694,7 +694,7 @@
                                              STM32_DMA_STREAM_ID_MSK(1, 6))
 #define STM32_USART2_RX_DMA_CHN             0x00440000
 #define STM32_USART2_TX_DMA_MSK             (STM32_DMA_STREAM_ID_MSK(1, 4) |\
-                                             STM32_DMA_STREAM_ID_MSK(1, 7)
+                                             STM32_DMA_STREAM_ID_MSK(1, 7))
 #define STM32_USART2_TX_DMA_CHN             0x04004000
 
 #define STM32_HAS_USART3                    FALSE

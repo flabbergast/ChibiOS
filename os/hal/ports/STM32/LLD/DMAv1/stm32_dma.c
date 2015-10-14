@@ -70,6 +70,11 @@
 #define STM32_DMA1_CH7_NUMBER       STM32_DMA1_CH4567_NUMBER
 #endif
 
+#if defined(STM32_DMA2_CH45_NUMBER)
+#define STM32_DMA2_CH4_NUMBER       STM32_DMA2_CH45_NUMBER
+#define STM32_DMA2_CH5_NUMBER       STM32_DMA2_CH45_NUMBER
+#endif
+
 #if STM32_DMA_SUPPORTS_CSELR == TRUE
 #define ADDR_DMA1_CSELR             &DMA1_CSELR->CSELR
 #define ADDR_DMA2_CSELR             &DMA2_CSELR->CSELR
@@ -103,8 +108,13 @@
 #define DMA2_CH1_CMASK              0x00000080U
 #define DMA2_CH2_CMASK              0x00000100U
 #define DMA2_CH3_CMASK              0x00000200U
+#if !defined(STM32_DMA2_CH45_NUMBER)
 #define DMA2_CH4_CMASK              0x00000400U
 #define DMA2_CH5_CMASK              0x00000800U
+#else
+#define DMA2_CH4_CMASK              0x00000C00U
+#define DMA2_CH5_CMASK              0x00000C00U
+#endif
 
 /*===========================================================================*/
 /* Driver exported variables.                                                */
@@ -125,16 +135,16 @@ const stm32_dma_stream_t _stm32_dma_streams[STM32_DMA_STREAMS] = {
   {DMA1_Channel5, DMA1_CH5_CMASK, &DMA1->IFCR, ADDR_DMA1_CSELR, 16,  4, STM32_DMA1_CH5_NUMBER},
 #if STM32_DMA1_NUM_CHANNELS > 5
   {DMA1_Channel6, DMA1_CH6_CMASK, &DMA1->IFCR, ADDR_DMA1_CSELR, 20,  5, STM32_DMA1_CH6_NUMBER},
-#endif
 #if STM32_DMA1_NUM_CHANNELS > 6
   {DMA1_Channel7, DMA1_CH7_CMASK, &DMA1->IFCR, ADDR_DMA1_CSELR, 24,  6, STM32_DMA1_CH7_NUMBER},
-#endif
 #if STM32_DMA2_NUM_CHANNELS > 0
-  {DMA2_Channel1, DMA2_CH1_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR,  0,  8, STM32_DMA2_CH1_NUMBER},
-  {DMA2_Channel2, DMA2_CH2_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR,  4,  9, STM32_DMA2_CH2_NUMBER},
-  {DMA2_Channel3, DMA2_CH3_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR,  8, 10, STM32_DMA2_CH3_NUMBER},
-  {DMA2_Channel4, DMA2_CH4_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR, 12, 11, STM32_DMA2_CH4_NUMBER},
-  {DMA2_Channel5, DMA2_CH5_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR, 16, 13, STM32_DMA2_CH5_NUMBER},
+  {DMA2_Channel1, DMA2_CH1_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR,  0,  7, STM32_DMA2_CH1_NUMBER},
+  {DMA2_Channel2, DMA2_CH2_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR,  4,  8, STM32_DMA2_CH2_NUMBER},
+  {DMA2_Channel3, DMA2_CH3_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR,  8,  9, STM32_DMA2_CH3_NUMBER},
+  {DMA2_Channel4, DMA2_CH4_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR, 12, 10, STM32_DMA2_CH4_NUMBER},
+  {DMA2_Channel5, DMA2_CH5_CMASK, &DMA2->IFCR, ADDR_DMA2_CSELR, 16, 11, STM32_DMA2_CH5_NUMBER},
+#endif
+#endif
 #endif
 };
 
@@ -253,7 +263,6 @@ OSAL_IRQ_HANDLER(STM32_DMA1_CH3_HANDLER) {
   OSAL_IRQ_EPILOGUE();
 }
 #endif /*!defined(STM32_DMA1_CH23_HANDLER) */
-
 
 /* Channels 4, 5, 6 and 7 are shared on some devices.*/
 #if defined(STM32_DMA1_CH4567_HANDLER)
@@ -438,6 +447,31 @@ OSAL_IRQ_HANDLER(STM32_DMA2_CH3_HANDLER) {
   OSAL_IRQ_EPILOGUE();
 }
 
+/* Channels 4 and 5 are shared on some devices.*/
+#if defined(STM32_DMA2_CH45_HANDLER)
+/**
+ * @brief   DMA2 streams 4 and 5 shared interrupt handler.
+ *
+ * @isr
+ */
+OSAL_IRQ_HANDLER(STM32_DMA2_CH4_HANDLER) {
+  uint32_t flags;
+
+  OSAL_IRQ_PROLOGUE();
+
+  flags = (DMA2->ISR >> 12) & STM32_DMA_ISR_MASK;
+  DMA2->IFCR = flags << 12;
+  if (dma_isr_redir[10].dma_func)
+    dma_isr_redir[10].dma_func(dma_isr_redir[10].dma_param, flags);
+
+  flags = (DMA2->ISR >> 16) & STM32_DMA_ISR_MASK;
+  DMA2->IFCR = flags << 16;
+  if (dma_isr_redir[11].dma_func)
+    dma_isr_redir[11].dma_func(dma_isr_redir[11].dma_param, flags);
+
+  OSAL_IRQ_EPILOGUE();
+}
+#else /* !defined(STM32_DMA2_CH45_HANDLER) */
 /**
  * @brief   DMA2 stream 4 shared interrupt handler.
  *
@@ -473,6 +507,7 @@ OSAL_IRQ_HANDLER(STM32_DMA2_CH5_HANDLER) {
 
   OSAL_IRQ_EPILOGUE();
 }
+#endif /* defined(STM32_DMA2_CH45_HANDLER) */
 #endif /* STM32_DMA2_NUM_CHANNELS > 0 */
 
 /*===========================================================================*/

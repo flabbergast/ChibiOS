@@ -144,8 +144,8 @@
 #define STM32_ETH_NUMBER                    61
 
 /* EXTI attributes.*/
-#define STM32_EXTI_NUM_LINES                23
-#define STM32_EXTI_IMR_MASK                 0
+#define STM32_EXTI_NUM_LINES                24
+#define STM32_EXTI_IMR_MASK                 0xFF000000
 
 /* GPIO attributes.*/
 #define STM32_HAS_GPIOA                     TRUE
