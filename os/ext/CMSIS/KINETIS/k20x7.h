@@ -183,7 +183,9 @@ typedef struct
 #define FTM1_BASE               ((uint32_t)0x40039000)
 #define ADC0_BASE               ((uint32_t)0x4003B000)
 #define RTC_BASE                ((uint32_t)0x4003D000)  //
+#define VBAT_BASE               ((uint32_t)0x4003E000)
 #define LPTMR0_BASE             ((uint32_t)0x40040000)
+#define SRF_BASE                ((uint32_t)0x40041000)
 #define TSI0_BASE               ((uint32_t)0x40045000)
 #define SIM_BASE                ((uint32_t)0x40047000)
 #define PORTA_BASE              ((uint32_t)0x40049000)
@@ -229,7 +231,9 @@ typedef struct
 #define FTM2                    ((FTM_TypeDef *)     FTM2_BASE)
 #define ADC0                    ((ADC_TypeDef *)     ADC0_BASE)
 #define ADC1                    ((ADC_TypeDef *)     ADC1_BASE)
+#define VBAT                    ((volatile uint8_t *)VBAT_BASE) /* 32 bytes */
 #define LPTMR0                  ((LPTMR_TypeDef *)   LPTMR0_BASE)
+#define SYSTEM_REGISTER_FILE    ((volatile uint8_t *)SRF_BASE) /* 32 bytes */
 #define TSI0                    ((TSI_TypeDef *)     TSI0_BASE)
 #define SIM                     ((SIM_TypeDef  *)    SIM_BASE)
 #define LLWU                    ((LLWU_TypeDef  *)   LLWU_BASE)
