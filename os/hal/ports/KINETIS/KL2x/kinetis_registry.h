@@ -121,6 +121,9 @@
 /* FTFA attributes.*/
 #define KINETIS_FTFA_IRQ_VECTOR     Vector54
 
+/* LPTMR attributes */
+#define KINETIS_LPTMR0_IRQ_VECTOR   VectorB0
+
 /*===========================================================================*/
 /* KL25                                                                      */
 /*===========================================================================*/

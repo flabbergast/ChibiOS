@@ -127,6 +127,9 @@
 #define KINETIS_HAS_USB             TRUE
 #define KINETIS_USB_IRQ_VECTOR      VectorCC
 
+/* LPTMR attributes.*/
+#define KINETIS_LPTMR0_IRQ_VECTOR   VectorDC
+
 /*===========================================================================*/
 /* K20x7                                                                     */
 /*===========================================================================*/
@@ -227,6 +230,9 @@
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE
 #define KINETIS_USB_IRQ_VECTOR      Vector164
+
+/* LPTMR attributes.*/
+#define KINETIS_LPTMR0_IRQ_VECTOR   Vector194
 
 #endif /* K20xY */
 

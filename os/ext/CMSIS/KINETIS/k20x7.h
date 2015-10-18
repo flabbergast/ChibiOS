@@ -107,7 +107,7 @@ typedef enum IRQn
   DAC0_IRQn                     = 81, // Vector184
   TSI_IRQn                      = 83, // Vector18C
   MCG_IRQn                      = 84, // Vector190
-  LowPowerTimer_IRQn            = 85, // Vector194
+  LPTMR0_IRQn                   = 85, // Vector194
   PINA_IRQn                     = 87, // Vector19C
   PINB_IRQn                     = 88, // Vector1A0
   PINC_IRQn                     = 89, // Vector1A4

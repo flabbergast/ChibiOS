@@ -83,7 +83,7 @@ typedef enum IRQn
   USBChargerDetect_IRQn         = 36, // VectorD0
   TSI_IRQn                      = 37, // VectorD4
   MCG_IRQn                      = 38, // VectorD8
-  LowPowerTimer_IRQn            = 39, // VectorDC
+  LPTMR0_IRQn                   = 39, // VectorDC
   PINA_IRQn                     = 40, // VectorE0
   PINB_IRQn                     = 41, // VectorE4
   PINC_IRQn                     = 42, // VectorE8
