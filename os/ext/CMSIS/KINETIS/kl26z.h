@@ -1079,77 +1079,70 @@ typedef struct {
 
 /****************************************************************/
 /*                                                              */
-/*                         USB OTG                              */
+/*               USB OTG: device dependent parts                */
 /*                                                              */
 /****************************************************************/
+/********  Bits definition for USBx_ADDINFO register  ***********/
+#define USBx_ADDINFO_IRQNUM_SHIFT    6                  /*!< Assigned Interrupt Request Number */
+#define USBx_ADDINFO_IRQNUM_MASK     ((uint8_t)((uint8_t)0x1F << USBx_ADDINFO_IRQNUM_SHIFT))
+
+/********  Bits definition for USBx_OTGISTAT register  **********/
+#define USBx_OTGISTAT_IDCHG          ((uint8_t)0x80)    /*!< Change in the ID Signal from the USB connector is sensed. */
+#define USBx_OTGISTAT_ONEMSEC        ((uint8_t)0x40)    /*!< Set when the 1 millisecond timer expires. */
+#define USBx_OTGISTAT_LINE_STATE_CHG ((uint8_t)0x20)    /*!< Set when the USB line state changes. */
+#define USBx_OTGISTAT_SESSVLDCHG     ((uint8_t)0x08)    /*!< Set when a change in VBUS is detected indicating a session valid or a session no longer valid. */
+#define USBx_OTGISTAT_B_SESS_CHG     ((uint8_t)0x04)    /*!< Set when a change in VBUS is detected on a B device. */
+#define USBx_OTGISTAT_AVBUSCHG       ((uint8_t)0x01)    /*!< Set when a change in VBUS is detected on an A device. */
+
+/********  Bits definition for USBx_OTGICR register  ************/
+#define USBx_OTGICR_IDEN             ((uint8_t)0x80)    /*!< ID Interrupt Enable */
+#define USBx_OTGICR_ONEMSECEN        ((uint8_t)0x40)    /*!< One Millisecond Interrupt Enable */
+#define USBx_OTGICR_LINESTATEEN      ((uint8_t)0x20)    /*!< Line State Change Interrupt Enable */
+#define USBx_OTGICR_SESSVLDEN        ((uint8_t)0x08)    /*!< Session Valid Interrupt Enable */
+#define USBx_OTGICR_BSESSEN          ((uint8_t)0x04)    /*!< B Session END Interrupt Enable */
+#define USBx_OTGICR_AVBUSEN          ((uint8_t)0x01)    /*!< A VBUS Valid Interrupt Enable */
+
+/********  Bits definition for USBx_OTGSTAT register  ***********/
+#define USBx_OTGSTAT_ID              ((uint8_t)0x80)    /*!< Indicates the current state of the ID pin on the USB connector */
+#define USBx_OTGSTAT_ONEMSECEN       ((uint8_t)0x40)    /*!< This bit is reserved for the 1ms count, but it is not useful to software. */
+#define USBx_OTGSTAT_LINESTATESTABLE ((uint8_t)0x20)    /*!< Indicates that the internal signals that control the LINE_STATE_CHG field of OTGISTAT are stable for at least 1 millisecond. */
+#define USBx_OTGSTAT_SESS_VLD        ((uint8_t)0x08)    /*!< Session Valid */
+#define USBx_OTGSTAT_BSESSEND        ((uint8_t)0x04)    /*!< B Session End */
+#define USBx_OTGSTAT_AVBUSVLD        ((uint8_t)0x01)    /*!< A VBUS Valid */
+
+/********  Bits definition for USBx_OTGCTL register  ************/
+#define USBx_OTGCTL_DPLOW            ((uint8_t)0x20)    /*!< D+ Data Line pull-down resistor enable */
+#define USBx_OTGCTL_DMLOW            ((uint8_t)0x10)    /*!< D– Data Line pull-down resistor enable */
+#define USBx_OTGCTL_OTGEN            ((uint8_t)0x04)    /*!< On-The-Go pullup/pulldown resistor enable */
+
 /********  Bits definition for USBx_ISTAT register  *************/
-#define USBx_ISTAT_STALL             ((uint8_t)0x80) /*!< Stall interrupt */
 #define USBx_ISTAT_ATTACH            ((uint8_t)0x40) /*!< Attach interrupt */
-#define USBx_ISTAT_RESUME            ((uint8_t)0x20) /*!< Signal remote wakeup on the bus */
-#define USBx_ISTAT_SLEEP             ((uint8_t)0x10) /*!< Detected bus idle for 3ms */
-#define USBx_ISTAT_TOKDNE            ((uint8_t)0x08) /*!< Completed processing of current token */
-#define USBx_ISTAT_SOFTOK            ((uint8_t)0x04) /*!< Received start of frame */
-#define USBx_ISTAT_ERROR             ((uint8_t)0x02) /*!< Error (must check ERRSTAT!) */
-#define USBx_ISTAT_USBRST            ((uint8_t)0x01) /*!< USB reset detected */
 
 /******** Bits definition for USBx_INTEN register ***************/
-#define USBx_INTEN_STALLEN           ((uint8_t)0x80) /*!< STALL interrupt enable */
 #define USBx_INTEN_ATTACHEN          ((uint8_t)0x40) /*!< ATTACH interrupt enable */
-#define USBx_INTEN_RESUMEEN          ((uint8_t)0x20) /*!< RESUME interrupt enable */
-#define USBx_INTEN_SLEEPEN           ((uint8_t)0x10) /*!< SLEEP interrupt enable */
-#define USBx_INTEN_TOKDNEEN          ((uint8_t)0x08) /*!< TOKDNE interrupt enable */
-#define USBx_INTEN_SOFTOKEN          ((uint8_t)0x04) /*!< SOFTOK interrupt enable */
-#define USBx_INTEN_ERROREN           ((uint8_t)0x02) /*!< ERROR interrupt enable */
-#define USBx_INTEN_USBRSTEN          ((uint8_t)0x01) /*!< USBRST interrupt enable */
-
-/********  Bits definition for USBx_ERRSTAT register  ***********/
-#define USBx_ERRSTAT_BTSERR          ((uint8_t)0x80) /*!< Bit stuff error detected */
-#define USBx_ERRSTAT_DMAERR          ((uint8_t)0x20) /*!< DMA request was not given */
-#define USBx_ERRSTAT_BTOERR          ((uint8_t)0x10) /*!< BUS turnaround timeout error */
-#define USBx_ERRSTAT_DFN8            ((uint8_t)0x08) /*!< Received data not 8-bit sized */
-#define USBx_ERRSTAT_CRC16           ((uint8_t)0x04) /*!< Packet with CRC16 error */
-#define USBx_ERRSTAT_CRC5EOF         ((uint8_t)0x02) /*!< CRC5 (device) or EOF (host) error */
-#define USBx_ERRSTAT_PIDERR          ((uint8_t)0x01) /*!< PID check field fail */
-
-/********  Bits definition for USBx_STAT register  *************/
-#define USBx_STAT_ENDP_MASK         ((uint8_t)0xF0) /*!< Endpoint address mask*/
-#define USBx_STAT_ENDP_SHIFT        ((uint8_t)0x04) /*!< Endpoint address shift*/
-#define USBx_STAT_TX_MASK           ((uint8_t)0x08) /*!< Transmit indicator mask*/
-#define USBx_STAT_TX_SHIFT          ((uint8_t)0x03) /*!< Transmit indicator shift*/
-#define USBx_STAT_ODD_MASK          ((uint8_t)0x04) /*!< EVEN/ODD bank indicator mask*/
-#define USBx_STAT_ODD_SHIFT         ((uint8_t)0x02) /*!< EVEN/ODD bank indicator shift */
 
 /******** Bits definition for USBx_CTL register *****************/
-#define USBx_CTL_JSTATE              ((uint8_t)0x80) /*!< Live USB differential receiver JSTATE signal */
-#define USBx_CTL_SE0                 ((uint8_t)0x40) /*!< Live USB single ended zero signal */
-#define USBx_CTL_TXSUSPENDTOKENBUS   ((uint8_t)0x20) /*!<  */
 #define USBx_CTL_RESET               ((uint8_t)0x10) /*!< Generates an USB reset signal (host mode) */
 #define USBx_CTL_HOSTMODEEN          ((uint8_t)0x08) /*!< Operate in Host mode */
 #define USBx_CTL_RESUME              ((uint8_t)0x04) /*!< Executes resume signaling */
-#define USBx_CTL_ODDRST              ((uint8_t)0x02) /*!< Reset all BDT ODD ping/pong bits */
-#define USBx_CTL_USBENSOFEN          ((uint8_t)0x01) /*!< USB Enable! */
+
+/******** Bits definition for USBx_ADDR register ****************/
+#define USBx_ADDR_LSEN               ((uint8_t)0x80) /*!< Low Speed Enable bit */
+
+/******** Bits definition for USBx_TOKEN register ***************/
+#define USBx_TOKEN_TOKENPID_SHIFT    4               /*!< Contains the token type executed by the USB module. */
+#define USBx_TOKEN_TOKENPID_MASK     ((uint8_t)((uint8_t)0x0F << USBx_TOKEN_TOKENPID_SHIFT))
+#define USBx_TOKEN_TOKENPID(x)       ((uint8_t)(((uint8_t)(x) << USBx_TOKEN_TOKENPID_SHIFT) & USBx_TOKEN_TOKENPID_MASK))
+#define USBx_TOKEN_TOKENENDPT_SHIFT  0               /*!< Holds the Endpoint address for the token command. */
+#define USBx_TOKEN_TOKENENDPT_MASK   ((uint8_t)((uint8_t)0x0F << USBx_TOKEN_TOKENENDPT_SHIFT))
+#define USBx_TOKEN_TOKENENDPT(x)     ((uint8_t)(((uint8_t)(x) << USBx_TOKEN_TOKENENDPT_SHIFT) & USBx_TOKEN_TOKENENDPT_MASK))
+#define USBx_TOKEN_TOKENPID_OUT      0x1
+#define USBx_TOKEN_TOKENPID_IN       0x9
+#define USBx_TOKEN_TOKENPID_SETUP    0xD
 
 /******** Bits definition for USBx_ENDPTn register **************/
 #define USBx_ENDPTn_HOSTWOHUB        ((uint8_t)0x80)
 #define USBx_ENDPTn_RETRYDIS         ((uint8_t)0x40)
-#define USBx_ENDPTn_EPCTLDIS         ((uint8_t)0x10) /*!< Disables control transfers */
-#define USBx_ENDPTn_EPRXEN           ((uint8_t)0x08) /*!< Enable RX transfers */
-#define USBx_ENDPTn_EPTXEN           ((uint8_t)0x04) /*!< Enable TX transfers */
-#define USBx_ENDPTn_EPSTALL          ((uint8_t)0x02) /*!< Endpoint is called and in STALL */
-#define USBx_ENDPTn_EPHSHK           ((uint8_t)0x01) /*!< Enable handshaking during transaction */
-
-/******** Bits definition for USBx_USBCTRL register *************/
-#define USBx_USBCTRL_SUSP            ((uint8_t)0x80) /*!< USB transceiver in suspend state */
-#define USBx_USBCTRL_PDE             ((uint8_t)0x40) /*!< Enable weak pull-downs */
-
-/******** Bits definition for USBx_CONTROL register *************/
-#define USBx_CONTROL_DPPULLUPNONOTG  ((uint8_t)0x10) /*!< Control pull-ups in device mode */
-
-/******** Bits definition for USBx_USBTRC0 register *************/
-#define USBx_USBTRC0_USBRESET        ((uint8_t)0x80) /*!< USB reset */
-#define USBx_USBTRC0_USBRESMEN       ((uint8_t)0x20) /*!< Asynchronous resume interrupt enable */
-#define USBx_USBTRC0_SYNC_DET        ((uint8_t)0x02) /*!< Synchronous USB interrupt detect */
-#define USBx_USBTRC0_USB_RESUME_INT  ((uint8_t)0x01) /*!< USB asynchronous interrupt */
 
 /****************************************************************/
 /*                                                              */
