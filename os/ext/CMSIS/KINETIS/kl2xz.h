@@ -24,6 +24,21 @@
 #define _KL2xZ_H_
 
 /*
+ * Include the correct MCU specific header
+ */
+#if defined(KL25) /* MKL25Z* MCUs */
+#include "kl25z.h"
+#elif defined(KL26) /* MKL26Z* MCUs */
+#include "kl26z.h"
+#elif defined(KL27Zxxx) /* MKL25Z128* and MKL27Z256* MCUs */
+#include "kl27zxxx.h"
+#elif defined(KL27Zxx) /* MKL25Z32* and MKL27Z64* MCUs */
+#include "kl27zxx.h"
+#else
+#error Please select a supported target MCU in your board.h
+#endif
+
+/*
  * ==============================================================
  * ---------- Interrupt Number Definition -----------------------
  * ==============================================================
@@ -36,17 +51,6 @@
  * ----------- Processor and Core Peripheral Section ------------------------
  * ==========================================================================
  */
-
-/**
- * @brief KL2x Interrupt Number Definition, according to the selected device
- *        in @ref Library_configuration_section
- */
-#define __MPU_PRESENT             0
-#define __VTOR_PRESENT            1
-#define __NVIC_PRIO_BITS          2
-#define __Vendor_SysTickConfig    0
-
-#include "core_cm0plus.h"        /* Cortex-M0+ processor and core peripherals */
 
 typedef struct
 {

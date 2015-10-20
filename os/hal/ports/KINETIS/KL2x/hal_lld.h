@@ -25,7 +25,7 @@
 #ifndef _HAL_LLD_H_
 #define _HAL_LLD_H_
 
-#include "kl25z.h"
+#include "kl2xz.h"
 #include "kinetis_registry.h"
 
 /*===========================================================================*/

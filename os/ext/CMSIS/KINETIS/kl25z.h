@@ -23,6 +23,15 @@
 #ifndef _KL25Z_H_
 #define _KL25Z_H_
 
+/**
+ * @brief KL2x Interrupt Number Definition, according to the selected device
+ *        in @ref Library_configuration_section
+ */
+#define __MPU_PRESENT             0
+#define __VTOR_PRESENT            1
+#define __NVIC_PRIO_BITS          2
+#define __Vendor_SysTickConfig    0
+
 /*
  * ==============================================================
  * ---------- Interrupt Number Definition -----------------------
@@ -73,13 +82,13 @@ typedef enum IRQn
   PIND_IRQn                     = 31,
 } IRQn_Type;
 
+#include "core_cm0plus.h"        /* Cortex-M0+ processor and core peripherals */
+
 /*
  * ==========================================================================
  * ----------- Processor and Core Peripheral Section ------------------------
  * ==========================================================================
  */
-
-#include "kl2xz.h"
 
 typedef struct
 {
