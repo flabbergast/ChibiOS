@@ -275,6 +275,32 @@ typedef struct {
   __IO uint8_t  CLK_RECOVER_INT_STATUS; // 0x15c
 } USBFS_TypeDef;
 
+typedef struct {
+  __IO uint32_t TCSR;                // 0x00
+       uint32_t RESERVED0[1];
+  __IO uint32_t TCR2;                // 0x08
+  __IO uint32_t TCR3;                // 0x0C
+  __IO uint32_t TCR4;                // 0x10
+  __IO uint32_t TCR5;                // 0x14
+       uint32_t RESERVED1[2];
+  __O  uint32_t TDR0;                // 0x20
+       uint32_t RESERVED2[15];
+  __IO uint32_t TMR;                 // 0x60
+       uint32_t RESERVED3[7];
+  __IO uint32_t RCSR;                // 0x80
+       uint32_t RESERVED4[1];
+  __IO uint32_t RCR2;                // 0x88
+  __IO uint32_t RCR3;                // 0x8C
+  __IO uint32_t RCR4;                // 0x90
+  __IO uint32_t RCR5;                // 0x94
+       uint32_t RESERVED5[2];
+  __I  uint32_t RDR0;                // 0xA0
+       uint32_t RESERVED6[15];
+  __IO uint32_t RMR;                 // 0xE0
+       uint32_t RESERVED7[7];
+  __IO uint32_t MCR;                 // 0x100
+} I2S_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -327,6 +353,7 @@ typedef struct {
 #define DMA                     ((DMA_TypeDef *)     DMA_BASE)
 #define FTFA                    ((FTFA_TypeDef *)    FTFA_BASE)
 #define DMAMUX                  ((DMAMUX_TypeDef *)  DMAMUX_BASE)
+#define I2S0                    ((I2S_TypeDef *)     I2S0_BASE)
 #define PIT                     ((PIT_TypeDef *)     PIT_BASE)
 #define TPM0                    ((TPM_TypeDef *)     LPTPM0_BASE)
 #define TPM1                    ((TPM_TypeDef *)     LPTPM1_BASE)
