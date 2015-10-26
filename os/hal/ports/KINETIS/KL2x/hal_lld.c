@@ -122,6 +122,7 @@ void kl2x_clock_init(void) {
             (KINETIS_MCG_FLL_DMX32 ? MCG_C4_DMX32 : 0);
 
 #elif KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEE
+  /* TODO: check this, for generality */
   /*
    * FLL Enabled External (FEE) MCG Mode
    * 24 MHz core, 12 MHz bus - using 32.768 kHz crystal with FLL.
@@ -201,11 +202,14 @@ void kl2x_clock_init(void) {
 
   /*
    * PLL Enabled External (PEE) MCG Mode
-   * 48 MHz core, 24 MHz bus - using a crystal (KINETIS_XTAL_FREQUENCY) with PLL.
-   * f_MCGOUTCLK = (OSCCLK / PLL_R) * M (a.k.a. KINETIS_PLLCLK_FREQUENCY)
-   *             =  {8 MHz} / 2 * 24 = {96 MHz}
+   * Uses external crystal (KINETIS_XTAL_FREQUENCY) with PLL.
+   * f_MCGOUTCLK = (OSCCLK / PLL_R) * M
+   *  OSCCLK = KINETIS_XTAL_FREQUENCY
    *  PLL_R is the reference divider selected by C5[PRDIV0]
+   *    (OSCCLK/PLL_R must be between 2 and 4 MHz)
    *  M is the multiplier selected by C6[VDIV0]
+   *
+   * Running from PLL, so assuming PLLCLK = MCGOUTCLK.
    *
    * Then the core/system and bus/flash clocks are divided:
    *   f_SYS = f_MCGOUTCLK / OUTDIV1 = 96 MHz / 2 = 48 MHz

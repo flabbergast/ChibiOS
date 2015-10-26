@@ -52,11 +52,6 @@
  */
 #define KINETIS_BUSCLK_MAX      24000000
 
-/**
- * @brief   Maximum flash clock (f_FLASH) frequency.
- */
-#define KINETIS_FLASHCLK_MAX    24000000L
-
 /* ADC attributes.*/
 #define KINETIS_HAS_ADC0            TRUE
 #define KINETIS_ADC0_IRQ_VECTOR     Vector7C
