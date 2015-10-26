@@ -44,6 +44,31 @@
 #define PLATFORM_NAME           "Kinetis"
 /** @} */
 
+#if KINETIS_HAS_MCG_LITE
+/* MCU only has MCG_Lite */
+
+/**
+ * @name    Internal clock sources
+ * @{
+ */
+#define KINETIS_HIRC            48000000  /**< High-frequency internal reference clock (USB recovery). */
+#define KINETIS_LIRC_8          8000000   /**< Low-frequency internal reference clock (faster). */
+#define KINETIS_LIRC_2          2000000   /**< Low-frequency internal reference clock (slower). */
+/** @} */
+
+/**
+ * @name    MCG modes of operation
+ * @{
+ */
+#define KINETIS_MCGLITE_MODE_LIRC8M 1   /**< Low frequency internal reference mode (8MHz). */
+#define KINETIS_MCGLITE_MODE_LIRC2M 2   /**< Low frequency internal reference mode (2MHz). */
+#define KINETIS_MCGLITE_MODE_HIRC   3   /**< High frequency internal reference mode (with optional USB recovery). */
+#define KINETIS_MCGLITE_MODE_EXT    4   /**< External reference mode. */
+/** @} */
+
+#else /* KINETIS_HAS_MCG_LITE */
+/* MCU has full blown MCG */
+
 /**
  * @name    Internal clock sources
  * @{
@@ -52,6 +77,10 @@
 #define KINETIS_IRCLK_S         32768       /**< Slow internal reference clock, factory trimmed. */
 /** @} */
 
+/**
+ * @name    MCG modes of operation
+ * @{
+ */
 #define KINETIS_MCG_MODE_FEI  1    /**< FLL Engaged Internal. */
 #define KINETIS_MCG_MODE_FEE  2    /**< FLL Engaged External. */
 #define KINETIS_MCG_MODE_FBI  3    /**< FLL Bypassed Internal. */
@@ -60,6 +89,9 @@
 #define KINETIS_MCG_MODE_PBE  6    /**< PLL Bypassed External. */
 #define KINETIS_MCG_MODE_BLPI 7    /**< Bypassed Low Power Internal. */
 #define KINETIS_MCG_MODE_BLPE 8    /**< Bypassed Low Power External. */
+/** @} */
+
+#endif /* KINETIS_HAS_MCG_LITE */
 
 /*===========================================================================*/
 /* Driver pre-compile time settings.                                         */
@@ -81,6 +113,10 @@
  */
 #if !defined(KINETIS_MCG_MODE) || defined(__DOXYGEN__)
 #define KINETIS_MCG_MODE            KINETIS_MCG_MODE_PEE
+#endif
+
+#if !defined(KINETIS_MCGLITE_MODE) || defined(__DOXYGEN__)
+#define KINETIS_MCGLITE_MODE        KINETIS_MCGLITE_MODE_HIRC
 #endif
 
 /**

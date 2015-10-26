@@ -132,6 +132,9 @@
 /* I2S attributes.*/
 #define KINETIS_HAS_I2S0            FALSE
 
+/* MCG attributes.*/
+#define KINETIS_HAS_MCG_LITE        FALSE
+
 /*===========================================================================*/
 /* KL26                                                                      */
 /*===========================================================================*/
@@ -148,6 +151,9 @@
 #define KINETIS_HAS_I2S0            TRUE
 #define KINETIS_I2S0_IRQ_VECTOR     Vector9C
 
+/* MCG attributes.*/
+#define KINETIS_HAS_MCG_LITE        FALSE
+
 /*===========================================================================*/
 /* KL27                                                                      */
 /*===========================================================================*/
@@ -163,6 +169,9 @@
 /* I2S attributes.*/
 #define KINETIS_HAS_I2S0            TRUE
 #define KINETIS_I2S0_IRQ_VECTOR     Vector9C
+
+/* MCG attributes.*/
+#define KINETIS_HAS_MCG_LITE        TRUE
 
 /* Note: on this device SERIAL0 and 1 are LPUART0 and 1,
  *       and SERIAL2 is alternatively FlexIO.

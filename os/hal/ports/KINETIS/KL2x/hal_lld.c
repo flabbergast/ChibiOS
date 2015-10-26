@@ -108,6 +108,87 @@ void kl2x_clock_init(void) {
   /* System oscillator drives 32 kHz clock (OSC32KSEL=0) */
   SIM->SOPT1 &= ~SIM_SOPT1_OSC32KSEL_MASK;
 
+#if KINETIS_HAS_MCG_LITE
+/* MCU only has MCG_Lite */
+
+#if KINETIS_MCGLITE_MODE == KINETIS_MCGLITE_MODE_LIRC8M
+  /* Out of reset, the MCU is in LIRC8M mode. */
+  /* Nothing to do. */
+
+#elif KINETIS_MCGLITE_MODE == KINETIS_MCGLITE_MODE_HIRC
+  /* Switching to HIRC mode, page 413 of the KL27Z manual. */
+
+  /* (1) Write 1b to MCG_MC[HIRCEN] to enable HIRC (optional). */
+  MCG->MC |= MCG_MC_HIRCEN;
+
+  /* (2) Write 00b to MCG_C1[CLKS] to select HIRC clock source. */
+  MCG->C1 = (MCG->C1 & ~MCG_C1_CLKS_MASK) | MCG_C1_CLKS_HIRC;
+
+  /* (3) Check MCG_S[CLKST] to confirm HIRC clock source is selected. */
+  while( (MCG->S & MCG_S_CLKST_MASK) != MCG_S_CLKST_HIRC )
+    ;
+
+#elif KINETIS_MCGLITE_MODE == KINETIS_MCGLITE_MODE_EXT
+  /* Assuming we have an external crystal, frequency
+   * specified with KINETIS_XTAL_FREQUENCY.
+   *
+   * Note: Except with 32768 kHz crystal (low-freq mode),
+   * external load capacitors and a feedback resistor
+   * are *required*. Additionally, a series resistor is
+   * required in the high-gain mode, and forbidden in
+   * the low-power mode.
+   * In this case, the internal caps can be configured
+   * via KINETIS_BOARD_OSCILLATOR_SETTING.
+   * (Page 420 of the KL27 manual.) */
+
+  /* EXTAL0 and XTAL0 */
+  PORTA->PCR[18] &= ~0x01000700; /* Set PA18 to analog (default) */
+  PORTA->PCR[19] &= ~0x01000700; /* Set PA19 to analog (default) */
+
+  /* Internal capacitors for crystal */
+#if defined(KINETIS_BOARD_OSCILLATOR_SETTING)
+  OSC0->CR = KINETIS_BOARD_OSCILLATOR_SETTING;
+#else /* KINETIS_BOARD_OSCILLATOR_SETTING */
+  /* Disable the internal capacitors */
+  OSC0->CR = 0;
+#endif /* KINETIS_BOARD_OSCILLATOR_SETTING */
+
+  /* Switching to EXT mode, page 413 of the KL27 manual. */
+
+  /* (1) Configure MCG_C2[EREFS0] for external clock source selection. */
+  #if KINETIS_XTAL_FREQUENCY == 32768 /* low range */
+  MCG->C2 = (MCG->C2 & ~MCG_C2_RANGE0_MASK) | MCG_C2_RANGE0(0);
+  #elif (KINETIS_XTAL_FREQUENCY >= 1000000 && \
+      KINETIS_XTAL_FREQUENCY <= 8000000) /* high range */
+  MCG->C2 = (MCG->C2 & ~MCG_C2_RANGE0_MASK) | MCG_C2_RANGE0(1);
+  #elif (KINETIS_XTAL_FREQUENCY > 8000000 && \
+         KINETIS_XTAL_FREQUENCY <= 32000000) /* very high range */
+  MCG->C2 = (MCG->C2 & ~MCG_C2_RANGE0_MASK) | MCG_C2_RANGE0(2);
+  #else /* KINETIS_XTAL_FREQUENCY == */
+  #error KINETIS_XTAL_FREQUENCY not in allowed range
+  #endif /* KINETIS_XTAL_FREQUENCY == */
+
+  #if defined(KINETIS_XTAL_HIGH_GAIN) && KINETIS_XTAL_HIGH_GAIN
+  MCG->C2 |= MCG_C2_HGO0;
+  #endif /* KINETIS_XTAL_HIGH_GAIN */
+
+  /* Oscillator requested. */
+  MCG->C2 |= MCG_C2_EREFS0;
+
+  /* (2) Write 10b to MCG_C1[CLKS] to select external clock source. */
+  MCG->C1 = (MCG->C1 & ~MCG_C1_CLKS_MASK) | MCG_C1_CLKS_EXT;
+
+  /* (3) Check MCG_S[CLKST] to confirm external clock source is selected. */
+  while( (MCG->S & MCG_S_CLKST_MASK) != MCG_S_CLKST_EXT )
+    ;
+
+#else /* KINETIS_MCGLITE_MODE */
+#error Unimplemented KINETIS_MCGLITE_MODE
+#endif /* KINETIS_MCGLITE_MODE */
+
+#else /* KINETIS_HAS_MCG_LITE */
+/* MCU has full blown MCG */
+
 #if KINETIS_MCG_MODE == KINETIS_MCG_MODE_FEI
   /* This is the default mode at reset. */
   /* The MCGOUTCLK is divided by OUTDIV1 and OUTDIV4:
@@ -342,6 +423,8 @@ void kl2x_clock_init(void) {
 #else /* KINETIS_MCG_MODE != KINETIS_MCG_MODE_PEE */
 #error Unimplemented KINETIS_MCG_MODE
 #endif /* KINETIS_MCG_MODE != KINETIS_MCG_MODE_PEE */
+
+#endif /* KINETIS_HAS_MCG_LITE */
 
 #endif /* !KINETIS_NO_INIT */
 }
