@@ -155,9 +155,13 @@
 #define KINETIS_HAS_MCG_LITE        FALSE
 
 /*===========================================================================*/
-/* KL27                                                                      */
+/* KL27Zxxx                                                                  */
 /*===========================================================================*/
-#elif defined(KL27) /* defined(KL26) */
+#elif defined(KL27Zxxx) /* defined(KL26) */
+
+#if !defined(KL27)
+#define KL27
+#endif
 
 /* EXT attributes.*/
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
@@ -177,7 +181,7 @@
  *       and SERIAL2 is alternatively FlexIO.
  */
 
-#else /* defined(KL27) */
+#else /* defined(KL27Zxxx) */
 #error MCU type not described in kinetis_registry
 #endif /* KL2Y */
 

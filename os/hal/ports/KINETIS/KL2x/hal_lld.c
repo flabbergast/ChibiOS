@@ -56,8 +56,33 @@ const uint8_t _cfm[0x10] = {
   0xFF,  /* NV_FPROT1: PROT=0xFF */
   0xFF,  /* NV_FPROT0: PROT=0xFF */
   0x7E,  /* NV_FSEC: KEYEN=1,MEEN=3,FSLACC=3,SEC=2 */
+#if defined(KL27)
+  /* Boot sequence, page 88 of manual:
+   * - If the NMI/BOOTCFG0 input is high or the NMI function is disabled in FTFA_FOPT, the CPU begins execution at the PC location.
+   * - If the NMI/BOOTCFG0 input is low, the NMI function is enabled in FTFA_FOPT, and FTFA_FOPT[BOOTPIN_OPT] = 1, this results in an NMI interrupt. The processor executes an Exception Entry and reads the NMI interrupt handler address from vector-table offset 8. The CPU begins execution at the NMI interrupt handler.
+   * - When FTFA_FOPT[BOOTPIN_OPT] = 0, it forces boot from ROM if NMI/BOOTCFG0 pin set to 0.
+   *
+   * Observed behaviour:
+   * - when BOOTPIN_OPT=0, BOOTSRC_SEL still matters:
+   *   - if 0b11 (from ROM), it still boots from ROM, even if BOOTCFG0 pin
+   *     is high/floating, but leaves ROM and runs user app after
+   *     5 seconds delay.
+   *   - if 0b00 (from FLASH), reset/powerup jumps to user app unless
+   *     BOOTCFG0 pin is asserted.
+   * - in any case, reset when in bootloader induces the 5 second delay
+   *   before starting the user app.
+   * 
+   */
+  0x3D,  /* NV_FOPT: bit7-6/BOOTSRC_SEL=0b00 (11=from ROM; 00=from FLASH)
+                     bit5/FAST_INIT=1, bit4/LPBOOT1=1,
+                     bit3/RESET_PIN_CFG=1, bit2/NMI_DIS=1,
+                     bit1/BOOTPIN_OPT=0, bit0/LPBOOT0=1 */
+         /* BOOTPIN_OPT: 1=boot depends on BOOTSRC_SEL
+                         0=boot samples BOOTCFG0=NMI pin */
+#else /* not KL27 */
   0xFF,  /* NV_FOPT: ??=1,??=1,FAST_INIT=1,LPBOOT1=1,RESET_PIN_CFG=1,
                       NMI_DIS=1,EZPORT_DIS=1,LPBOOT0=1 */
+#endif /* KL27 */
   0xFF,
   0xFF
 };
@@ -113,7 +138,23 @@ void kl2x_clock_init(void) {
 
 #if KINETIS_MCGLITE_MODE == KINETIS_MCGLITE_MODE_LIRC8M
   /* Out of reset, the MCU is in LIRC8M mode. */
-  /* Nothing to do. */
+  /* Except when coming out of the ROM bootloader, then
+   * the MCU is in HIRC mode; so better set it explicitly here. */
+
+  /* Switching to LIRC8M mode, page 414 of the KL27Z manual. */
+
+  /* (1) Write 1b to MCG_C2[IRCS] to select LIRC 8M. */
+  MCG->C2 |= MCG_C2_IRCS;
+
+  /* (2) Write 1b to MCG_C1[IRCLKEN] to enable LIRC clock (optional). */
+  MCG->C1 |= MCG_C1_IRCLKEN;
+
+  /* (2) Write 01b to MCG_C1[CLKS] to select LIRC clock source. */
+  MCG->C1 = (MCG->C1 & ~MCG_C1_CLKS_MASK) | MCG_C1_CLKS_LIRC;
+
+  /* (3) Check MCG_S[CLKST] to confirm LIRC clock source is selected. */
+  while( (MCG->S & MCG_S_CLKST_MASK) != MCG_S_CLKST_LIRC )
+    ;
 
 #elif KINETIS_MCGLITE_MODE == KINETIS_MCGLITE_MODE_HIRC
   /* Switching to HIRC mode, page 413 of the KL27Z manual. */

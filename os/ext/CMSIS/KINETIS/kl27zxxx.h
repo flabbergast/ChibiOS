@@ -98,7 +98,7 @@ typedef struct
   __I  uint8_t  S;
        uint8_t  RESERVED1[1];
   __IO uint8_t  SC;
-       uint8_t  RESERVED1[15];
+       uint8_t  RESERVED2[15];
   __IO uint8_t  MC;
 } MCGLite_TypeDef;
 
