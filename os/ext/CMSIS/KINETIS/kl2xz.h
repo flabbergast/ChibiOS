@@ -231,14 +231,9 @@ typedef struct
   USBOTG_TypeDef;
 */
 
-typedef struct
-{
-  __I  uint8_t  SRS0;
-  __I  uint8_t  SRS1;
-       uint8_t  RESERVED0[2];
-  __IO uint8_t  RPFC;
-  __IO uint8_t  RPFW;
-} RCM_TypeDef;
+/* Device dependent
+  RCM_TypeDef;
+*/
 
 typedef struct
 {
@@ -837,10 +832,9 @@ typedef struct
 #define USBx_USBTRC0_SYNC_DET        ((uint8_t)0x02) /*!< Synchronous USB interrupt detect */
 #define USBx_USBTRC0_USB_RESUME_INT  ((uint8_t)0x01) /*!< USB asynchronous interrupt */
 
-
 /****************************************************************/
 /*                                                              */
-/*                 Reset Control Module (RCM)                   */
+/*    Reset Control Module (RCM): Device independent parts      */
 /*                                                              */
 /****************************************************************/
 /**********  Bits definition for RCM_SRS0 register  *************/

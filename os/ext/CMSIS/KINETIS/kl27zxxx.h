@@ -275,6 +275,19 @@ typedef struct {
   __IO uint8_t  CLK_RECOVER_INT_STATUS; // 0x15c
 } USBFS_TypeDef;
 
+typedef struct
+{
+  __I  uint8_t  SRS0;
+  __I  uint8_t  SRS1;
+       uint8_t  RESERVED0[2];
+  __IO uint8_t  RPFC;
+  __IO uint8_t  RPFW;
+  __IO uint8_t  FM;
+  __IO uint8_t  MR;
+  __IO uint8_t  SSRS0;
+  __IO uint8_t  SSRS1;
+} RCM_TypeDef;
+
 typedef struct {
   __IO uint32_t TCSR;                // 0x00
        uint32_t RESERVED0[1];
@@ -1178,8 +1191,33 @@ typedef struct {
 /*                 Reset Control Module (RCM)                   */
 /*                                                              */
 /****************************************************************/
+/* Device independent parts, plus: */
+/*********** Bits definition for RCM_FM register ****************/
+#define RCM_FM_FORCEROM_SHIFT         1                  /*!< Force ROM Boot */
+#define RCM_FM_FORCEROM_MASK          ((uint8_t)((uint8_t)0x03 << RCM_FM_FORCEROM_SHIFT))
+#define RCM_FM_FORCEROM(x)            ((uint8_t)(((uint8_t)(x) << RCM_FM_FORCEROM_SHIFT) & RCM_FM_FORCEROM_MASK))
 
-/* Device independent */
+/*********** Bits definition for RCM_MR register ****************/
+#define RCM_MR_BOOTROM_SHIFT          1                  /*!< Boot ROM Configuration */
+#define RCM_MR_BOOTROM_MASK           ((uint8_t)((uint8_t)0x03 << RCM_MR_BOOTROM_SHIFT))
+#define RCM_MR_BOOTROM(x)             ((uint8_t)(((uint8_t)(x) << RCM_MR_BOOTROM_SHIFT) & RCM_MR_BOOTROM_MASK))
+#define RCM_MR_BOOTROM_FROM_FLASH         RCM_MR_BOOTROM(0)
+#define RCM_MR_BOOTROM_FROM_ROM_BOOTCFG0  RCM_MR_BOOTROM(1)
+#define RCM_MR_BOOTROM_FROM_ROM_FOPT      RCM_MR_BOOTROM(2)
+#define RCM_MR_BOOTROM_FROM_ROM_BOTH      RCM_MR_BOOTROM(3)
+
+/**********  Bits definition for RCM_SSRS0 register  ************/
+#define RCM_SSRS0_SPOR                ((uint8_t)0x80)   /*!< Sticky Power-On Reset */
+#define RCM_SSRS0_SPIN                ((uint8_t)0x40)   /*!< Sticky External Reset Pin */
+#define RCM_SSRS0_SWDOG               ((uint8_t)0x20)   /*!< Sticky Watchdog */
+#define RCM_SSRS0_SLVD                ((uint8_t)0x02)   /*!< Sticky Low-Voltage Detect Reset */
+#define RCM_SSRS0_SWAKEUP             ((uint8_t)0x01)   /*!< Sticky Low Leakage Wakeup Reset */
+
+/**********  Bits definition for RCM_SSRS1 register  *************/
+#define RCM_SSRS1_SSACKERR            ((uint8_t)0x20)   /*!< Sticky Stop Mode Acknowledge Error Reset */
+#define RCM_SSRS1_SMDM_AP             ((uint8_t)0x08)   /*!< Sticky MDM-AP System Reset Request */
+#define RCM_SSRS1_SSW                 ((uint8_t)0x04)   /*!< Sticky Software */
+#define RCM_SSRS1_SLOCKUP             ((uint8_t)0x02)   /*!< Sticky Core Lockup */
 
 /****************************************************************/
 /*                                                              */

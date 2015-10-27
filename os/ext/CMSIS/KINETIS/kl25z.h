@@ -249,6 +249,15 @@ typedef struct {
   __IO uint8_t  USBFRMADJUST;        // 0x114
 } USBOTG_TypeDef;
 
+typedef struct
+{
+  __I  uint8_t  SRS0;
+  __I  uint8_t  SRS1;
+       uint8_t  RESERVED0[2];
+  __IO uint8_t  RPFC;
+  __IO uint8_t  RPFW;
+} RCM_TypeDef;
+
 /****************************************************************/
 /*                  Peripheral memory map                       */
 /****************************************************************/
@@ -1117,7 +1126,7 @@ typedef struct {
 /*                                                              */
 /****************************************************************/
 
-/* Device independent */
+/* Only device independent parts */
 
 /****************************************************************/
 /*                                                              */
