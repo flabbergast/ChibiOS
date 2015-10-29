@@ -90,7 +90,6 @@
 #define KINETIS_HAS_SERIAL2         TRUE
 #define KINETIS_SERIAL2_IRQ_VECTOR  Vector78
 #define KINETIS_HAS_SERIAL_ERROR_IRQ FALSE
-#define KINETIS_SERIAL0_HAS_VLPS    TRUE
 
 /* SPI attributes.*/
 #define KINETIS_HAS_SPI0            TRUE
@@ -135,6 +134,11 @@
 /* MCG attributes.*/
 #define KINETIS_HAS_MCG_LITE        FALSE
 
+/* Serial attributes */
+#define KINETIS_SERIAL0_IS_UARTLP   TRUE
+#define KINETIS_SERIAL0_IS_LPUART   FALSE
+#define KINETIS_SERIAL1_IS_LPUART   FALSE
+
 /*===========================================================================*/
 /* KL26                                                                      */
 /*===========================================================================*/
@@ -153,6 +157,11 @@
 
 /* MCG attributes.*/
 #define KINETIS_HAS_MCG_LITE        FALSE
+
+/* Serial attributes */
+#define KINETIS_SERIAL0_IS_UARTLP   TRUE
+#define KINETIS_SERIAL0_IS_LPUART   FALSE
+#define KINETIS_SERIAL1_IS_LPUART   FALSE
 
 /*===========================================================================*/
 /* KL27Zxxx                                                                  */
@@ -177,9 +186,11 @@
 /* MCG attributes.*/
 #define KINETIS_HAS_MCG_LITE        TRUE
 
-/* Note: on this device SERIAL0 and 1 are LPUART0 and 1,
- *       and SERIAL2 is alternatively FlexIO.
- */
+/* Note: on this device, SERIAL2 is alternatively FlexIO. */
+/* Serial attributes */
+#define KINETIS_SERIAL0_IS_UARTLP   FALSE
+#define KINETIS_SERIAL0_IS_LPUART   TRUE
+#define KINETIS_SERIAL1_IS_LPUART   TRUE
 
 #else /* defined(KL27Zxxx) */
 #error MCU type not described in kinetis_registry
