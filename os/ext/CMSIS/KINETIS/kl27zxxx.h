@@ -433,18 +433,18 @@ typedef struct {
 #define SIM_SOPT1CFG_URWE            ((uint32_t)0x01000000)    /*!< USB voltage regulator voltage regulator write enable */
 
 /*******  Bits definition for SIM_SOPT2 register  ************/
-#define SIM_SOPT2_LPUART1SRC_SHIFT   28                                                                                   /*!< LPUART1 clock source select (shift) */
-#define SIM_SOPT2_LPUART1SRC_MASK    ((uint32_t)((uint32_t)0x03 << SIM_SOPT2_UART0SRC_SHIFT))                             /*!< LPUART1 clock source select (mask) */
-#define SIM_SOPT2_LPUART1SRC(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT2_UART0SRC_SHIFT) & SIM_SOPT2_UART0SRC_MASK))  /*!< LPUART1 clock source select */
-#define SIM_SOPT2_LPUART0SRC_SHIFT   26                                                                                   /*!< LPUART0 clock source select (shift) */
-#define SIM_SOPT2_LPUART0SRC_MASK    ((uint32_t)((uint32_t)0x03 << SIM_SOPT2_UART0SRC_SHIFT))                             /*!< LPUART0 clock source select (mask) */
-#define SIM_SOPT2_LPUART0SRC(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT2_UART0SRC_SHIFT) & SIM_SOPT2_UART0SRC_MASK))  /*!< UART0 clock source select */
+#define SIM_SOPT2_LPUART1SRC_SHIFT   28                                                                                       /*!< LPUART1 clock source select (shift) */
+#define SIM_SOPT2_LPUART1SRC_MASK    ((uint32_t)((uint32_t)0x03 << SIM_SOPT2_LPUART1SRC_SHIFT))                               /*!< LPUART1 clock source select (mask) */
+#define SIM_SOPT2_LPUART1SRC(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT2_LPUART1SRC_SHIFT) & SIM_SOPT2_LPUART1SRC_MASK))  /*!< LPUART1 clock source select */
+#define SIM_SOPT2_LPUART0SRC_SHIFT   26                                                                                       /*!< LPUART0 clock source select (shift) */
+#define SIM_SOPT2_LPUART0SRC_MASK    ((uint32_t)((uint32_t)0x03 << SIM_SOPT2_LPUART0SRC_SHIFT))                               /*!< LPUART0 clock source select (mask) */
+#define SIM_SOPT2_LPUART0SRC(x)      ((uint32_t)(((uint32_t)(x) << SIM_SOPT2_LPUART0SRC_SHIFT) & SIM_SOPT2_LPUART0SRC_MASK))  /*!< UART0 clock source select */
 #define SIM_SOPT2_TPMSRC_SHIFT       24                                                                               /*!< TPM clock source select (shift) */
 #define SIM_SOPT2_TPMSRC_MASK        ((uint32_t)((uint32_t)0x03 << SIM_SOPT2_TPMSRC_SHIFT))                           /*!< TPM clock source select (mask) */
 #define SIM_SOPT2_TPMSRC(x)          ((uint32_t)(((uint32_t)(x) << SIM_SOPT2_TPMSRC_SHIFT) & SIM_SOPT2_TPMSRC_MASK))  /*!< TPM clock source select */
 #define SIM_SOPT2_FLEXIOSRC_SHIFT    22                                                                               /*!< FlexIO Module Clock Source Select (shift) */
-#define SIM_SOPT2_FLEXIOSRC_MASK     ((uint32_t)((uint32_t)0x03 << SIM_SOPT2_TPMSRC_SHIFT))                           /*!< FlexIO Module Clock Source Select (mask) */
-#define SIM_SOPT2_FLEXIOSRC(x)       ((uint32_t)(((uint32_t)(x) << SIM_SOPT2_TPMSRC_SHIFT) & SIM_SOPT2_TPMSRC_MASK))  /*!< FlexIO Module Clock Source Select */
+#define SIM_SOPT2_FLEXIOSRC_MASK     ((uint32_t)((uint32_t)0x03 << SIM_SOPT2_FLEXIO_SHIFT))                           /*!< FlexIO Module Clock Source Select (mask) */
+#define SIM_SOPT2_FLEXIOSRC(x)       ((uint32_t)(((uint32_t)(x) << SIM_SOPT2_FLEXIO_SHIFT) & SIM_SOPT2_FLEXIO_MASK))  /*!< FlexIO Module Clock Source Select */
 #define SIM_SOPT2_USBSRC             ((uint32_t)0x00040000)    /*!< USB clock source select */
 #define SIM_SOPT2_CLKOUTSEL_SHIFT    5                                                                                      /*!< CLKOUT select (shift) */
 #define SIM_SOPT2_CLKOUTSEL_MASK     ((uint32_t)((uint32_t)0x07 << SIM_SOPT2_CLKOUTSEL_SHIFT))                              /*!< CLKOUT select (mask) */

@@ -82,6 +82,20 @@
 #define KINETIS_SERIAL_UART2_PRIORITY        12
 #endif
 
+/**
+ * @brief   UART0 clock source.
+ */
+#if !defined(KINETIS_UART0_CLOCK_SRC) || defined(__DOXYGEN__)
+#define KINETIS_UART0_CLOCK_SRC              1 /* MCGFLLCLK clock, or MCGPLLCLK/2; or IRC48M */
+#endif
+
+/**
+ * @brief   UART1 clock source.
+ */
+#if !defined(KINETIS_UART1_CLOCK_SRC) || defined(__DOXYGEN__)
+#define KINETIS_UART1_CLOCK_SRC              1 /* IRC48M */
+#endif
+
 /** @} */
 
 /*===========================================================================*/
@@ -141,9 +155,13 @@ typedef struct {
   volatile uint8_t*  s2_p;
   volatile uint8_t*  d_p;
   UART_TypeDef *uart_p;
-#if KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_HAS_VLPS
+#if KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_IS_UARTLP
   UARTLP_TypeDef *uartlp_p;
-#endif /* KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_HAS_VLPS */
+#endif /* KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_IS_UARTLP */
+#if  (KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_IS_LPUART) \
+  || (KINETIS_SERIAL_USE_UART1 && KINETIS_SERIAL1_IS_LPUART)
+  LPUART_TypeDef *lpuart_p;
+#endif /* KINETIS_SERIAL_USE_UART0 && KINETIS_SERIAL0_IS_LPUART */
 } UART_w_TypeDef;
 
 /**
