@@ -73,6 +73,15 @@
 *****************************************************************************
 
 *** 3.1.0 ***
+- HAL: Merged the latest STM32F2xx CMSIS headers and fixed the support
+       broken in 3.0.x.
+- RT:  Added new function chVTGetTimersStateI() returning the state of the
+       timers list.
+- HAL: Now STM32 USARTv2 driver initializes the ISR vectors statically on
+       initialization. Disabling them was not necessary and added to
+       the code size.
+- HAL: Added DMA channel selection on STM32F030xC devices.
+- HAL: Added serial driver support for USART 3..6 on STM32F030xC devices.
 - HAL: Merged the newest ST header files for STM32F1xx.
 - HAL: Added support for differential mode to the STM32F3xx ADC driver.
 - HAL: Experimental isochronous capability added to STM32 OTGv1 driver.
@@ -115,7 +124,21 @@
 - HAL: New STM32 ADCv1 driver supporting small STM32 devices (F0, L0).
 - HAL: Introduced support for TIM21 and TIM22 in STM32 ST driver.
 - HAL: Updated STM32F0xx headers to STM32CubeF0 version 1.3.0. Added support
-       for STM32F030xC, STM32F070x6, STM32F070xB devices.
+       for STM32F030xC, STM32F070x6, STM32F070xB, STM32F091xC,
+       STM32F098xx devices.
+- HAL: Fixed STM32F0xx HAL missing MCOPRE support (bug #658).
+- HAL: Fixed STM32L1xx HAL errors in comments (bug #657)(backported
+       to 3.0.3 and 2.6.10).
+- HAL: Fixed STM32 USBv1 wrong buffer alignment (bug #656)(backported
+       to 3.0.3 and 2.6.10).
+- HAL: Fixed wrong vector name for STM32F3xx EXTI33 (bug #655)(backported
+       to 3.0.3 and 2.6.10).
+- HAL: Fixed no demo for nucleo STM32F072RB board (bug #652).
+- HAL: Fixed missing RCC and ISR definitions for STM32F0xx timers (bug #651)
+       (backported to 3.0.3 and 2.6.10).
+- HAL: Fixed incorrect compiler check in STM32 RTCv1 driver (bug #650)
+       (backported to 3.0.3).
+- HAL: Fixed incorrect case in path (bug #649).
 - HAL: Fixed STM32F3xx HAL checking for non-existing macros (bug #648)
        (backported to 3.0.3 and 2.6.10).
 - HAL: Fixed error in STM32F030 EXT driver (bug #647)(backported to 3.0.3).
