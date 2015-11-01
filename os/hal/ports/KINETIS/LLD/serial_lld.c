@@ -353,16 +353,16 @@ void sd_lld_init(void) {
   SD1.uart.s2_p =  &(UART0->S2);
   SD1.uart.d_p =   &(UART0->D);
 #else /* ! KINETIS_SERIAL0_IS_LPUART */
-  /* TODO: little or big endian? */
-  SD1.uart.bdh_p = ((uint8_t *)&(LPUART0->BAUD)) + 2; /* BDH: BAUD, byte 3 */
-  SD1.uart.bdl_p = ((uint8_t *)&(LPUART0->BAUD)) + 3; /* BDL: BAUD, byte 4 */
-  SD1.uart.c1_p =  ((uint8_t *)&(LPUART0->CTRL)) + 3; /* C1: CTRL, byte 4 */
-  SD1.uart.c2_p =  ((uint8_t *)&(LPUART0->CTRL)) + 1; /* C2: CTRL, byte 2 */
-  SD1.uart.c3_p =  ((uint8_t *)&(LPUART0->CTRL)) + 0; /* C3: CTRL, byte 1 */
-  SD1.uart.c4_p =  ((uint8_t *)&(LPUART0->BAUD)) + 0; /* C4: BAUD, byte 1 */
-  SD1.uart.s1_p =  ((uint8_t *)&(LPUART0->STAT)) + 1; /* S1: STAT, byte 2 */
-  SD1.uart.s2_p =  ((uint8_t *)&(LPUART0->STAT)) + 0; /* S2: STAT, byte 1 */
-  SD1.uart.d_p =   ((uint8_t *)&(LPUART0->DATA)) + 3; /* D: DATA, byte 4 */
+  /* little endian! */
+  SD1.uart.bdh_p = ((uint8_t *)&(LPUART0->BAUD)) + 1; /* BDH: BAUD, byte 3 */
+  SD1.uart.bdl_p = ((uint8_t *)&(LPUART0->BAUD)) + 0; /* BDL: BAUD, byte 4 */
+  SD1.uart.c1_p =  ((uint8_t *)&(LPUART0->CTRL)) + 0; /* C1: CTRL, byte 4 */
+  SD1.uart.c2_p =  ((uint8_t *)&(LPUART0->CTRL)) + 2; /* C2: CTRL, byte 2 */
+  SD1.uart.c3_p =  ((uint8_t *)&(LPUART0->CTRL)) + 3; /* C3: CTRL, byte 1 */
+  SD1.uart.c4_p =  ((uint8_t *)&(LPUART0->BAUD)) + 3; /* C4: BAUD, byte 1 */
+  SD1.uart.s1_p =  ((uint8_t *)&(LPUART0->STAT)) + 2; /* S1: STAT, byte 2 */
+  SD1.uart.s2_p =  ((uint8_t *)&(LPUART0->STAT)) + 3; /* S2: STAT, byte 1 */
+  SD1.uart.d_p =   ((uint8_t *)&(LPUART0->DATA)) + 0; /* D: DATA, byte 4 */
 #endif /* ! KINETIS_SERIAL0_IS_LPUART */
 #if KINETIS_SERIAL0_IS_UARTLP
   SD1.uart.uartlp_p = UART0;
@@ -378,6 +378,7 @@ void sd_lld_init(void) {
 #if KINETIS_SERIAL_USE_UART1
   /* Driver initialization.*/
   sdObjectInit(&SD2, NULL, notify2);
+#if ! KINETIS_SERIAL1_IS_LPUART
   SD2.uart.bdh_p = &(UART1->BDH);
   SD2.uart.bdl_p = &(UART1->BDL);
   SD2.uart.c1_p =  &(UART1->C1);
@@ -388,6 +389,20 @@ void sd_lld_init(void) {
   SD2.uart.s2_p =  &(UART1->S2);
   SD2.uart.d_p =   &(UART1->D);
   SD2.uart.uart_p = UART1;
+#else /* ! KINETIS_SERIAL1_IS_LPUART */
+  /* little endian! */
+  SD2.uart.bdh_p = ((uint8_t *)&(LPUART1->BAUD)) + 1; /* BDH: BAUD, byte 3 */
+  SD2.uart.bdl_p = ((uint8_t *)&(LPUART1->BAUD)) + 0; /* BDL: BAUD, byte 4 */
+  SD2.uart.c1_p =  ((uint8_t *)&(LPUART1->CTRL)) + 0; /* C1: CTRL, byte 4 */
+  SD2.uart.c2_p =  ((uint8_t *)&(LPUART1->CTRL)) + 2; /* C2: CTRL, byte 2 */
+  SD2.uart.c3_p =  ((uint8_t *)&(LPUART1->CTRL)) + 3; /* C3: CTRL, byte 1 */
+  SD2.uart.c4_p =  ((uint8_t *)&(LPUART1->BAUD)) + 3; /* C4: BAUD, byte 1 */
+  SD2.uart.s1_p =  ((uint8_t *)&(LPUART1->STAT)) + 2; /* S1: STAT, byte 2 */
+  SD2.uart.s2_p =  ((uint8_t *)&(LPUART1->STAT)) + 3; /* S2: STAT, byte 1 */
+  SD2.uart.d_p =   ((uint8_t *)&(LPUART1->DATA)) + 0; /* D: DATA, byte 4 */
+  SD2.uart.lpuart_p = LPUART1;
+  SD2.uart.uart_p = NULL;
+#endif /* ! KINETIS_SERIAL1_IS_LPUART */
 #endif /* KINETIS_SERIAL_USE_UART1 */
 
 #if KINETIS_SERIAL_USE_UART2

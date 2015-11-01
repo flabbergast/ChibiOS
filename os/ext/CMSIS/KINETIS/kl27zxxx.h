@@ -62,7 +62,7 @@ typedef enum IRQn
   SPI1_IRQn                     = 11,
   LPUART0_IRQn                  = 12,
   LPUART1_IRQn                  = 13,
-  UART2_FLEXIO_IRQn             = 14,
+  UART2_IRQn                    = 14,
   ADC0_IRQn                     = 15,
   CMP0_IRQn                     = 16,
   TPM0_IRQn                     = 17,
