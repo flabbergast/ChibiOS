@@ -128,6 +128,8 @@
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE
 #define KINETIS_USB_IRQ_VECTOR      VectorCC
+#define KINETIS_USB0_IS_USBOTG      TRUE
+#define KINETIS_HAS_USB_CLOCK_RECOVERY FALSE
 
 /* LPTMR attributes.*/
 #define KINETIS_LPTMR0_IRQ_VECTOR   VectorDC
@@ -232,7 +234,9 @@
 /* USB attributes.*/
 #define KINETIS_HAS_USB             TRUE
 #define KINETIS_USB_IRQ_VECTOR      Vector164
-
+#define KINETIS_USB0_IS_USBOTG      TRUE
+#define KINETIS_HAS_USB_CLOCK_RECOVERY FALSE
+ 
 /* LPTMR attributes.*/
 #define KINETIS_LPTMR0_IRQ_VECTOR   Vector194
 

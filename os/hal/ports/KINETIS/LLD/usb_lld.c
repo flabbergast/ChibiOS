@@ -561,6 +561,7 @@ void usb_lld_init(void) {
   usbObjectInit(&USBD1);
 
 #if KINETIS_USB_USE_USB0
+
   SIM->SOPT2 |= SIM_SOPT2_USBSRC;
 
 #if defined(K20x5) || defined(K20x7)
@@ -586,15 +587,15 @@ void usb_lld_init(void) {
   chDbgAssert(i<2 && j <8,"USB Init error");
 
 #else /* KINETIS_MCG_MODE == KINETIS_MCG_MODE_PEE */
-#error USB clock not implemented in current KINETIS_MCG_MODE
+#error USB clock setting not implemented for this KINETIS_MCG_MODE
 #endif /* KINETIS_MCG_MODE == ... */
 
-#elif defined(KL25) || defined (KL26)
+#elif defined(KL25) || defined (KL26) || defined(KL27)
 
   /* No extra clock dividers for USB clock */
 
-#else /* defined(KL25) || defined (KL26) */
-#error USB driver not implement for your MCU type
+#else /* defined(KL25) || defined (KL26) || defined(KL27) */
+#error USB driver not implemented for your MCU type
 #endif
 
 #endif /* KINETIS_USB_USE_USB0 */
@@ -609,7 +610,6 @@ void usb_lld_init(void) {
  */
 void usb_lld_start(USBDriver *usbp) {
   if (usbp->state == USB_STOP) {
-    /* Clock activation.*/
 #if KINETIS_USB_USE_USB0
     if (&USBD1 == usbp) {
 #if defined(DEBUG_USB)
@@ -629,7 +629,17 @@ void usb_lld_start(USBDriver *usbp) {
         _bdt[i].addr=0;
       }
 
-      SIM->SCGC4 |= SIM_SCGC4_USBOTG;  /* Enable Clock */
+      /* Enable Clock */
+#if KINETIS_USB0_IS_USBOTG
+      SIM->SCGC4 |= SIM_SCGC4_USBOTG;
+#else /* KINETIS_USB0_IS_USBOTG */
+      SIM->SCGC4 |= SIM_SCGC4_USBFS;
+#endif /* KINETIS_USB0_IS_USBOTG */
+
+#if KINETIS_HAS_USB_CLOCK_RECOVERY
+      USB0->CLK_RECOVER_IRC_EN |= USBx_CLK_RECOVER_IRC_EN_IRC_EN;
+      USB0->CLK_RECOVER_CTRL |= USBx_CLK_RECOVER_CTRL_CLOCK_RECOVER_EN;
+#endif /* KINETIS_HAS_USB_CLOCK_RECOVERY */
 
       /* Reset USB module, wait for completion */
       USB0->USBTRC0 |= USBx_USBTRC0_USBRESET;
@@ -643,7 +653,9 @@ void usb_lld_start(USBDriver *usbp) {
       /* Clear all ISR flags */
       USB0->ISTAT = 0xFF;
       USB0->ERRSTAT = 0xFF;
+#if KINETIS_USB0_IS_USBOTG
       USB0->OTGISTAT = 0xFF;
+#endif /* KINETIS_USB0_IS_USBOTG */
       USB0->USBTRC0 |= 0x40; //a hint was given that this is an undocumented interrupt bit
 
       /* Enable USB */
@@ -654,12 +666,16 @@ void usb_lld_start(USBDriver *usbp) {
       USB0->INTEN |= USBx_INTEN_USBRSTEN;
 
       /* Enable interrupt in NVIC */
+#if KINETIS_USB0_IS_USBOTG
       nvicEnableVector(USB_OTG_IRQn, KINETIS_USB_USB0_IRQ_PRIORITY);
+#else /* KINETIS_USB0_IS_USBOTG */
+      nvicEnableVector(USB_IRQn, KINETIS_USB_USB0_IRQ_PRIORITY);
+#endif /* KINETIS_USB0_IS_USBOTG */
 
       /* Enable D+ pullup */
       USB0->CONTROL = USBx_CONTROL_DPPULLUPNONOTG;
     }
-#endif
+#endif /* KINETIS_USB_USE_USB0 */
   }
 }
 
@@ -671,13 +687,17 @@ void usb_lld_start(USBDriver *usbp) {
  * @notapi
  */
 void usb_lld_stop(USBDriver *usbp) {
-  /* If in ready state then disables the USB clock.*/
+  /* TODO: If in ready state then disables the USB clock.*/
   if (usbp->state == USB_STOP) {
 #if KINETIS_USB_USE_USB0
     if (&USBD1 == usbp) {
+#if KINETIS_USB0_IS_USBOTG
       nvicDisableVector(USB_OTG_IRQn);
+#else /* KINETIS_USB0_IS_USBOTG */
+      nvicDisableVector(USB_IRQn);
+#endif /* KINETIS_USB0_IS_USBOTG */
     }
-#endif
+#endif /* KINETIS_USB_USE_USB0 */
   }
 }
 
@@ -691,6 +711,9 @@ void usb_lld_stop(USBDriver *usbp) {
 void usb_lld_reset(USBDriver *usbp) {
   // FIXME, dyn alloc
   _usbbn = 0;
+
+#if KINETIS_USB_USE_USB0
+
 #if defined(DEBUG_USB)
   usb_debug_putX('#');
 #endif /* DEBUG_USB */
@@ -721,6 +744,7 @@ void usb_lld_reset(USBDriver *usbp) {
 
   /* "is this necessary?", Paul from PJRC */
   USB0->CTL = USBx_CTL_USBENSOFEN;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -731,11 +755,15 @@ void usb_lld_reset(USBDriver *usbp) {
  * @notapi
  */
 void usb_lld_set_address(USBDriver *usbp) {
+
 #if defined(DEBUG_USB)
   usb_debug_putX('g');
   usb_debug_phexX((uint8_t)usbp->address);
 #endif /* DEBUG_USB */
+
+#if KINETIS_USB_USE_USB0
   USB0->ADDR = usbp->address&0x7F;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -793,7 +821,9 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
   if((epc->ep_mode & USB_EP_MODE_TYPE) != USB_EP_MODE_TYPE_CTRL)
     mask |= USBx_ENDPTn_EPCTLDIS;
 
+#if KINETIS_USB_USE_USB0
   USB0->ENDPT[ep].V = mask;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -809,8 +839,10 @@ void usb_lld_disable_endpoints(USBDriver *usbp) {
   usb_debug_putX('i');
 #endif /* DEBUG_USB */
   uint8_t i;
+#if KINETIS_USB_USE_USB0
   for(i=1;i<KINETIS_USB_ENDPOINTS;i++)
     USB0->ENDPT[i].V = 0;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -830,6 +862,7 @@ usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('j');
 #endif /* DEBUG_USB */
+#if KINETIS_USB_USE_USB0
   if(ep > USB_MAX_ENDPOINTS)
     return EP_STATUS_DISABLED;
   if(!(USB0->ENDPT[ep].V & (USBx_ENDPTn_EPRXEN)))
@@ -837,6 +870,7 @@ usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep) {
   else if(USB0->ENDPT[ep].V & USBx_ENDPTn_EPSTALL)
     return EP_STATUS_STALLED;
   return EP_STATUS_ACTIVE;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -858,11 +892,13 @@ usbepstatus_t usb_lld_get_status_in(USBDriver *usbp, usbep_t ep) {
 #endif /* DEBUG_USB */
   if(ep > USB_MAX_ENDPOINTS)
     return EP_STATUS_DISABLED;
+#if KINETIS_USB_USE_USB0
   if(!(USB0->ENDPT[ep].V & (USBx_ENDPTn_EPTXEN)))
     return EP_STATUS_DISABLED;
   else if(USB0->ENDPT[ep].V & USBx_ENDPTn_EPSTALL)
     return EP_STATUS_STALLED;
   return EP_STATUS_ACTIVE;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -981,7 +1017,9 @@ void usb_lld_stall_out(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('q');
 #endif /* DEBUG_USB */
+#if KINETIS_USB_USE_USB0
   USB0->ENDPT[ep].V |= USBx_ENDPTn_EPSTALL;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -997,7 +1035,9 @@ void usb_lld_stall_in(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('r');
 #endif /* DEBUG_USB */
+#if KINETIS_USB_USE_USB0
   USB0->ENDPT[ep].V |= USBx_ENDPTn_EPSTALL;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -1013,7 +1053,9 @@ void usb_lld_clear_out(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('s');
 #endif /* DEBUG_USB */
+#if KINETIS_USB_USE_USB0
   USB0->ENDPT[ep].V &= ~USBx_ENDPTn_EPSTALL;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 /**
@@ -1029,7 +1071,9 @@ void usb_lld_clear_in(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('t');
 #endif /* DEBUG_USB */
+#if KINETIS_USB_USE_USB0
   USB0->ENDPT[ep].V &= ~USBx_ENDPTn_EPSTALL;
+#endif /* KINETIS_USB_USE_USB0 */
 }
 
 #endif /* HAL_USE_USB */

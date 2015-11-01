@@ -139,6 +139,10 @@
 #define KINETIS_SERIAL0_IS_LPUART   FALSE
 #define KINETIS_SERIAL1_IS_LPUART   FALSE
 
+/* USB attributes.*/
+#define KINETIS_USB0_IS_USBOTG      TRUE
+#define KINETIS_HAS_USB_CLOCK_RECOVERY FALSE
+
 /*===========================================================================*/
 /* KL26                                                                      */
 /*===========================================================================*/
@@ -162,6 +166,10 @@
 #define KINETIS_SERIAL0_IS_UARTLP   TRUE
 #define KINETIS_SERIAL0_IS_LPUART   FALSE
 #define KINETIS_SERIAL1_IS_LPUART   FALSE
+
+/* USB attributes.*/
+#define KINETIS_USB0_IS_USBOTG      TRUE
+#define KINETIS_HAS_USB_CLOCK_RECOVERY FALSE
 
 /*===========================================================================*/
 /* KL27Zxxx                                                                  */
@@ -191,6 +199,10 @@
 #define KINETIS_SERIAL0_IS_UARTLP   FALSE
 #define KINETIS_SERIAL0_IS_LPUART   TRUE
 #define KINETIS_SERIAL1_IS_LPUART   TRUE
+
+/* USB attributes.*/
+#define KINETIS_USB0_IS_USBOTG      FALSE
+#define KINETIS_HAS_USB_CLOCK_RECOVERY TRUE
 
 #else /* defined(KL27Zxxx) */
 #error MCU type not described in kinetis_registry
