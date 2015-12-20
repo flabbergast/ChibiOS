@@ -18,7 +18,7 @@
  * @file    STM32F7xx/stm32_rcc.h
  * @brief   RCC helper driver header.
  * @note    This file requires definitions from the ST header file
- *          @p stm32f4xx.h.
+ *          @p stm32f7xx.h.
  *
  * @addtogroup STM32F7xx_RCC
  * @{
@@ -1127,7 +1127,7 @@
 #define rccResetTIM8() rccResetAPB2(RCC_APB2RSTR_TIM8RST)
 
 /**
- * @brief   Enables the TIM9peripheral clock.
+ * @brief   Enables the TIM9 peripheral clock.
  *
  * @param[in] lp        low power enable flag
  *

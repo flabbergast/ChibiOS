@@ -19,7 +19,7 @@
 
 /**
  * @file    PPC/chcore.h
- * @brief   PowerPC architecture port macros and structures.
+ * @brief   Power e200 port macros and structures.
  *
  * @addtogroup PPC_CORE
  * @{
@@ -58,6 +58,9 @@
  */
 #if defined(__GNUC__) || defined(__DOXYGEN__)
 #define PORT_COMPILER_NAME              "GCC " __VERSION__
+
+#elif defined(__MWERKS__)
+#define PORT_COMPILER_NAME              "CW"
 
 #else
 #error "unsupported compiler"
@@ -422,12 +425,17 @@ static inline void port_init(void) {
   port_write_spr(272, n);
 
 #if PPC_SUPPORTS_IVORS
-  /* The CPU supports IVOR registers, the kernel requires IVOR4 and IVOR10
-     and the initialization is performed here.*/
-  asm volatile ("li          %%r3, _IVOR4@l       \t\n"
-                "mtIVOR4     %%r3                 \t\n"
-                "li          %%r3, _IVOR10@l      \t\n"
-                "mtIVOR10    %%r3" : : : "r3", "memory");
+  {
+    /* The CPU supports IVOR registers, the kernel requires IVOR4 and IVOR10
+       and the initialization is performed here.*/
+    extern void _IVOR4(void);
+    port_write_spr(404, _IVOR4);
+
+#if PPC_SUPPORTS_DECREMENTER
+    extern void _IVOR10(void);
+    port_write_spr(410, _IVOR10);
+#endif
+  }
 #endif
 
   /* INTC initialization, software vector mode, 4 bytes vectors, starting

@@ -29,12 +29,15 @@
  *          - STM32F301x8 for Analog & DSP devices.
  *          - STM32F302x8 for Analog & DSP devices.
  *          - STM32F302xC for Analog & DSP devices.
+ *          - STM32F302xE for Analog & DSP devices.
  *          - STM32F303x8 for Analog & DSP devices.
  *          - STM32F303xC for Analog & DSP devices.
+ *          - STM32F303xE for Analog & DSP devices.
  *          - STM32F318xx for Analog & DSP devices.
  *          - STM32F328xx for Analog & DSP devices.
  *          - STM32F334x8 for Analog & DSP devices.
  *          - STM32F358xx for Analog & DSP devices.
+ *          - STM32F398xx for Analog & DSP devices.
  *          .
  *
  * @addtogroup HAL
@@ -63,11 +66,17 @@
 #elif defined(STM32F302xC)
 #define PLATFORM_NAME           "STM32F302xC Analog & DSP"
 
+#elif defined(STM32F302xE)
+#define PLATFORM_NAME           "STM32F302xE Analog & DSP"
+
 #elif defined(STM32F303x8)
 #define PLATFORM_NAME           "STM32F303x8 Analog & DSP"
 
 #elif defined(STM32F303xC)
 #define PLATFORM_NAME           "STM32F303xC Analog & DSP"
+
+#elif defined(STM32F303xE)
+#define PLATFORM_NAME           "STM32F303xE Analog & DSP"
 
 #elif defined(STM32F318xx)
 #define PLATFORM_NAME           "STM32F318xx Analog & DSP"
@@ -80,6 +89,9 @@
 
 #elif defined(STM32F358xx)
 #define PLATFORM_NAME           "STM32F358xx Analog & DSP"
+
+#elif defined(STM32F398xx)
+#define PLATFORM_NAME           "STM32F398xx Analog & DSP"
 
 #else
 #error "STM32F3xx device not specified"

@@ -39,6 +39,7 @@
 #include "hal_mmcsd.h"
 
 /* Shared headers.*/
+#include "hal_buffers.h"
 #include "hal_queues.h"
 
 /* Normal drivers.*/
@@ -60,6 +61,7 @@
 #include "spi.h"
 #include "uart.h"
 #include "usb.h"
+#include "wdg.h"
 
 /*
  *  The ST driver is a special case, it is only included if the OSAL is

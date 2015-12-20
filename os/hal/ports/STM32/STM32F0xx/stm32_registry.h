@@ -151,12 +151,15 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             TRUE
+#define STM32_SPI1_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI1_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 2)
 #define STM32_SPI1_RX_DMA_CHN               0x00000000
 #define STM32_SPI1_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 3)
 #define STM32_SPI1_TX_DMA_CHN               0x00000000
 
 #define STM32_HAS_SPI2                      TRUE
+#define STM32_SPI2_SUPPORTS_I2S             FALSE
 #define STM32_SPI2_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 4)
 #define STM32_SPI2_RX_DMA_CHN               0x00000000
 #define STM32_SPI2_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 5)
@@ -238,11 +241,16 @@
 #define STM32_HAS_USART6                    FALSE
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 
 /* USB attributes.*/
 #define STM32_HAS_USB                       FALSE
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE
@@ -382,12 +390,16 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             TRUE
+#define STM32_SPI1_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI1_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 2)
 #define STM32_SPI1_RX_DMA_CHN               0x00000000
 #define STM32_SPI1_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 3)
 #define STM32_SPI1_TX_DMA_CHN               0x00000000
 
 #define STM32_HAS_SPI2                      TRUE
+#define STM32_SPI2_SUPPORTS_I2S             TRUE
+#define STM32_SPI2_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI2_RX_DMA_MSK               (STM32_DMA_STREAM_ID_MSK(1, 4) |\
                                              STM32_DMA_STREAM_ID_MSK(1, 6))
 #define STM32_SPI2_RX_DMA_CHN               0x00000000
@@ -483,6 +495,7 @@
 #define STM32_HAS_USART6                    FALSE
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 
 /* USB attributes.*/
 #if defined(STM32F072xB) || defined(STM32F078xx)
@@ -495,6 +508,10 @@
 #endif
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE
@@ -612,12 +629,15 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             TRUE
+#define STM32_SPI1_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI1_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 2)
 #define STM32_SPI1_RX_DMA_CHN               0x00000000
 #define STM32_SPI1_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 3)
 #define STM32_SPI1_TX_DMA_CHN               0x00000000
 
 #define STM32_HAS_SPI2                      TRUE
+#define STM32_SPI2_SUPPORTS_I2S             FALSE
 #define STM32_SPI2_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 4)
 #define STM32_SPI2_RX_DMA_CHN               0x00000000
 #define STM32_SPI2_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 5)
@@ -693,6 +713,7 @@
 #define STM32_HAS_USART6                    FALSE
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 
 /* USB attributes.*/
 #define STM32_HAS_USB                       TRUE
@@ -701,6 +722,10 @@
 #define STM32_USB_HAS_BCDR                  TRUE
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE
@@ -818,6 +843,8 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             TRUE
+#define STM32_SPI1_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI1_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 2)
 #define STM32_SPI1_RX_DMA_CHN               0x00000000
 #define STM32_SPI1_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 3)
@@ -889,11 +916,16 @@
 #define STM32_HAS_USART6                    FALSE
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 
 /* USB attributes.*/
 #define STM32_HAS_USB                       FALSE
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE
@@ -1012,6 +1044,8 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             TRUE
+#define STM32_SPI1_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI1_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 2)
 #define STM32_SPI1_RX_DMA_CHN               0x00000000
 #define STM32_SPI1_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 3)
@@ -1088,6 +1122,7 @@
 #define STM32_HAS_USART6                    FALSE
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 
 /* USB attributes.*/
 #define STM32_HAS_USB                       TRUE
@@ -1097,6 +1132,10 @@
 
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE
@@ -1238,12 +1277,14 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             FALSE
 #define STM32_SPI1_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 2)
 #define STM32_SPI1_RX_DMA_CHN               0x00000030
 #define STM32_SPI1_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 3)
 #define STM32_SPI1_TX_DMA_CHN               0x00000300
 
 #define STM32_HAS_SPI2                      TRUE
+#define STM32_SPI2_SUPPORTS_I2S             FALSE
 #define STM32_SPI2_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 4)
 #define STM32_SPI2_RX_DMA_CHN               0x00003000
 #define STM32_SPI2_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 5)
@@ -1359,6 +1400,7 @@
 
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 #else
 #define STM32_HAS_USART3                    FALSE
 #define STM32_HAS_UART4                     FALSE
@@ -1366,12 +1408,17 @@
 #define STM32_HAS_USART6                    FALSE
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 #endif
 
 /* USB attributes.*/
 #define STM32_HAS_USB                       FALSE
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE
@@ -1500,12 +1547,14 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             FALSE
 #define STM32_SPI1_RX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 2)
 #define STM32_SPI1_RX_DMA_CHN               0x00000000
 #define STM32_SPI1_TX_DMA_MSK               STM32_DMA_STREAM_ID_MSK(1, 3)
 #define STM32_SPI1_TX_DMA_CHN               0x00000000
 
 #define STM32_HAS_SPI2                      TRUE
+#define STM32_SPI2_SUPPORTS_I2S             FALSE
 #define STM32_SPI2_RX_DMA_MSK               (STM32_DMA_STREAM_ID_MSK(1, 4) |\
                                              STM32_DMA_STREAM_ID_MSK(1, 6))
 #define STM32_SPI2_RX_DMA_CHN               0x00000000
@@ -1601,6 +1650,7 @@
 #define STM32_HAS_USART6                    FALSE
 #define STM32_HAS_UART7                     FALSE
 #define STM32_HAS_UART8                     FALSE
+#define STM32_HAS_LPUART1                   FALSE
 
 /* USB attributes.*/
 #define STM32_HAS_USB                       TRUE
@@ -1610,6 +1660,10 @@
 
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE
@@ -1759,6 +1813,8 @@
 
 /* SPI attributes.*/
 #define STM32_HAS_SPI1                      TRUE
+#define STM32_SPI1_SUPPORTS_I2S             TRUE
+#define STM32_SPI1_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI1_RX_DMA_MSK               (STM32_DMA_STREAM_ID_MSK(1, 2) |\
                                              STM32_DMA_STREAM_ID_MSK(2, 3))
 #define STM32_SPI1_RX_DMA_CHN               0x00000330
@@ -1767,6 +1823,8 @@
 #define STM32_SPI1_TX_DMA_CHN               0x00003300
 
 #define STM32_HAS_SPI2                      TRUE
+#define STM32_SPI2_SUPPORTS_I2S             TRUE
+#define STM32_SPI2_I2S_FULLDUPLEX           FALSE
 #define STM32_SPI2_RX_DMA_MSK               (STM32_DMA_STREAM_ID_MSK(1, 4) |\
                                              STM32_DMA_STREAM_ID_MSK(1, 6))
 #define STM32_SPI2_RX_DMA_CHN               0x00303000
@@ -1961,10 +2019,16 @@
                                              STM32_DMA_STREAM_ID_MSK(2, 5))
 #define STM32_UART8_TX_DMA_CHN              0x0F0FF0FF
 
+#define STM32_HAS_LPUART1                   FALSE
+
 /* USB attributes.*/
 #define STM32_HAS_USB                       FALSE
 #define STM32_HAS_OTG1                      FALSE
 #define STM32_HAS_OTG2                      FALSE
+
+/* IWDG attributes.*/
+#define STM32_HAS_IWDG                      TRUE
+#define STM32_IWDG_IS_WINDOWED              TRUE
 
 /* LTDC attributes.*/
 #define STM32_HAS_LTDC                      FALSE

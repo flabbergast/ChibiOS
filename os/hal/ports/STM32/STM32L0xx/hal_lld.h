@@ -125,7 +125,7 @@
  * @name    RCC_CFGR register bits definitions
  * @{
  */
-#define STM32_SW_MASK           (3 << 0)   /**< SW field mask.             */
+#define STM32_SW_MASK           (3 << 0)    /**< SW field mask.             */
 #define STM32_SW_MSI            (0 << 0)    /**< SYSCLK source is MSI.      */
 #define STM32_SW_HSI16          (1 << 0)    /**< SYSCLK source is HSI16     */
 #define STM32_SW_HSE            (2 << 0)    /**< SYSCLK source is HSE.      */
@@ -495,6 +495,21 @@
  */
 #if !defined(STM32L0xx_MCUCONF)
 #error "Using a wrong mcuconf.h file, STM32L0xx_MCUCONF not defined"
+#endif
+
+/*
+ * Board files sanity checks.
+ */
+#if !defined(STM32_LSECLK)
+#error "STM32_LSECLK not defined in board.h"
+#endif
+
+#if !defined(STM32_LSEDRV)
+#error "STM32_LSEDRV not defined in board.h"
+#endif
+
+#if !defined(STM32_HSECLK)
+#error "STM32_HSECLK not defined in board.h"
 #endif
 
 /* Voltage related limits.*/

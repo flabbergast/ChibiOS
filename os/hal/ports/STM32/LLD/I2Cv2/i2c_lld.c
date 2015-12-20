@@ -164,8 +164,8 @@ static void i2c_lld_setup_rx_transfer(I2CDriver *i2cp) {
 
   /* Configures the CR2 registers with both the calculated and static
      settings.*/
-  dp->CR2 = (dp->CR2 & ~I2C_CR2_NBYTES) | i2cp->config->cr2 | I2C_CR2_RD_WRN |
-            (n << 16U) | reload;
+  dp->CR2 = (dp->CR2 & ~(I2C_CR2_NBYTES | I2C_CR2_RELOAD)) | i2cp->config->cr2 |
+            I2C_CR2_RD_WRN | (n << 16U) | reload;
 }
 
 /**
@@ -192,7 +192,7 @@ static void i2c_lld_setup_tx_transfer(I2CDriver *i2cp) {
 
   /* Configures the CR2 registers with both the calculated and static
      settings.*/
-  dp->CR2 = (dp->CR2 & ~I2C_CR2_NBYTES) | i2cp->config->cr2 |
+  dp->CR2 = (dp->CR2 & ~(I2C_CR2_NBYTES | I2C_CR2_RELOAD)) | i2cp->config->cr2 |
             (n << 16U) | reload;
 }
 
@@ -844,8 +844,11 @@ void i2c_lld_start(I2CDriver *i2cp) {
 #endif
 
   /* Reset i2c peripheral, the TCIE bit will be handled separately.*/
-  dp->CR1 = i2cp->config->cr1 | I2C_CR1_ERRIE | I2C_CR1_NACKIE |
-            I2C_CR1_TXDMAEN | I2C_CR1_RXDMAEN;
+  dp->CR1 = i2cp->config->cr1 |
+#if STM32_I2C_USE_DMA == TRUE
+            I2C_CR1_TXDMAEN | I2C_CR1_RXDMAEN | /* Enable only if using DMA */
+#endif
+            I2C_CR1_ERRIE | I2C_CR1_NACKIE;
 
   /* Setup I2C parameters.*/
   dp->TIMINGR = i2cp->config->timingr;

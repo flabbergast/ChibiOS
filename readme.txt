@@ -60,9 +60,9 @@
   +--test/                - Kernel test suite source code.
   |  +--lib/              - Portable test engine.
   |  +--hal/              - HAL test suites.
-  |  |  +--testbuild/     - HAL uild test and MISRA check.
+  |  |  +--testbuild/     - HAL build test and MISRA check.
   |  +--nil/              - NIL test suites.
-  |  |  +--testbuild/     - NIL nuild test and MISRA check.
+  |  |  +--testbuild/     - NIL build test and MISRA check.
   |  +--rt/               - RT test suites.
   |  |  +--testbuild/     - RT build test and MISRA check.
   |  |  +--coverage/      - RT code coverage project.
@@ -73,6 +73,21 @@
 *****************************************************************************
 
 *** 3.1.0 ***
+- RT:  Added CodeWarrior compiler support to the e200 port.
+- HAL: Introduced preliminary support for STM32F7xx devices.
+- HAL: Introduced preliminary support for STM32L4xx devices.
+- HAL: Introduced preliminary support for STM32L0xx devices.
+- HAL: Enhanced the CAN driver with I-class functions. Now it is possible
+       to exchange frames from ISRs.
+- HAL: Added watchdog driver model (WDG) and STM32 implementation on IWDG.
+- HAL: Added synchronous API and mutual exclusion to the UART driver.
+- HAL: Added PAL driver for STM32L4xx GPIOv3 peripheral.
+- HAL: Added I2S driver for STM32 SPIv2 peripheral.
+- HAL: Added demos and board files for ST's Nucleo32 boards (F031, F042, F303).
+- HAL: Added "lines" handling to PAL driver, lines are identifiers of both
+       ports and pins encoded in a single value. Added a set of macros
+       operating on lines.
+- HAL: Merged the latest STM32F3xx CMSIS headers.
 - HAL: Merged the latest STM32F2xx CMSIS headers and fixed the support
        broken in 3.0.x.
 - RT:  Added new function chVTGetTimersStateI() returning the state of the
@@ -108,24 +123,50 @@
 - HAL: Added support for I2C3 and I2C4 to the STM32 I2Cv2 I2C driver.
 - HAL: Added support for SPI4...SPI6 to the STM32 SPIv2 SPI driver.
 - HAL: Added support for UART4...UART8 to the STM32 UARTv2 UART driver.
-- HAL: Added support for UART7 and UART8 to the STM32 UARTv2 serial driver.
+- HAL: Added support for UART7 and UART8,LPUART1 to the STM32 UARTv2 serial
+       driver.
+- HAL: STM32F3xx and STM32L4xx devices now share the same ADCv3 driver.
 - HAL: STM32F2xx, STM32F4xx and STM32F7xx devices now share the same ADCv2
        and DMAv2 drivers.
 - HAL: STM32F0xx and STM32L0xx devices now share the same ADCv1 driver.
 - HAL: STM32F0xx, STM32F1xx, STM32F3xx, STM32F37x, STM32L0xx and STM32L1xx
        devices now share the same DMAv1 driver.
-- HAL: Introduced preliminary support for STM32F7xx devices.
-- HAL: Introduced preliminary support for STM32L0xx devices.
 - HAL: New STM32 shared DMAv2 driver supporting channel selection and
        data cache invalidation (F2, F4, F7).
 - HAL: New STM32 shared DMAv1 driver supporting channel selection and fixing
        the behavior with shared IRQs (F0, L0).
+- HAL: New STM32 ADCv3 driver supporting middle STM32 devices (F3, L4).
 - HAL: New STM32 ADCv2 driver supporting large STM32 devices (F2, F4, F7).
 - HAL: New STM32 ADCv1 driver supporting small STM32 devices (F0, L0).
 - HAL: Introduced support for TIM21 and TIM22 in STM32 ST driver.
 - HAL: Updated STM32F0xx headers to STM32CubeF0 version 1.3.0. Added support
        for STM32F030xC, STM32F070x6, STM32F070xB, STM32F091xC,
        STM32F098xx devices.
+- HAL: Fixed STM32 ICU driver uses chSysLock and chSysUnlock (bug #681)
+       (backported to 3.0.4).
+- HAL: Fixed wrong DMA priority assigned to STM32F3 ADC3&4 (bug #680)
+       (backported to 3.0.4 and 2.6.10).
+- HAL: Fixed invalid DMA settings in STM32 DACv1 driver in dual mode
+       (bug #677)(backported to 3.0.4).
+- HAL: Fixed usbStop() hangs in STM32 OTGv1 driver (bug #674)(backported
+       to 3.0.4 and 2.6.10).
+- HAL: Fixed STM32 I2Cv2 driver fails on transfers greater than 255 bytes
+       (bug #673)(backported to 3.0.4).
+- HAL: Fixed STM32 I2Cv2 DMA conflict (bug #671)(backported to 3.0.4).
+- HAL: Fixed I2S clock selection not working in STM32F4xx HAL (bug #667)
+       (backported to 3.0.4 and 2.6.10).
+- HAL: Fixed differences in STM32F3 ADC macro definitions (bug #665)
+       (backported to 3.0.3).
+- HAL: Fixed RTC module loses day of week when converting (bug #664)
+       (backported to 3.0.3).
+- HAL: Fixed STM32 USBv1 broken isochronous endpoints (bug #662)
+       (backported to 3.0.4).
+- HAL: Fixed STM32 USBv1 wrong multiplier when calculating descriptor address
+       in BTABLE (bug #661)(backported to 3.0.4 and 2.6.10).
+- HAL: Fixed STM32 USBv1 does not make use of BTABLE_ADDR define (bug #660)
+       (backported to 3.0.4 and 2.6.10).
+- HAL: Fixed invalid class type for sdPutWouldBlock() and sdGetWouldBlock()
+       functions (bug #659)(backported to 3.0.3 and 2.6.10).
 - HAL: Fixed STM32F0xx HAL missing MCOPRE support (bug #658).
 - HAL: Fixed STM32L1xx HAL errors in comments (bug #657)(backported
        to 3.0.3 and 2.6.10).
@@ -133,6 +174,8 @@
        to 3.0.3 and 2.6.10).
 - HAL: Fixed wrong vector name for STM32F3xx EXTI33 (bug #655)(backported
        to 3.0.3 and 2.6.10).
+- HAL: Fixed nvicEnableVector broken for Cortex-M0 (bug #654)(backported
+       to 3.0.3).
 - HAL: Fixed no demo for nucleo STM32F072RB board (bug #652).
 - HAL: Fixed missing RCC and ISR definitions for STM32F0xx timers (bug #651)
        (backported to 3.0.3 and 2.6.10).
@@ -195,6 +238,7 @@
        (backported to 3.0.1).
 - HAL: Fixed missing UART7 and UART8 support on STM32F4xx family (bug #612).
 - HAL: Fixed outdated CMSIS headers for STM32F1xx devices (bug #609).
+- HAL: Fixed CAN errors (bug #387).
 - HAL: Fixed USB HS ULPI Support (except board files because patch originally
        targeted version 2.6.x)(bug #377).
 

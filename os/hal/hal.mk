@@ -5,6 +5,7 @@ HALCONF := $(strip $(shell cat halconf.h | egrep -e "define"))
 
 HALSRC := $(CHIBIOS)/os/hal/src/hal.c \
           $(CHIBIOS)/os/hal/src/st.c \
+          $(CHIBIOS)/os/hal/src/hal_buffers.c \
           $(CHIBIOS)/os/hal/src/hal_queues.c \
           $(CHIBIOS)/os/hal/src/hal_mmcsd.c
 ifneq ($(findstring HAL_USE_ADC TRUE,$(HALCONF)),)
@@ -64,8 +65,12 @@ endif
 ifneq ($(findstring HAL_USE_USB TRUE,$(HALCONF)),)
 HALSRC += $(CHIBIOS)/os/hal/src/usb.c
 endif
+ifneq ($(findstring HAL_USE_WDG TRUE,$(HALCONF)),)
+HALSRC += $(CHIBIOS)/os/hal/src/wdg.c
+endif
 else
 HALSRC = $(CHIBIOS)/os/hal/src/hal.c \
+         $(CHIBIOS)/os/hal/src/hal_buffers.c \
          $(CHIBIOS)/os/hal/src/hal_queues.c \
          $(CHIBIOS)/os/hal/src/hal_mmcsd.c \
          $(CHIBIOS)/os/hal/src/adc.c \
@@ -87,7 +92,8 @@ HALSRC = $(CHIBIOS)/os/hal/src/hal.c \
          $(CHIBIOS)/os/hal/src/spi.c \
          $(CHIBIOS)/os/hal/src/st.c \
          $(CHIBIOS)/os/hal/src/uart.c \
-         $(CHIBIOS)/os/hal/src/usb.c
+         $(CHIBIOS)/os/hal/src/usb.c \
+         $(CHIBIOS)/os/hal/src/wdg.c
 endif
 
 # Required include directories

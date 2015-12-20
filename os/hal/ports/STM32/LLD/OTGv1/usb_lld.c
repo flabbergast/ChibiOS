@@ -135,7 +135,7 @@ static void otg_core_reset(USBDriver *usbp) {
   while ((otgp->GRSTCTL & GRSTCTL_CSRST) != 0)
     ;
 
-  osalSysPolledDelayX(12);
+  osalSysPolledDelayX(18);
 
   /* Wait AHB idle condition.*/
   while ((otgp->GRSTCTL & GRSTCTL_AHBIDL) == 0)
@@ -147,32 +147,11 @@ static void otg_disable_ep(USBDriver *usbp) {
   unsigned i;
 
   for (i = 0; i <= usbp->otgparams->num_endpoints; i++) {
-    /* Disable only if enabled because this sentence in the manual:
-       "The application must set this bit only if Endpoint Enable is
-        already set for this endpoint".*/
-    if ((otgp->ie[i].DIEPCTL & DIEPCTL_EPENA) != 0) {
-      otgp->ie[i].DIEPCTL = DIEPCTL_EPDIS;
-      /* Wait for endpoint disable.*/
-      while (!(otgp->ie[i].DIEPINT & DIEPINT_EPDISD))
-        ;
-    }
-    else
-      otgp->ie[i].DIEPCTL = 0;
+    otgp->ie[i].DIEPCTL = 0;
     otgp->ie[i].DIEPTSIZ = 0;
     otgp->ie[i].DIEPINT = 0xFFFFFFFF;
-    /* Disable only if enabled because this sentence in the manual:
-       "The application must set this bit only if Endpoint Enable is
-        already set for this endpoint".
-       Note that the attempt to disable the OUT EP0 is ignored by the
-       hardware but the code is simpler this way.*/
-    if ((otgp->oe[i].DOEPCTL & DOEPCTL_EPENA) != 0) {
-      otgp->oe[i].DOEPCTL = DOEPCTL_EPDIS;
-      /* Wait for endpoint disable.*/
-      while (!(otgp->oe[i].DOEPINT & DOEPINT_OTEPDIS))
-        ;
-    }
-    else
-      otgp->oe[i].DOEPCTL = 0;
+
+    otgp->oe[i].DOEPCTL = 0;
     otgp->oe[i].DOEPTSIZ = 0;
     otgp->oe[i].DOEPINT = 0xFFFFFFFF;
   }
@@ -186,7 +165,7 @@ static void otg_rxfifo_flush(USBDriver *usbp) {
   while ((otgp->GRSTCTL & GRSTCTL_RXFFLSH) != 0)
     ;
   /* Wait for 3 PHY Clocks.*/
-  osalSysPolledDelayX(12);
+  osalSysPolledDelayX(18);
 }
 
 static void otg_txfifo_flush(USBDriver *usbp, uint32_t fifo) {
@@ -196,7 +175,7 @@ static void otg_txfifo_flush(USBDriver *usbp, uint32_t fifo) {
   while ((otgp->GRSTCTL & GRSTCTL_TXFFLSH) != 0)
     ;
   /* Wait for 3 PHY Clocks.*/
-  osalSysPolledDelayX(12);
+  osalSysPolledDelayX(18);
 }
 
 /**
