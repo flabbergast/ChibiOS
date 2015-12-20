@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-#ifndef _KL27Z_H_
-#define _KL27Z_H_
+#ifndef _KL27ZXXX_H_
+#define _KL27ZXXX_H_
 
 /**
  * @brief KL2x Interrupt Number Definition, according to the selected device
@@ -1291,4 +1291,4 @@ typedef struct {
 #define VREF_SC_MODE_LV_HIGH_POWER    VREF_SC_MODE_LV(1)
 #define VREF_SC_MODE_LV_LOW_POWER     VREF_SC_MODE_LV(2)
 
-#endif /* _KL27Z_H_ */
+#endif /* _KL27ZXXX_H_ */

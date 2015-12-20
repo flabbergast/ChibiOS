@@ -57,10 +57,6 @@
 #define KINETIS_ADC0_IRQ_VECTOR     Vector7C
 #define KINETIS_HAS_ADC1            FALSE
 
-/* DAC attributes.*/
-#define KINETIS_HAS_DAC0            TRUE
-#define KINTEIS_DAC0_IRQ_VECTOR     VectorA4
-
 /* DMA attributes.*/
 #define KINETIS_DMA0_IRQ_VECTOR     Vector40
 #define KINETIS_DMA1_IRQ_VECTOR     Vector44
@@ -123,6 +119,10 @@
 /*===========================================================================*/
 #if defined(KL25) || defined(__DOXYGEN__)
 
+/* DAC attributes.*/
+#define KINETIS_HAS_DAC0            TRUE
+#define KINTEIS_DAC0_IRQ_VECTOR     VectorA4
+
 /* EXT attributes.*/
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 #define KINETIS_PORTD_IRQ_VECTOR    VectorBC
@@ -148,6 +148,10 @@
 /*===========================================================================*/
 #elif defined(KL26) /* defined(KL25) */
 
+/* DAC attributes.*/
+#define KINETIS_HAS_DAC0            TRUE
+#define KINTEIS_DAC0_IRQ_VECTOR     VectorA4
+
 /* EXT attributes.*/
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 /* Common IRQ vector for PORTC and PORTD */
@@ -172,9 +176,9 @@
 #define KINETIS_HAS_USB_CLOCK_RECOVERY FALSE
 
 /*===========================================================================*/
-/* KL27Zxxx                                                                  */
+/* KL27                                                                      */
 /*===========================================================================*/
-#elif defined(KL27Zxxx) /* defined(KL26) */
+#elif defined(KL27Zxxx) || defined(KL27Zxx) /* defined(KL26) */
 
 #if !defined(KL27)
 #define KL27
@@ -187,14 +191,10 @@
 #define KINETIS_PORTD_IRQ_VECTOR    VectorBC
 #define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
 
-/* I2S attributes.*/
-#define KINETIS_HAS_I2S0            TRUE
-#define KINETIS_I2S0_IRQ_VECTOR     Vector9C
-
 /* MCG attributes.*/
 #define KINETIS_HAS_MCG_LITE        TRUE
 
-/* Note: on this device, SERIAL2 is alternatively FlexIO. */
+/* Note: on this device, SERIAL2 IRQ is alternatively FlexIO IRQ. */
 /* Serial attributes */
 #define KINETIS_SERIAL0_IS_UARTLP   FALSE
 #define KINETIS_SERIAL0_IS_LPUART   TRUE
@@ -204,7 +204,37 @@
 #define KINETIS_USB0_IS_USBOTG      FALSE
 #define KINETIS_HAS_USB_CLOCK_RECOVERY TRUE
 
-#else /* defined(KL27Zxxx) */
+/*===========================================================================*/
+/* KL27Zxxx (MKL27Z128* and MKL27Z256*) specific                             */
+/*===========================================================================*/
+#if defined(KL27Zxxx)
+
+/* DAC attributes.*/
+#define KINETIS_HAS_DAC0            TRUE
+#define KINTEIS_DAC0_IRQ_VECTOR     VectorA4
+
+/* I2S attributes.*/
+#define KINETIS_HAS_I2S0            TRUE
+#define KINETIS_I2S0_IRQ_VECTOR     Vector9C
+
+/*===========================================================================*/
+/* KL27Zxx (MKL27Z32* and MKL27Z264*) specific                               */
+/*===========================================================================*/
+#elif defined(KL27Zxx) /* defined(KL27Zxxx) */
+
+/* Has CRC module */
+/* Does not have USB voltage regulator */
+/* Does have KEEP_ALIVE USB feature */
+
+/* DAC attributes.*/
+#define KINETIS_HAS_DAC0            FALSE
+
+/* I2S attributes.*/
+#define KINETIS_HAS_I2S0            FALSE
+
+#endif /* defined(KL27Zxx) */
+
+#else /* ! (KL25 || KL26 || KL27)  */
 #error MCU type not described in kinetis_registry
 #endif /* KL2Y */
 
