@@ -18,14 +18,14 @@
 */
 
 /*
- * KL26Z64 memory setup.
+ * KL26Z128 memory setup.
  */
 MEMORY
 {
   flash0   : org = 0x00000000, len = 0xc0
   flashcfg : org = 0x00000400, len = 0x10
-  flash    : org = 0x00000410, len = 64k - 0x410
-  ram0     : org = 0x1FFFF800, len = 8k
+  flash    : org = 0x00000410, len = 128k - 0x410
+  ram0     : org = 0x1FFFF000, len = 16k
   ram1     : org = 0x00000000, len = 0
   ram2     : org = 0x00000000, len = 0
   ram3     : org = 0x00000000, len = 0
