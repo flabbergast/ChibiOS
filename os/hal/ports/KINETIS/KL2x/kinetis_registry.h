@@ -126,6 +126,8 @@
 /* EXT attributes.*/
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 #define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_EXT_HAS_COMMON_CD_IRQ   FALSE
+#define KINETIS_EXT_HAS_COMMON_BCDE_IRQ FALSE
 #define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
 
 /* I2S attributes.*/
@@ -155,8 +157,9 @@
 /* EXT attributes.*/
 #define KINETIS_PORTA_IRQ_VECTOR    VectorB8
 /* Common IRQ vector for PORTC and PORTD */
-#define KINETIS_PORTC_IRQ_VECTOR    VectorBC
 #define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_EXT_HAS_COMMON_CD_IRQ   TRUE
+#define KINETIS_EXT_HAS_COMMON_BCDE_IRQ FALSE
 #define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
 
 /* I2S attributes.*/
@@ -184,13 +187,6 @@
 #define KL27
 #endif
 
-/* EXT attributes.*/
-#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
-/* Common IRQ vector for PORTC and PORTD */
-#define KINETIS_PORTC_IRQ_VECTOR    VectorBC
-#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
-#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
-
 /* MCG attributes.*/
 #define KINETIS_HAS_MCG_LITE        TRUE
 
@@ -213,6 +209,14 @@
 #define KINETIS_HAS_DAC0            TRUE
 #define KINTEIS_DAC0_IRQ_VECTOR     VectorA4
 
+/* EXT attributes.*/
+#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
+/* Common IRQ vector for PORTC and PORTD */
+#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_EXT_HAS_COMMON_CD_IRQ   TRUE
+#define KINETIS_EXT_HAS_COMMON_BCDE_IRQ FALSE
+#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
+
 /* I2S attributes.*/
 #define KINETIS_HAS_I2S0            TRUE
 #define KINETIS_I2S0_IRQ_VECTOR     Vector9C
@@ -228,6 +232,14 @@
 
 /* DAC attributes.*/
 #define KINETIS_HAS_DAC0            FALSE
+
+/* EXT attributes.*/
+#define KINETIS_PORTA_IRQ_VECTOR    VectorB8
+/* Common IRQ vector for PORTB to PORTE */
+#define KINETIS_PORTD_IRQ_VECTOR    VectorBC
+#define KINETIS_EXT_HAS_COMMON_CD_IRQ   FALSE
+#define KINETIS_EXT_HAS_COMMON_BCDE_IRQ TRUE
+#define KINETIS_GPIO_HAS_OPENDRAIN  FALSE
 
 /* I2S attributes.*/
 #define KINETIS_HAS_I2S0            FALSE
