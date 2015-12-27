@@ -301,9 +301,16 @@ void usb_packet_receive(USBDriver *usbp, usbep_t ep, size_t n)
       osp->mode.linear.rxbuf[i] = bd->addr[i];
   }
 
-  /* Update the Buffer status */
-  osp->data_bank ^= DATA1;
+  /* Update the Buffer status
+   * Set current buffer to same DATA bank and then toggle.
+   * Since even/odd buffers are ping-pong and setup re-initialized them
+   * this should work correctly */
+#if defined(DEBUG_USB)
+    usb_debug_phexX((uint8_t)osp->data_bank);
+    usb_debug_phexX((uint8_t)osp->odd_even);
+#endif /* DEBUG_USB */
   bd->desc = BDT_DESC(epc->out_maxsize, osp->data_bank);
+  osp->data_bank ^= DATA1;
   // osalSysLockFromISR(); // already locked?
   usb_lld_start_out(usbp, ep);
   // osalSysUnlockFromISR();
@@ -794,7 +801,7 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
     _bdt[BDT_INDEX(ep, RX, EVEN)].desc = BDT_DESC(epc->out_maxsize, DATA0);
     _bdt[BDT_INDEX(ep, RX, EVEN)].addr = usb_alloc(epc->out_maxsize);
     /* RXo */
-    _bdt[BDT_INDEX(ep, RX,  ODD)].desc = BDT_DESC(epc->out_maxsize, DATA0);
+    _bdt[BDT_INDEX(ep, RX,  ODD)].desc = BDT_DESC(epc->out_maxsize, DATA1);
     _bdt[BDT_INDEX(ep, RX,  ODD)].addr = usb_alloc(epc->out_maxsize);
     /* Enable OUT direction */
     mask |= USBx_ENDPTn_EPRXEN;
@@ -927,9 +934,16 @@ void usb_lld_read_setup(USBDriver *usbp, usbep_t ep, uint8_t *buf) {
   for (n = 0; n < 8; n++) {
     buf[n] = bd->addr[n];
   }
-  /* Release the buffer */
-  os->data_bank ^= DATA1;
-  bd->desc = BDT_DESC(usbp->epc[ep]->out_maxsize,os->data_bank);
+  /* Release the buffer
+   * Setup packet is always DATA0
+   * Initialize buffers so current expects DATA0 & opposite DATA1 */
+#if defined(DEBUG_USB)
+    usb_debug_phexX((uint8_t)os->data_bank);
+    usb_debug_phexX((uint8_t)os->odd_even);
+#endif /* DEBUG_USB */
+  bd->desc = BDT_DESC(usbp->epc[ep]->out_maxsize,DATA0);
+  _bdt[BDT_INDEX(ep, RX, os->odd_even^ODD)].desc = BDT_DESC(usbp->epc[ep]->out_maxsize,DATA1);
+  os->data_bank = DATA1;
 }
 
 /**
@@ -951,6 +965,10 @@ void usb_lld_prepare_receive(USBDriver *usbp, usbep_t ep) {
   else
     osp->rxpkts = (uint16_t)((osp->rxsize + usbp->epc[ep]->out_maxsize - 1) /
                              usbp->epc[ep]->out_maxsize);
+#if defined(DEBUG_USB)
+  usb_debug_putX('0'+osp->rxsize);
+  usb_debug_putX('0'+osp->rxpkts);
+#endif /* DEBUG_USB */
 }
 
 /**
