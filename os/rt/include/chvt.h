@@ -336,7 +336,7 @@ static inline bool chVTIsSystemTimeWithin(systime_t start, systime_t end) {
  *                      can be @p NULL if the information is not required.
  * @return              The time, in ticks, until next time event.
  * @retval false        if the timers list is empty.
- * @retbal true         if the timers list contains at least one timer.
+ * @retval true         if the timers list contains at least one timer.
  *
  * @iclass
  */
@@ -344,8 +344,9 @@ static inline bool chVTGetTimersStateI(systime_t *timep) {
 
   chDbgCheckClassI();
 
-  if (&ch.vtlist == (virtual_timers_list_t *)ch.vtlist.vt_next)
+  if (&ch.vtlist == (virtual_timers_list_t *)ch.vtlist.vt_next) {
     return false;
+  }
 
   if (timep != NULL) {
 #if CH_CFG_ST_TIMEDELTA == 0

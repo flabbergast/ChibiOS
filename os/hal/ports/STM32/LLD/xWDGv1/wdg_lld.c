@@ -24,7 +24,7 @@
 
 #include "hal.h"
 
-#if HAL_USE_WDG || defined(__DOXYGEN__)
+#if (HAL_USE_WDG == TRUE) || defined(__DOXYGEN__)
 
 /*===========================================================================*/
 /* Driver local definitions.                                                 */
@@ -126,7 +126,7 @@ void wdg_lld_stop(WDGDriver *wdgp) {
 /**
  * @brief   Reloads WDG's counter.
  *
- * @param[in] idwgp pointer to the @p WDGDriver object
+ * @param[in] wdgp      pointer to the @p WDGDriver object
  *
  * @notapi
  */
@@ -135,6 +135,6 @@ void wdg_lld_reset(WDGDriver * wdgp) {
   wdgp->wdg->KR = KR_KEY_RELOAD;
 }
 
-#endif /* HAL_USE_WDG */
+#endif /* HAL_USE_WDG == TRUE */
 
 /** @} */

@@ -1,8 +1,8 @@
 
 *** ChibiOS/RT test suite
 ***
-*** Kernel:       3.0.0
-*** Compiled:     Jul  9 2015 - 10:10:38
+*** Kernel:       3.1.0
+*** Compiled:     Jan  4 2016 - 12:12:53
 *** Compiler:     GCC 4.6.3 build on 2013-01-07
 *** Architecture: Power Architecture
 *** Core Variant: e200z0
@@ -99,11 +99,11 @@
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.1 (Benchmark, messages #1)
---- Score : 152789 msgs/S, 305578 ctxswc/S
+--- Score : 152782 msgs/S, 305564 ctxswc/S
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.2 (Benchmark, messages #2)
---- Score : 128902 msgs/S, 257804 ctxswc/S
+--- Score : 128898 msgs/S, 257796 ctxswc/S
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.3 (Benchmark, messages #3)
@@ -111,11 +111,11 @@
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.4 (Benchmark, context switch)
---- Score : 452752 ctxswc/S
+--- Score : 452768 ctxswc/S
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.5 (Benchmark, threads, full cycle)
---- Score : 102399 threads/S
+--- Score : 102403 threads/S
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.6 (Benchmark, threads, create only)
@@ -131,11 +131,11 @@
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.9 (Benchmark, I/O Queues throughput)
---- Score : 400616 bytes/S
+--- Score : 389600 bytes/S
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.10 (Benchmark, virtual timers set/reset)
---- Score : 637904 timers/S
+--- Score : 644036 timers/S
 --- Result: SUCCESS
 ----------------------------------------------------------------------------
 --- Test Case 12.11 (Benchmark, semaphores wait/signal)

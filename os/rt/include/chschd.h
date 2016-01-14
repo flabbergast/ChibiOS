@@ -180,7 +180,7 @@ struct ch_threads_list {
 /**
  * @brief   Generic threads bidirectional linked list header and element.
  */
-struct ch_threads_queue{
+struct ch_threads_queue {
   thread_t              *p_next;    /**< @brief Next in the list/queue.     */
   thread_t              *p_prev;    /**< @brief Previous in the queue.      */
 };
@@ -276,6 +276,12 @@ struct ch_thread {
      *        state.
      */
     thread_reference_t  *wttrp;
+#if (CH_CFG_USE_MESSAGES == TRUE) || defined(__DOXYGEN__)
+    /**
+     * @brief Thread sent message.
+     */
+    msg_t               sentmsg;
+#endif
 #if (CH_CFG_USE_SEMAPHORES == TRUE) || defined(__DOXYGEN__)
     /**
      * @brief Pointer to a generic semaphore object.
@@ -314,10 +320,6 @@ struct ch_thread {
    * @brief Messages queue.
    */
   threads_queue_t       p_msgqueue;
-  /**
-   * @brief Thread message.
-   */
-  msg_t                 p_msg;
 #endif
 #if (CH_CFG_USE_EVENTS == TRUE) || defined(__DOXYGEN__)
   /**
@@ -476,7 +478,7 @@ struct ch_system {
    */
   kernel_stats_t        kernel_stats;
 #endif
-#if CH_CFG_NO_IDLE_THREAD == FALSE
+#if (CH_CFG_NO_IDLE_THREAD == FALSE) || defined(__DOXYGEN__)
   /**
    * @brief   Idle thread working area.
    */

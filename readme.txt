@@ -72,18 +72,30 @@
 *** Releases and Change Log                                               ***
 *****************************************************************************
 
-*** 3.1.0 ***
+*** RT 3.2.0 ***
+- OPT: Removed the p_msg field from the thread_t structure saving a
+       msg_t-sized field from the structure. Messages now use a new field
+       into the p_u union. Now synchnorous messages are even faster.
+- FIX: Fixed tm_stop - best case bug (bug #688)(backported to 16.1.0
+       and 3.0.5).
+
+*** 16.1.0 ***
 - RT:  Added CodeWarrior compiler support to the e200 port.
+- HAL: Added support for STM32F446.
 - HAL: Introduced preliminary support for STM32F7xx devices.
 - HAL: Introduced preliminary support for STM32L4xx devices.
 - HAL: Introduced preliminary support for STM32L0xx devices.
+- HAL: Increased performance of USBv1 and OTGv1 driver thanks to better
+       data copying code.
+- HAL: Enhanced Serial-USB driver using the new buffers queues object.
+- HAL: Simplified USB driver, queued API has been removed.
 - HAL: Enhanced the CAN driver with I-class functions. Now it is possible
        to exchange frames from ISRs.
 - HAL: Added watchdog driver model (WDG) and STM32 implementation on IWDG.
 - HAL: Added synchronous API and mutual exclusion to the UART driver.
 - HAL: Added PAL driver for STM32L4xx GPIOv3 peripheral.
 - HAL: Added I2S driver for STM32 SPIv2 peripheral.
-- HAL: Added demos and board files for ST's Nucleo32 boards (F031, F042, F303).
+- HAL: Added demos an- d board files for ST's Nucleo32 boards (F031, F042, F303).
 - HAL: Added "lines" handling to PAL driver, lines are identifiers of both
        ports and pins encoded in a single value. Added a set of macros
        operating on lines.
@@ -142,6 +154,11 @@
 - HAL: Updated STM32F0xx headers to STM32CubeF0 version 1.3.0. Added support
        for STM32F030xC, STM32F070x6, STM32F070xB, STM32F091xC,
        STM32F098xx devices.
+- RT:  Fixed ARM port enforcing THUMB mode (bug #687)(backported to 3.0.5).
+- HAL: Fixed HAL drivers still calling RT functions (bug #686)(backported
+       to 3.0.5).
+- HAL: Fixed chprintf() still calling RT functions (bug #684)(backported
+       to 3.0.5).
 - HAL: Fixed STM32 ICU driver uses chSysLock and chSysUnlock (bug #681)
        (backported to 3.0.4).
 - HAL: Fixed wrong DMA priority assigned to STM32F3 ADC3&4 (bug #680)
