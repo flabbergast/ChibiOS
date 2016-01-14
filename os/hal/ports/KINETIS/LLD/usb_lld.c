@@ -621,9 +621,6 @@ void usb_lld_start(USBDriver *usbp) {
 #else /* KINETIS_USB0_IS_USBOTG */
       nvicEnableVector(USB_IRQn, KINETIS_USB_USB0_IRQ_PRIORITY);
 #endif /* KINETIS_USB0_IS_USBOTG */
-
-      /* Enable D+ pullup */
-      USB0->CONTROL = USBx_CONTROL_DPPULLUPNONOTG;
     }
 #endif /* KINETIS_USB_USE_USB0 */
   }

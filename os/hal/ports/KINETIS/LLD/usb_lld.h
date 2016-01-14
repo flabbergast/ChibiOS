@@ -372,7 +372,7 @@ struct USBDriver {
  * @api
  */
 #if !defined(usb_lld_connect_bus)
-#define usb_lld_connect_bus(usbp) ;
+#define usb_lld_connect_bus(usbp)   (USB0->CONTROL |= USBx_CONTROL_DPPULLUPNONOTG)
 #endif
 
 /**
@@ -381,7 +381,7 @@ struct USBDriver {
  * @api
  */
 #if !defined(usb_lld_disconnect_bus)
-#define usb_lld_disconnect_bus(usbp) ;
+#define usb_lld_disconnect_bus(usbp) (USB0->CONTROL &= ~USBx_CONTROL_DPPULLUPNONOTG)
 #endif
 
 /*===========================================================================*/
