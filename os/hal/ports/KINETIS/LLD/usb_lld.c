@@ -1,5 +1,7 @@
 /*
-    ChibiOS - Copyright (C) 2014..2015 RedoX
+    ChibiOS - Copyright (C) 2006..2015 Giovanni Di Sirio
+     this driver - Copyright (C) 2014..2015 RedoX
+                             (C) 2015..2016 flabbergast
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -214,44 +216,16 @@ void usb_packet_transmit(USBDriver *usbp, usbep_t ep, size_t n)
   usb_debug_phexX((uint8_t)n);
   usb_debug_phexX((uint8_t)epc->in_maxsize);
 #endif /* DEBUG_USB */
-  if (isp->txqueued)
-  {
-#if defined(DEBUG_USB)
-    usb_debug_putX('>');
-#endif /* DEBUG_USB */
-    output_queue_t *oq = isp->mode.queue.txqueue;
-    /* Copy from queue to _usbb[] */
-    size_t i;
-    for(i=0;i<n;i++)
-    {
-      bd->addr[i] = *oq->q_rdptr++;
-      if (oq->q_rdptr >= oq->q_top)
-        oq->q_rdptr = oq->q_buffer;
-    }
-    /* Updating queue.*/
-    syssts_t sts = osalSysGetStatusAndLockX();
-    oq->q_counter += n;
-    osalThreadDequeueAllI(&oq->q_waiting, Q_OK);
-    osalSysRestoreStatusX(sts);
-  }
-  else
-  {
-#if defined(DEBUG_USB)
-    usb_debug_putX('y');
-#endif /* DEBUG_USB */
-    /* Copy from buf to _usbb[] */
-    size_t i=0;
-    for(i=0;i<n;i++)
-      bd->addr[i] = isp->mode.linear.txbuf[i];
-  }
+  /* Copy from buf to _usbb[] */
+  size_t i=0;
+  for(i=0;i<n;i++)
+    bd->addr[i] = isp->txbuf[i];
 
-  // osalSysLockFromISR(); // already locked?
   /* Update the Buffer status */
   bd->desc = BDT_DESC(n, isp->data_bank);
   /* Toggle the odd and data bits for next TX */
   isp->data_bank ^= DATA1;
   isp->odd_even ^= ODD;
-  // osalSysUnlockFromISR();
 }
 
 /* Called from locked ISR. */
@@ -270,36 +244,10 @@ void usb_packet_receive(USBDriver *usbp, usbep_t ep, size_t n)
   usb_debug_phexX((uint8_t)n);
   usb_debug_phexX((uint8_t)epc->in_maxsize);
 #endif /* DEBUG_USB */
-  if (osp->rxqueued)
-  {
-#if defined(DEBUG_USB)
-    usb_debug_putX('<');
-#endif /* DEBUG_USB */
-    input_queue_t *iq = osp->mode.queue.rxqueue;
-    /* Copy from _usbb[] to queue */
-    size_t i;
-    for(i=0;i<n;i++)
-    {
-      *iq->q_wrptr++ = bd->addr[i];
-      if (iq->q_wrptr >= iq->q_top)
-        iq->q_wrptr = iq->q_buffer;
-    }
-    /* Updating queue.*/
-    // osalSysLockFromISR(); // already locked?
-    iq->q_counter += n;
-    osalThreadDequeueAllI(&iq->q_waiting, Q_OK);
-    // osalSysUnlockFromISR();
-  }
-  else
-  {
-#if defined(DEBUG_USB)
-    usb_debug_putX('y');
-#endif /* DEBUG_USB */
-    /* Copy from _usbb[] to buf  */
-    size_t i=0;
-    for(i=0;i<n;i++)
-      osp->mode.linear.rxbuf[i] = bd->addr[i];
-  }
+  /* Copy from _usbb[] to buf  */
+  size_t i=0;
+  for(i=0;i<n;i++)
+    osp->rxbuf[i] = bd->addr[i];
 
   /* Update the Buffer status
    * Set current buffer to same DATA bank and then toggle.
@@ -311,9 +259,7 @@ void usb_packet_receive(USBDriver *usbp, usbep_t ep, size_t n)
 #endif /* DEBUG_USB */
   bd->desc = BDT_DESC(epc->out_maxsize, osp->data_bank);
   osp->data_bank ^= DATA1;
-  // osalSysLockFromISR(); // already locked?
   usb_lld_start_out(usbp, ep);
-  // osalSysUnlockFromISR();
 }
 
 /*===========================================================================*/
@@ -415,8 +361,7 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
 #if defined(DEBUG_USB)
           usb_debug_putX('+');
 #endif /* DEBUG_USB */
-          if (!epc->in_state->txqueued)
-            epc->in_state->mode.linear.txbuf += txed;
+          epc->in_state->txbuf += txed;
           osalSysLockFromISR();
           usb_packet_transmit(usbp,ep,epc->in_state->txsize - epc->in_state->txcnt);
           osalSysUnlockFromISR();
@@ -444,8 +389,7 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
         osalSysUnlockFromISR();
         if(rxed)
         {
-          if(!epc->out_state->rxqueued)
-            epc->out_state->mode.linear.rxbuf += rxed;
+          epc->out_state->rxbuf += rxed;
 
           /* Update transaction data */
           epc->out_state->rxcnt              += rxed;
@@ -526,7 +470,6 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
     // suspend the USB module
     //? USB0->USBCTRL |= USBx_USBCTRL_SUSP;
 
-    USB0->ISTAT = USBx_ISTAT_RESUME;
     USB0->ISTAT = USBx_ISTAT_SLEEP;
   }
 
