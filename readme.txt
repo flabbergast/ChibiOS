@@ -72,12 +72,14 @@
 *** Releases and Change Log                                               ***
 *****************************************************************************
 
-*** RT 3.2.0 ***
-- OPT: Removed the p_msg field from the thread_t structure saving a
+*** Next ***
+- RT:  Removed the p_msg field from the thread_t structure saving a
        msg_t-sized field from the structure. Messages now use a new field
-       into the p_u union. Now synchnorous messages are even faster.
-- FIX: Fixed tm_stop - best case bug (bug #688)(backported to 16.1.0
+       into the p_u union. Now synchronous messages are even faster.
+- HAL: Fixed error in HAL buffer queues (bug #689)(backported to 16.1.1).
+- RT:  Fixed tm_stop - best case bug (bug #688)(backported to 16.1.1
        and 3.0.5).
+- ALL: Several minor documentation/formatting-related fixes.
 
 *** 16.1.0 ***
 - RT:  Added CodeWarrior compiler support to the e200 port.
