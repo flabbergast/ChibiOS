@@ -327,6 +327,8 @@ OSAL_IRQ_HANDLER(KINETIS_USB_IRQ_VECTOR) {
         /* Clear any pending IN stuff */
         _bdt[BDT_INDEX(ep, TX, EVEN)].desc = 0;
         _bdt[BDT_INDEX(ep, TX,  ODD)].desc = 0;
+        /* Also in the chibios state machine */
+        (usbp)->receiving &= ~1;
         /* After a SETUP, IN is always DATA1 */
         usbp->epc[ep]->in_state->data_bank = DATA1;
 
@@ -887,17 +889,17 @@ void usb_lld_read_setup(USBDriver *usbp, usbep_t ep, uint8_t *buf) {
 }
 
 /**
- * @brief   Prepares for a receive operation.
+ * @brief   Starts a receive operation on an OUT endpoint.
  *
  * @param[in] usbp      pointer to the @p USBDriver object
  * @param[in] ep        endpoint number
  *
  * @notapi
  */
-void usb_lld_prepare_receive(USBDriver *usbp, usbep_t ep) {
+void usb_lld_start_out(USBDriver *usbp, usbep_t ep) {
   USBOutEndpointState *osp = usbp->epc[ep]->out_state;
 #if defined(DEBUG_USB)
-  usb_debug_putX('m');
+  usb_debug_putX('o');
 #endif /* DEBUG_USB */
   /* Transfer initialization.*/
   if (osp->rxsize == 0)         /* Special case for zero sized packets.*/
@@ -908,39 +910,6 @@ void usb_lld_prepare_receive(USBDriver *usbp, usbep_t ep) {
 #if defined(DEBUG_USB)
   usb_debug_putX('0'+osp->rxsize);
   usb_debug_putX('0'+osp->rxpkts);
-#endif /* DEBUG_USB */
-}
-
-/**
- * @brief   Prepares for a transmit operation.
- *
- * @param[in] usbp      pointer to the @p USBDriver object
- * @param[in] ep        endpoint number
- *
- * @notapi
- */
-
-void usb_lld_prepare_transmit(USBDriver *usbp, usbep_t ep) {
-  (void)usbp;
-  (void)ep;
-#if defined(DEBUG_USB)
-  usb_debug_putX('n');
-#endif /* DEBUG_USB */
-}
-
-/**
- * @brief   Starts a receive operation on an OUT endpoint.
- *
- * @param[in] usbp      pointer to the @p USBDriver object
- * @param[in] ep        endpoint number
- *
- * @notapi
- */
-void usb_lld_start_out(USBDriver *usbp, usbep_t ep) {
-  (void)usbp;
-  (void)ep;
-#if defined(DEBUG_USB)
-  usb_debug_putX('o');
 #endif /* DEBUG_USB */
 }
 
