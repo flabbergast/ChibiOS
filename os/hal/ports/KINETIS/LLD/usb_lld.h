@@ -381,7 +381,12 @@ struct USBDriver {
  * @api
  */
 #if !defined(usb_lld_disconnect_bus)
-#define usb_lld_disconnect_bus(usbp) (USB0->CONTROL &= ~USBx_CONTROL_DPPULLUPNONOTG)
+/* Writing to USB0->CONTROL causes an unhandled exception when USB module is not clocked. */
+#if KINETIS_USB0_IS_USBOTG
+#define usb_lld_disconnect_bus(usbp) if(SIM->SCGC4 & SIM_SCGC4_USBOTG) {USB0->CONTROL &= ~USBx_CONTROL_DPPULLUPNONOTG;} else {}
+#else /* KINETIS_USB0_IS_USBOTG */
+#define usb_lld_disconnect_bus(usbp) if(SIM->SCGC4 & SIM_SCGC4_USBFS) {USB0->CONTROL &= ~USBx_CONTROL_DPPULLUPNONOTG;} else {}
+#endif /* KINETIS_USB0_IS_USBOTG */
 #endif
 
 /*===========================================================================*/
